@@ -1,0 +1,157 @@
+{
+ "_comment": "県市ごとの歴史・人文の概説(情報カードの県市名の下に表示)",
+ "TW-TPE": {
+  "zh": "台灣首都。清代艋舺・大稻埕的河港商貿起家，日治時期成為政治中心，現代則以101與故宮聞名於世。",
+  "ja": "台湾の首都。清代は艋舺・大稲埕の河港商業で栄え、日本統治期に政治の中心となった。故宮と101を擁する文化都市。",
+  "en": "Taiwan's capital - born from Qing-era river trade, shaped by the Japanese era, crowned today by Taipei 101 and the Palace Museum.",
+  "cn": "台湾首都。清代艋舺・大稻埕的河港商贸起家，日治时期成为政治中心，现代则以101与故宫闻名于世。",
+  "ko": "대만의 수도. 청대 河港 상업으로 번성했고 일제 시대 정치 중심이 되었다. 고궁과 101을 품은 문화 도시."
+ },
+ "TW-NWT": {
+  "zh": "環抱台北的最大城市。九份金礦、平溪煤鄉、淡水洋行港埠，處處是產業歲月的記憶。",
+  "ja": "台北を取り囲む台湾最大の都市。九份の金鉱、平渓の炭鉱、淡水の開港場と、産業の記憶が観光名所になった。",
+  "en": "The vast city wrapping Taipei, where gold-rush Jiufen, coal-town Pingxi and treaty-port Tamsui turned industry into scenery.",
+  "cn": "环抱台北的最大城市。九份金矿、平溪煤乡、淡水洋行港埠，处处是产业岁月的记忆。",
+  "ko": "타이베이를 감싸는 대만 최대 도시. 지우펀의 금광, 핑시의 탄광, 단수이의 개항장 등 산업의 기억이 명소가 되었다."
+ },
+ "TW-KEE": {
+  "zh": "台灣頭的雨港。曾是清法戰爭與日治建港的舞台，砲台與色彩屋訴說港都身世。",
+  "ja": "「台湾の玄関」と呼ばれた雨の港町。清仏戦争や築港の歴史が砲台やカラフルな港町風景に残る。",
+  "en": "The rainy gateway port of the north, its forts and painted harborfront telling of wars and shipping booms.",
+  "cn": "台湾头的雨港。曾是清法战争与日治建港的舞台，砲台与色彩屋诉说港都身世。",
+  "ko": "'대만의 관문'이라 불린 비의 항구 도시. 포대와 알록달록한 항구 풍경에 역사가 남아 있다."
+ },
+ "TW-TAO": {
+  "zh": "國門之都。大溪木器與老街見證河運時代，石門水庫開啟現代水利篇章。",
+  "ja": "空の玄関口。大渓の木工と老街が河運時代を、石門ダムが近代を物語る。",
+  "en": "Home of the international airport, with river-trade heritage at Daxi and the great Shimen Reservoir.",
+  "cn": "国门之都。大溪木器与老街见证河运时代，石门水库开启现代水利篇章。",
+  "ko": "하늘의 관문. 다시의 목공과 옛거리가 河運 시대를, 스먼댐이 근대를 말해준다."
+ },
+ "TW-HSZ": {
+  "zh": "北台灣最早的城市「竹塹」。清代築城、日治公會堂、今日科學園區，古今在此交會。",
+  "ja": "北台湾最古の城下町「竹塹」。清代の城門と廟、日本統治期の建築、現代のサイエンスパークが同居する。",
+  "en": "The north's oldest walled city, where Qing gates and temples meet Taiwan's silicon valley.",
+  "cn": "北台湾最早的城市「竹堑」。清代筑城、日治公会堂、今日科学园区，古今在此交会。",
+  "ko": "북대만에서 가장 오래된 성곽 도시 '주첸'. 청대 성문과 사원, 현대의 사이언스파크가 공존한다."
+ },
+ "TW-HSQ": {
+  "zh": "客家與泰雅的山縣。北埔內灣的客庄風情、尖石司馬庫斯的部落與巨木，是深呼吸的地方。",
+  "ja": "客家とタイヤル族の山あいの県。北埔・内湾の客家集落と、司馬庫斯の巨木の森が待つ。",
+  "en": "A mountain county of Hakka towns and Atayal villages, from Beipu teahouses to the giant trees of Smangus.",
+  "cn": "客家与泰雅的山县。北埔内湾的客庄风情、尖石司马库斯的部落与巨木，是深呼吸的地方。",
+  "ko": "하카와 타이야족의 산악 현. 베이푸·네이완의 하카 마을과 스마쿠스의 거목 숲이 기다린다."
+ },
+ "TW-MIA": {
+  "zh": "山城客庄。舊山線鐵道與龍騰斷橋是鐵道迷聖地，大湖草莓香甜了整個冬天。",
+  "ja": "客家の山県。旧山線の鉄道遺産と龍騰断橋、冬の大湖いちご狩りで知られる。",
+  "en": "Hakka hill country famed for its old mountain railway, the broken viaduct and winter strawberries.",
+  "cn": "山城客庄。旧山线铁道与龙腾断桥是铁道迷圣地，大湖草莓香甜了整个冬天。",
+  "ko": "하카의 산악 현. 옛 산선 철도 유산과 룽텅 끊어진 다리, 겨울 다후 딸기로 유명하다."
+ },
+ "TW-TXG": {
+  "zh": "中部之都。從犁頭店老街到歌劇院，從高美濕地到武陵農場，城市與山海兼得。",
+  "ja": "中部の中核都市。珍珠奶茶発祥の店、高美湿地の夕日、武陵の山岳リゾートまで幅広い。",
+  "en": "Central Taiwan's metropolis - birthplace of bubble tea, sunset wetlands and high mountain farms.",
+  "cn": "中部之都。从犁头店老街到歌剧院，从高美湿地到武陵农场，城市与山海兼得。",
+  "ko": "중부의 중심 도시. 버블티 발상지, 가오메이 습지의 노을, 우링의 산악 리조트까지 폭넓다."
+ },
+ "TW-CHA": {
+  "zh": "「一府二鹿三艋舺」的鹿港所在。廟宇工藝之都，田尾花鄉與王功蚵田點綴平原。",
+  "ja": "「一府二鹿三艋舺」と謳われた鹿港を擁する。廟建築と工芸の都であり、花と牡蠣の平野が広がる。",
+  "en": "Home of Lukang, once Taiwan's second city - a treasury of temple craft amid flower farms and oyster flats.",
+  "cn": "「一府二鹿三艋舺」的鹿港所在。庙宇工艺之都，田尾花乡与王功蚵田点缀平原。",
+  "ko": "'일부이록삼맹갑'이라 불린 루강을 품은 곳. 사원 건축과 공예의 도시이자 꽃과 굴의 평야."
+ },
+ "TW-NAN": {
+  "zh": "台灣唯一不靠海的縣。日月潭的邵族傳說、溪頭霧林與凍頂茶香，是島嶼的心臟。",
+  "ja": "台湾で唯一海に面しない県。日月潭のサオ族伝説、渓頭の霧の森、凍頂烏龍茶の香りが息づく内陸の心臓部。",
+  "en": "Taiwan's only landlocked county - Sun Moon Lake legends, misty forests and the home of oolong tea.",
+  "cn": "台湾唯一不靠海的县。日月潭的邵族传说、溪头雾林与冻顶茶香，是岛屿的心脏。",
+  "ko": "대만에서 유일하게 바다가 없는 현. 르웨탄의 사오족 전설, 시터우의 안개 숲, 우롱차 향이 흐르는 내륙의 심장."
+ },
+ "TW-YUN": {
+  "zh": "農業首都。北港朝天宮三百年香火不息，布袋戲在此扎根，古坑咖啡飄香山間。",
+  "ja": "農業の中心地。北港朝天宮の媽祖信仰、布袋戯(指人形劇)のふるさと、古坑コーヒーの産地。",
+  "en": "Taiwan's farm belt, anchored by the great Mazu temple at Beigang and the cradle of glove puppetry.",
+  "cn": "农业首都。北港朝天宫三百年香火不息，布袋戏在此扎根，古坑咖啡飘香山间。",
+  "ko": "농업의 중심지. 베이강 차오톈궁의 마조 신앙, 포대희의 고향, 구컹 커피의 산지."
+ },
+ "TW-CYI": {
+  "zh": "阿里山林業之城。日治檜木宿舍群與KANO棒球傳奇，讓小城充滿故事。",
+  "ja": "阿里山林業で栄えた街。ヒノキの日本家屋群と映画『KANO』の野球伝説が残る。",
+  "en": "The forestry town at Alishan's foot, rich with cypress-built quarters and the KANO baseball legend.",
+  "cn": "阿里山林业之城。日治桧木宿舍群与KANO棒球传奇，让小城充满故事。",
+  "ko": "아리산 임업으로 번성한 도시. 편백 일본가옥 마을과 영화 'KANO'의 야구 전설이 남아 있다."
+ },
+ "TW-CYQ": {
+  "zh": "從海濱濕地到阿里山雲海。鄒族的達娜伊谷、奮起湖便當、高山茶園，垂直台灣盡在一縣。",
+  "ja": "海辺の湿地から阿里山の雲海まで標高差3000m。ツォウ族の谷、奮起湖弁当、高山茶園と「垂直の台湾」が詰まる。",
+  "en": "From coastal wetlands to Alishan's sea of clouds - three vertical kilometers of Taiwan in one county.",
+  "cn": "从海滨湿地到阿里山云海。邹族的达娜伊谷、奋起湖便当、高山茶园，垂直台湾尽在一县。",
+  "ko": "바닷가 습지에서 아리산 운해까지 고도차 3,000m. 쩌우족의 계곡, 펀치후 도시락, 고산 차밭이 담긴 '수직의 대만'."
+ },
+ "TW-TNN": {
+  "zh": "台灣最古老的城市。荷蘭城堡、鄭氏王朝、清代府城，四百年歷史層層堆疊，小吃之都名不虛傳。",
+  "ja": "台湾最古の都市。オランダ、鄭成功、清朝と400年の歴史が層をなす古都であり、小吃(B級グルメ)の都。",
+  "en": "Taiwan's oldest city - four centuries of Dutch, Koxinga and Qing history, and the island's street-food capital.",
+  "cn": "台湾最古老的城市。荷兰城堡、郑氏王朝、清代府城，四百年历史层层堆叠，小吃之都名不虚传。",
+  "ko": "대만에서 가장 오래된 도시. 네덜란드·정성공·청조 400년 역사가 겹겹이 쌓인 고도이자 길거리 미식의 수도."
+ },
+ "TW-KHH": {
+  "zh": "南方港都。打狗開港、日治築港到貨櫃大港，如今駁二藝術與旗津海風並存。",
+  "ja": "南部最大の港湾都市。開港場から国際貿易港へ、いまはアート特区と港町情緒が共存する。",
+  "en": "The great southern port, reinvented from harbor town to container giant to arts district.",
+  "cn": "南方港都。打狗开港、日治筑港到货柜大港，如今驳二艺术与旗津海风并存。",
+  "ko": "남부 최대의 항구 도시. 개항장에서 국제무역항으로, 지금은 예술 특구와 항구 정취가 공존한다."
+ },
+ "TW-PIF": {
+  "zh": "國境之南。排灣魯凱的山、東港的黑鮪魚、墾丁的珊瑚礁海岸，熱帶台灣在此。",
+  "ja": "台湾最南端。パイワン族・ルカイ族の山、東港のマグロ、墾丁のサンゴ礁と、熱帯の台湾がここにある。",
+  "en": "Taiwan's tropical deep south - indigenous mountains, tuna harbors and the coral coasts of Kenting.",
+  "cn": "国境之南。排湾鲁凯的山、东港的黑鲔鱼、垦丁的珊瑚礁海岸，热带台湾在此。",
+  "ko": "대만 최남단. 파이완·루카이족의 산, 둥강의 참치, 컨딩의 산호초까지 열대의 대만이 여기에 있다."
+ },
+ "TW-ILA": {
+  "zh": "蘭陽平原。葛瑪蘭人的故鄉，雪山隧道通車後的溫泉與童玩之鄉。",
+  "ja": "蘭陽平野に開けた温泉と水の郷。カバラン族の故地であり、雪山トンネルで台北と直結した週末旅の定番。",
+  "en": "The Lanyang plain of hot springs and rivers, homeland of the Kavalan people.",
+  "cn": "兰阳平原。葛玛兰人的故乡，雪山隧道通车后的温泉与童玩之乡。",
+  "ko": "란양 평야에 펼쳐진 온천과 물의 고장. 카발란족의 옛 땅이며 터널 개통으로 타이베이와 직결된 주말 여행지."
+ },
+ "TW-HUA": {
+  "zh": "山海之間的縱谷門戶。太魯閣的大理石峽谷、阿美族的豐年祭，東台灣的壯闊由此開始。",
+  "ja": "中央山脈と太平洋に挟まれた東部の玄関。大理石の峡谷とアミ族の文化が誇り。",
+  "en": "Gateway to the east, squeezed between marble gorges and the Pacific, heartland of the Amis people.",
+  "cn": "山海之间的纵谷门户。太鲁阁的大理石峡谷、阿美族的丰年祭，东台湾的壮阔由此开始。",
+  "ko": "중앙산맥과 태평양 사이 동부의 관문. 대리석 협곡과 아미족 문화가 자랑이다."
+ },
+ "TW-TTT": {
+  "zh": "慢活的後山。卑南遺址的史前、南島民族的歌聲、熱氣球的天空，時間在此放慢。",
+  "ja": "「後山」と呼ばれたスローな土地。先史遺跡、原住民族の歌、熱気球の空が待つ。",
+  "en": "The laid-back 'back mountain' coast of prehistoric sites, indigenous song and balloon-filled skies.",
+  "cn": "慢活的后山。卑南遗址的史前、南岛民族的歌声、热气球的天空，时间在此放慢。",
+  "ko": "'뒷산'이라 불린 느린 땅. 선사 유적, 원주민의 노래, 열기구의 하늘이 기다린다."
+ },
+ "TW-PEN": {
+  "zh": "玄武岩群島。四百年前漢人最早落腳之地，石滬與古厝訴說討海人生。",
+  "ja": "玄武岩の群島。漢民族が台湾で最初に住み着いた地であり、石滬(石の魚捕り堰)と古厝が海の暮らしを語る。",
+  "en": "A basalt archipelago - the first Han settlement in Taiwan, storied in stone weirs and coral-walled houses.",
+  "cn": "玄武岩群岛。四百年前汉人最早落脚之地，石沪与古厝诉说讨海人生。",
+  "ko": "현무암의 군도. 한족이 대만에서 처음 정착한 땅으로, 돌 어살과 고택이 바다 살이를 말한다."
+ },
+ "TW-KIN": {
+  "zh": "前線島嶼。閩南聚落、南洋洋樓與戰地坑道並存，高粱酒香中讀冷戰史。",
+  "ja": "かつての最前線の島。閩南集落と南洋帰りの洋楼、戦地の坑道が同居し、コーリャン酒が香る。",
+  "en": "The old frontline isle where Fujian villages, emigrant mansions and Cold-War tunnels share the sorghum-scented air.",
+  "cn": "前线岛屿。闽南聚落、南洋洋楼与战地坑道并存，高粱酒香中读冷战史。",
+  "ko": "옛 최전선의 섬. 민난 마을과 남양 양관, 전장의 갱도가 공존하고 고량주 향이 흐른다."
+ },
+ "TW-LIE": {
+  "zh": "閩東石屋的列島。戰地前哨化身藍眼淚之鄉，芹壁的石牆映著海光。",
+  "ja": "閩東文化の石屋が残る列島。軍事最前線から「青い涙」の光る海の観光地へ。",
+  "en": "Granite-village islands of Eastern-Min culture, from garrison outpost to the home of the glowing 'blue tears'.",
+  "cn": "闽东石屋的列岛。战地前哨化身蓝眼泪之乡，芹壁的石墙映著海光。",
+  "ko": "민둥 문화의 석조 마을 열도. 군사 최전선에서 '푸른 눈물'이 빛나는 바다 명소로."
+ }
+}

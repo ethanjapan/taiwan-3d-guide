@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>台灣 3D 旅遊導覽</title>
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <canvas id="stage" aria-hidden="true"></canvas>
+
+    <header class="topbar">
+      <h1 class="title"><img class="title-compass" src="/ui/compass.webp" alt="" /><span data-i18n="title">台灣 3D 旅遊導覽</span></h1>
+      <nav class="langs" aria-label="Language">
+        <button type="button" class="lang info-btn" id="info-btn" data-i18n="infoBtn"></button>
+        <button type="button" class="lang" data-lang="zh" lang="zh-Hant">繁中</button>
+        <button type="button" class="lang" data-lang="cn" lang="zh-Hans">简中</button>
+        <button type="button" class="lang" data-lang="ja" lang="ja">日本語</button>
+        <button type="button" class="lang" data-lang="en" lang="en">EN</button>
+        <button type="button" class="lang" data-lang="ko" lang="ko">한국어</button>
+      </nav>
+    </header>
+
+    <p class="hint" id="hint" data-i18n="hint">拖曳旋轉．滾動縮放．點選縣市</p>
+
+    <div class="search" id="search">
+      <input type="search" id="search-input" autocomplete="off" />
+      <ul class="search-results" id="search-results" hidden></ul>
+    </div>
+
+    <aside class="panel" id="panel" hidden>
+      <img class="panel-garland" src="/ui/garland.webp" alt="" />
+      <button type="button" class="close" id="close" data-i18n-aria="close" aria-label="關閉">×</button>
+      <div class="guide-row">
+        <img class="guide-avatar" src="/guide/rinka-avatar.webp" alt="RINKA" width="40" height="40" />
+        <span class="guide-label" data-i18n="guideLabel"></span>
+      </div>
+      <h2 class="panel-name" id="panel-name"></h2>
+      <div class="panel-body" id="panel-body"></div>
+    </aside>
+
+    <div class="badge" id="badge" data-show="false" aria-hidden="true"></div>
+
+    <aside class="panel info-panel" id="info-panel" hidden>
+      <img class="panel-garland" src="/ui/garland.webp" alt="" />
+      <button type="button" class="close" id="info-close" data-i18n-aria="close" aria-label="關閉">×</button>
+      <h2 class="panel-name" id="info-title"></h2>
+      <div class="panel-body" id="info-body"></div>
+    </aside>
+
+    <aside class="welcome" id="welcome">
+      <img class="welcome-hibiscus" src="/ui/hibiscus.webp" alt="" />
+      <img class="welcome-photo" src="/guide/rinka-guide.webp" alt="RINKA" />
+      <div class="welcome-body">
+        <p class="welcome-name">RINKA</p>
+        <p class="welcome-text" data-i18n="welcomeText"></p>
+        <div class="welcome-links">
+          <a href="https://ethanjapan.github.io/mv-studio-site/" target="_blank" rel="noopener" data-i18n="rinkaSite">MV STUDIO</a>
+          <a href="https://www.youtube.com/@mvstudio_by_linlin" target="_blank" rel="noopener">YouTube</a>
+        </div>
+      </div>
+      <button type="button" class="close" id="welcome-close" data-i18n-aria="close" aria-label="關閉">×</button>
+    </aside>
+
+    <button type="button" class="stamp-btn phase-btn" id="phase-btn">
+      <img id="phase-icon" src="/ui/sun.webp" alt="" />
+      <span id="phase-label"></span>
+    </button>
+
+    <button type="button" class="stamp-btn" id="stamp-btn">
+      <img src="/ui/stamp-ring.webp" alt="" />
+      <span id="stamp-count">0/22</span>
+    </button>
+
+    <aside class="panel stamp-panel" id="stamp-panel" hidden>
+      <img class="panel-garland" src="/ui/garland.webp" alt="" />
+      <h2 class="info-title" id="stamp-title"></h2>
+      <p class="course-tip" id="stamp-hint"></p>
+      <div class="stamp-grid" id="stamp-grid"></div>
+      <button type="button" class="close" id="stamp-close" aria-label="close">×</button>
+    </aside>
+
+    <noscript>
+      <p class="fallback-note">此頁需要 JavaScript。</p>
+    </noscript>
+
+    <section class="fallback" id="fallback" hidden>
+      <h2 data-i18n="fallbackTitle">22 縣市一覽</h2>
+      <p data-i18n="fallbackNote">您的瀏覽器不支援 WebGL，以清單方式呈現。</p>
+      <ul id="fallback-list"></ul>
+    </section>
+
+    <footer class="credit">
+      <span data-i18n="credit"></span>
+    </footer>
+
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

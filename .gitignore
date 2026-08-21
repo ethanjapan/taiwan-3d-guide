@@ -1,0 +1,10 @@
+node_modules/
+dist/
+# 内部作業物は公開リポジトリに含めない(made-linlinのプロンプト文書公開事故の再発防止)
+docs/
+tools/
+assets-from-chatgpt/
+assets-rinka/
+data/source/
+*.log
+.DS_Store

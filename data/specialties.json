@@ -1,0 +1,574 @@
+{
+ "TW-TPE": [
+  {
+   "id": "xiaolongbao",
+   "zh": "小籠包",
+   "ja": "小籠包",
+   "en": "Xiaolongbao",
+   "cn": "小笼包",
+   "ko": "샤오룽바오"
+  },
+  {
+   "id": "pineapple-cake",
+   "zh": "鳳梨酥",
+   "ja": "パイナップルケーキ",
+   "en": "Pineapple cake",
+   "cn": "凤梨酥",
+   "ko": "펑리수(파인애플 케이크)"
+  },
+  {
+   "id": "beef-noodles",
+   "zh": "牛肉麵",
+   "ja": "牛肉麺",
+   "en": "Beef noodle soup",
+   "cn": "牛肉面",
+   "ko": "우육면"
+  }
+ ],
+ "TW-NWT": [
+  {
+   "id": "sky-lantern",
+   "zh": "平溪天燈",
+   "ja": "平渓ランタン",
+   "en": "Pingxi sky lantern",
+   "cn": "平溪天灯",
+   "ko": "핑시 풍등"
+  },
+  {
+   "id": "taro-balls",
+   "zh": "九份芋圓",
+   "ja": "九份芋団子",
+   "en": "Jiufen taro balls",
+   "cn": "九份芋圆",
+   "ko": "지우펀 위위안(토란 경단)"
+  },
+  {
+   "id": "iron-eggs",
+   "zh": "淡水鐵蛋",
+   "ja": "淡水鉄卵",
+   "en": "Tamsui iron eggs",
+   "cn": "淡水铁蛋",
+   "ko": "단수이 철알"
+  }
+ ],
+ "TW-KEE": [
+  {
+   "id": "paopao-ice",
+   "zh": "泡泡冰",
+   "ja": "泡泡氷",
+   "en": "Paopao ice",
+   "cn": "泡泡冰",
+   "ko": "파오파오빙"
+  },
+  {
+   "id": "sandwich",
+   "zh": "營養三明治",
+   "ja": "栄養サンドイッチ",
+   "en": "Fried sandwich",
+   "cn": "营养三明治",
+   "ko": "영양 샌드위치"
+  },
+  {
+   "id": "tianbula",
+   "zh": "甜不辣",
+   "ja": "台湾おでん",
+   "en": "Tianbula",
+   "cn": "甜不辣",
+   "ko": "톈부라(대만 어묵)"
+  }
+ ],
+ "TW-TAO": [
+  {
+   "id": "dried-tofu",
+   "zh": "大溪豆乾",
+   "ja": "大渓押し豆腐",
+   "en": "Daxi dried tofu",
+   "cn": "大溪豆干",
+   "ko": "다시 더우간(말린두부)"
+  },
+  {
+   "id": "peach",
+   "zh": "拉拉山水蜜桃",
+   "ja": "拉拉山の水蜜桃",
+   "en": "Lalashan peaches",
+   "cn": "拉拉山水蜜桃",
+   "ko": "라라산 복숭아"
+  },
+  {
+   "id": "fish",
+   "zh": "石門活魚",
+   "ja": "石門活魚料理",
+   "en": "Shimen fresh fish",
+   "cn": "石门活鱼",
+   "ko": "스먼 활어요리"
+  }
+ ],
+ "TW-HSZ": [
+  {
+   "id": "rice-noodles",
+   "zh": "新竹米粉",
+   "ja": "新竹ビーフン",
+   "en": "Hsinchu rice vermicelli",
+   "cn": "新竹米粉",
+   "ko": "신주 쌀국수"
+  },
+  {
+   "id": "meatball-soup",
+   "zh": "貢丸湯",
+   "ja": "貢丸スープ",
+   "en": "Pork meatball soup",
+   "cn": "贡丸汤",
+   "ko": "궁완탕(완자탕)"
+  },
+  {
+   "id": "glass-art",
+   "zh": "玻璃工藝",
+   "ja": "ガラス工芸",
+   "en": "Glass art",
+   "cn": "玻璃工艺",
+   "ko": "유리공예"
+  }
+ ],
+ "TW-HSQ": [
+  {
+   "id": "oriental-beauty",
+   "zh": "東方美人茶",
+   "ja": "東方美人茶",
+   "en": "Oriental Beauty tea",
+   "cn": "东方美人茶",
+   "ko": "동방미인차"
+  },
+  {
+   "id": "lei-cha",
+   "zh": "客家擂茶",
+   "ja": "客家擂茶",
+   "en": "Hakka lei cha",
+   "cn": "客家擂茶",
+   "ko": "하카 레이차"
+  },
+  {
+   "id": "persimmon",
+   "zh": "新埔柿餅",
+   "ja": "干し柿",
+   "en": "Dried persimmons",
+   "cn": "新埔柿饼",
+   "ko": "곶감"
+  }
+ ],
+ "TW-MIA": [
+  {
+   "id": "strawberry",
+   "zh": "大湖草莓",
+   "ja": "大湖いちご",
+   "en": "Dahu strawberries",
+   "cn": "大湖草莓",
+   "ko": "다후 딸기"
+  },
+  {
+   "id": "mochi",
+   "zh": "客家麻糬",
+   "ja": "客家餅",
+   "en": "Hakka mochi",
+   "cn": "客家麻糬",
+   "ko": "하카 찹쌀떡"
+  },
+  {
+   "id": "wood-carving",
+   "zh": "三義木雕",
+   "ja": "三義木彫り",
+   "en": "Sanyi wood carving",
+   "cn": "三义木雕",
+   "ko": "싼이 목조각"
+  }
+ ],
+ "TW-TXG": [
+  {
+   "id": "bubble-tea",
+   "zh": "珍珠奶茶",
+   "ja": "タピオカミルクティー発祥",
+   "en": "Bubble tea (birthplace)",
+   "cn": "珍珠奶茶",
+   "ko": "버블티(발상지)"
+  },
+  {
+   "id": "sun-cake",
+   "zh": "太陽餅",
+   "ja": "太陽餅",
+   "en": "Sun cake",
+   "cn": "太阳饼",
+   "ko": "태양병"
+  },
+  {
+   "id": "chicken-cutlet",
+   "zh": "逢甲雞排",
+   "ja": "逢甲チキンカツ",
+   "en": "Fengjia chicken cutlet",
+   "cn": "逢甲鸡排",
+   "ko": "펑자 치킨까스"
+  }
+ ],
+ "TW-CHA": [
+  {
+   "id": "ba-wan",
+   "zh": "彰化肉圓",
+   "ja": "彰化肉円",
+   "en": "Changhua ba-wan",
+   "cn": "彰化肉圆",
+   "ko": "장화 바완"
+  },
+  {
+   "id": "ox-tongue-cookie",
+   "zh": "鹿港牛舌餅",
+   "ja": "鹿港牛舌餅",
+   "en": "Lukang ox-tongue cookie",
+   "cn": "鹿港牛舌饼",
+   "ko": "루강 우설과자"
+  },
+  {
+   "id": "oyster-omelet",
+   "zh": "王功蚵仔煎",
+   "ja": "牡蠣オムレツ",
+   "en": "Oyster omelet",
+   "cn": "王功蚵仔煎",
+   "ko": "굴전"
+  }
+ ],
+ "TW-NAN": [
+  {
+   "id": "dongding-oolong",
+   "zh": "凍頂烏龍茶",
+   "ja": "凍頂烏龍茶",
+   "en": "Dongding oolong tea",
+   "cn": "冻顶乌龙茶",
+   "ko": "둥딩 우롱차"
+  },
+  {
+   "id": "shaoxing-wine",
+   "zh": "埔里紹興酒",
+   "ja": "埔里紹興酒",
+   "en": "Puli Shaoxing wine",
+   "cn": "埔里绍兴酒",
+   "ko": "푸리 사오싱주"
+  },
+  {
+   "id": "tea-eggs",
+   "zh": "日月潭茶葉蛋",
+   "ja": "日月潭茶葉蛋",
+   "en": "Sun Moon Lake tea eggs",
+   "cn": "日月潭茶叶蛋",
+   "ko": "르웨탄 찻잎달걀"
+  }
+ ],
+ "TW-YUN": [
+  {
+   "id": "coffee",
+   "zh": "古坑咖啡",
+   "ja": "古坑コーヒー",
+   "en": "Gukeng coffee",
+   "cn": "古坑咖啡",
+   "ko": "구컹 커피"
+  },
+  {
+   "id": "soy-sauce",
+   "zh": "西螺醬油",
+   "ja": "西螺醤油",
+   "en": "Xiluo soy sauce",
+   "cn": "西螺酱油",
+   "ko": "시뤄 간장"
+  },
+  {
+   "id": "peanuts",
+   "zh": "北港花生",
+   "ja": "北港ピーナッツ",
+   "en": "Beigang peanuts",
+   "cn": "北港花生",
+   "ko": "베이강 땅콩"
+  }
+ ],
+ "TW-CYI": [
+  {
+   "id": "turkey-rice",
+   "zh": "火雞肉飯",
+   "ja": "七面鳥飯",
+   "en": "Turkey rice",
+   "cn": "火鸡肉饭",
+   "ko": "칠면조 덮밥"
+  },
+  {
+   "id": "cube-pastry",
+   "zh": "方塊酥",
+   "ja": "方塊酥",
+   "en": "Cube pastry",
+   "cn": "方块酥",
+   "ko": "방콰이수(큐브과자)"
+  },
+  {
+   "id": "fish-head",
+   "zh": "砂鍋魚頭",
+   "ja": "魚頭の土鍋煮込み",
+   "en": "Fish head casserole",
+   "cn": "砂锅鱼头",
+   "ko": "생선머리 전골"
+  }
+ ],
+ "TW-CYQ": [
+  {
+   "id": "alishan-tea",
+   "zh": "阿里山高山茶",
+   "ja": "阿里山高山茶",
+   "en": "Alishan high-mountain tea",
+   "cn": "阿里山高山茶",
+   "ko": "아리산 고산차"
+  },
+  {
+   "id": "bento",
+   "zh": "奮起湖便當",
+   "ja": "奮起湖弁当",
+   "en": "Fenqihu railway bento",
+   "cn": "奋起湖便当",
+   "ko": "펀치후 도시락"
+  },
+  {
+   "id": "aiyu",
+   "zh": "愛玉",
+   "ja": "愛玉ゼリー",
+   "en": "Aiyu jelly",
+   "cn": "爱玉",
+   "ko": "아이위 젤리"
+  }
+ ],
+ "TW-TNN": [
+  {
+   "id": "danzai-noodles",
+   "zh": "擔仔麵",
+   "ja": "担仔麺",
+   "en": "Danzai noodles",
+   "cn": "担仔面",
+   "ko": "단짜이면"
+  },
+  {
+   "id": "beef-soup",
+   "zh": "牛肉湯",
+   "ja": "牛肉スープ",
+   "en": "Beef soup",
+   "cn": "牛肉汤",
+   "ko": "쇠고기탕"
+  },
+  {
+   "id": "pomelo",
+   "zh": "麻豆文旦",
+   "ja": "麻豆文旦",
+   "en": "Madou pomelo",
+   "cn": "麻豆文旦",
+   "ko": "마더우 문단(유자)"
+  }
+ ],
+ "TW-KHH": [
+  {
+   "id": "papaya-milk",
+   "zh": "木瓜牛奶",
+   "ja": "パパイヤミルク",
+   "en": "Papaya milk",
+   "cn": "木瓜牛奶",
+   "ko": "파파야 우유"
+  },
+  {
+   "id": "grilled-squid",
+   "zh": "旗津烤魷魚",
+   "ja": "旗津焼きイカ",
+   "en": "Cijin grilled squid",
+   "cn": "旗津烤鱿鱼",
+   "ko": "치진 오징어구이"
+  },
+  {
+   "id": "pineapple",
+   "zh": "大樹金鑽鳳梨",
+   "ja": "大樹パイナップル",
+   "en": "Dashu pineapple",
+   "cn": "大树金钻凤梨",
+   "ko": "다수 파인애플"
+  }
+ ],
+ "TW-PIF": [
+  {
+   "id": "pork-knuckle",
+   "zh": "萬巒豬腳",
+   "ja": "萬巒豚足",
+   "en": "Wanluan pork knuckle",
+   "cn": "万峦猪脚",
+   "ko": "완롼 족발"
+  },
+  {
+   "id": "tuna",
+   "zh": "東港黑鮪魚",
+   "ja": "東港クロマグロ",
+   "en": "Donggang bluefin tuna",
+   "cn": "东港黑鲔鱼",
+   "ko": "둥강 참다랑어"
+  },
+  {
+   "id": "onion",
+   "zh": "恆春洋蔥",
+   "ja": "恒春タマネギ",
+   "en": "Hengchun onions",
+   "cn": "恒春洋葱",
+   "ko": "헝춘 양파"
+  }
+ ],
+ "TW-ILA": [
+  {
+   "id": "green-onion",
+   "zh": "三星蔥",
+   "ja": "三星ネギ",
+   "en": "Sanxing green onions",
+   "cn": "三星葱",
+   "ko": "싼싱 대파"
+  },
+  {
+   "id": "duck",
+   "zh": "鴨賞",
+   "ja": "鴨の燻製",
+   "en": "Smoked duck",
+   "cn": "鸭赏",
+   "ko": "오리 훈제"
+  },
+  {
+   "id": "kumquat",
+   "zh": "金棗",
+   "ja": "キンカン",
+   "en": "Kumquats",
+   "cn": "金枣",
+   "ko": "금귤"
+  }
+ ],
+ "TW-HUA": [
+  {
+   "id": "mochi",
+   "zh": "花蓮麻糬",
+   "ja": "花蓮餅",
+   "en": "Hualien mochi",
+   "cn": "花莲麻糬",
+   "ko": "화롄 찹쌀떡"
+  },
+  {
+   "id": "wonton",
+   "zh": "扁食",
+   "ja": "ワンタン",
+   "en": "Wonton soup",
+   "cn": "扁食",
+   "ko": "완탕"
+  },
+  {
+   "id": "watermelon",
+   "zh": "花蓮大西瓜",
+   "ja": "花蓮スイカ",
+   "en": "Hualien watermelon",
+   "cn": "花莲大西瓜",
+   "ko": "화롄 수박"
+  }
+ ],
+ "TW-TTT": [
+  {
+   "id": "sugar-apple",
+   "zh": "釋迦",
+   "ja": "釈迦頭(バンレイシ)",
+   "en": "Sugar apple",
+   "cn": "释迦",
+   "ko": "석가(슈가애플)"
+  },
+  {
+   "id": "bento",
+   "zh": "池上便當",
+   "ja": "池上弁当",
+   "en": "Chishang bento",
+   "cn": "池上便当",
+   "ko": "츠상 도시락"
+  },
+  {
+   "id": "roselle",
+   "zh": "洛神花",
+   "ja": "ローゼル",
+   "en": "Roselle",
+   "cn": "洛神花",
+   "ko": "로젤(히비스커스)"
+  }
+ ],
+ "TW-PEN": [
+  {
+   "id": "brown-sugar-cake",
+   "zh": "黑糖糕",
+   "ja": "黒糖ケーキ",
+   "en": "Brown sugar cake",
+   "cn": "黑糖糕",
+   "ko": "흑당 케이크"
+  },
+  {
+   "id": "cactus-ice",
+   "zh": "仙人掌冰",
+   "ja": "サボテンアイス",
+   "en": "Cactus ice cream",
+   "cn": "仙人掌冰",
+   "ko": "선인장 아이스크림"
+  },
+  {
+   "id": "squid",
+   "zh": "小管",
+   "ja": "ヤリイカ",
+   "en": "Baby squid",
+   "cn": "小管",
+   "ko": "꼴뚜기"
+  }
+ ],
+ "TW-KIN": [
+  {
+   "id": "kaoliang",
+   "zh": "金門高粱酒",
+   "ja": "金門コーリャン酒",
+   "en": "Kinmen kaoliang liquor",
+   "cn": "金门高粱酒",
+   "ko": "진먼 고량주"
+  },
+  {
+   "id": "peanut-candy",
+   "zh": "貢糖",
+   "ja": "貢糖",
+   "en": "Peanut candy",
+   "cn": "贡糖",
+   "ko": "궁탕(땅콩엿)"
+  },
+  {
+   "id": "beef-jerky",
+   "zh": "金門牛肉乾",
+   "ja": "金門ビーフジャーキー",
+   "en": "Kinmen beef jerky",
+   "cn": "金门牛肉干",
+   "ko": "진먼 육포"
+  }
+ ],
+ "TW-LIE": [
+  {
+   "id": "jiguang-bing",
+   "zh": "繼光餅",
+   "ja": "継光餅",
+   "en": "Jiguang biscuit",
+   "cn": "继光饼",
+   "ko": "지광빙"
+  },
+  {
+   "id": "laojiu-misua",
+   "zh": "老酒麵線",
+   "ja": "老酒麺線",
+   "en": "Aged-wine misua",
+   "cn": "老酒面线",
+   "ko": "노주 면선"
+  },
+  {
+   "id": "fish-noodles",
+   "zh": "魚麵",
+   "ja": "魚麺",
+   "en": "Fish noodles",
+   "cn": "鱼面",
+   "ko": "어면(생선국수)"
+  }
+ ]
+}

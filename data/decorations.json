@@ -1,0 +1,23 @@
+{
+  "_comment": "地面デコ・動物の配置。county指定=県市グループの子(選択で一緒に隆起)。sea:true=海上(scene直下)。dx/dyは県市中心からのオフセット(データ座標)。根拠は実在の産地/生息地。",
+  "items": [
+    { "file": "tea-field", "county": "TW-NAN", "dx": 7, "dy": 13, "size": 11, "note": "南投=茶産地(凍頂)" },
+    { "file": "rice-paddy", "county": "TW-ILA", "dx": -7, "dy": -7, "size": 10, "note": "宜蘭平野" },
+    { "file": "temple", "county": "TW-YUN", "dx": 8, "dy": 9, "size": 10, "note": "雲林=廟文化(北港)" },
+    { "file": "night-stall", "county": "TW-TXG", "dx": 11, "dy": -9, "size": 10, "note": "台中=逢甲夜市" },
+    { "file": "lighthouse", "county": "TW-PIF", "dx": 5, "dy": -26, "size": 10, "note": "鵝鑾鼻燈塔" },
+    { "file": "hot-spring", "county": "TW-ILA", "dx": 9, "dy": 5, "size": 9, "note": "礁溪温泉" },
+    { "file": "orchard", "county": "TW-MIA", "dx": 6, "dy": -7, "size": 10, "note": "苗栗果樹" },
+    { "file": "pier", "county": "TW-PEN", "dx": 7, "dy": -9, "size": 10, "note": "澎湖漁港" },
+    { "file": "paifang", "county": "TW-CHA", "dx": -7, "dy": -5, "size": 9, "note": "鹿港" },
+    { "file": "waterfall", "county": "TW-HUA", "dx": 2, "dy": -18, "size": 11, "note": "花蓮渓谷" },
+    { "file": "terrace", "county": "TW-TTT", "dx": 6, "dy": 19, "size": 11, "note": "花東縦谷" },
+    { "file": "tent", "county": "TW-NAN", "dx": -8, "dy": -13, "size": 9, "note": "南投キャンプ" },
+    { "file": "bear", "county": "TW-NAN", "dx": 3, "dy": -21, "size": 9, "note": "玉山=台湾黒熊" },
+    { "file": "deer", "county": "TW-PIF", "dx": 7, "dy": -15, "size": 9, "note": "墾丁=梅花鹿" },
+    { "file": "pheasant", "county": "TW-CYQ", "dx": 10, "dy": 4, "size": 8, "note": "阿里山=帝雉" },
+    { "file": "macaque", "county": "TW-KHH", "dx": -5, "dy": 9, "size": 8, "note": "柴山=タイワンザル" },
+    { "file": "turtle", "sea": true, "x": -26, "y": -88, "size": 8, "note": "小琉球沖=ウミガメ" },
+    { "file": "dolphins", "sea": true, "x": 42, "y": -4, "size": 9, "note": "花蓮沖=イルカ" }
+  ]
+}
