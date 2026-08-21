@@ -12,6 +12,9 @@
     <header class="topbar">
       <h1 class="title"><img class="title-compass" src="/ui/compass.webp" alt="" /><span data-i18n="title">台灣 3D 旅遊導覽</span></h1>
       <nav class="langs" aria-label="Language">
+        <button type="button" class="lang search-toggle" id="search-toggle" aria-label="search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
+        </button>
         <button type="button" class="lang info-btn" id="info-btn" data-i18n="infoBtn"></button>
         <button type="button" class="lang" data-lang="zh" lang="zh-Hant">繁中</button>
         <button type="button" class="lang" data-lang="cn" lang="zh-Hans">简中</button>
@@ -29,6 +32,7 @@
     </div>
 
     <aside class="panel" id="panel" hidden>
+      <div class="sheet-handle" data-sheet-handle></div>
       <img class="panel-garland" src="/ui/garland.webp" alt="" />
       <button type="button" class="close" id="close" data-i18n-aria="close" aria-label="關閉">×</button>
       <div class="guide-row">
@@ -39,9 +43,10 @@
       <div class="panel-body" id="panel-body"></div>
     </aside>
 
-    <div class="badge" id="badge" data-show="false" aria-hidden="true"></div>
+    <div class="badge" id="badge" data-show="false" aria-hidden="true"><span class="badge-inner" id="badge-inner"></span></div>
 
     <aside class="panel info-panel" id="info-panel" hidden>
+      <div class="sheet-handle" data-sheet-handle></div>
       <img class="panel-garland" src="/ui/garland.webp" alt="" />
       <button type="button" class="close" id="info-close" data-i18n-aria="close" aria-label="關閉">×</button>
       <h2 class="panel-name" id="info-title"></h2>
@@ -73,6 +78,7 @@
     </button>
 
     <aside class="panel stamp-panel" id="stamp-panel" hidden>
+      <div class="sheet-handle" data-sheet-handle></div>
       <img class="panel-garland" src="/ui/garland.webp" alt="" />
       <h2 class="info-title" id="stamp-title"></h2>
       <p class="course-tip" id="stamp-hint"></p>

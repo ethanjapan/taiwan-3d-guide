@@ -1350,3 +1350,239 @@ html[data-phase="night"] .credit {
     bottom: 120px;
   }
 }
+
+/* ==== 演出強化(2026-08-22 A1-A6/B1-B5): transform+opacityのみ・300ms以下・reduced-motion対応 ==== */
+
+/* A1: パネル本体の登場(display:none→表示でアニメが再始動する性質を利用) */
+@keyframes panel-in-x {
+  from { opacity: 0; transform: translateY(-50%) translateX(26px); }
+  to { opacity: 1; transform: translateY(-50%) translateX(0); }
+}
+
+@keyframes panel-in-y {
+  from { opacity: 0; transform: translateY(36px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel {
+  animation: panel-in-x 0.28s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+}
+
+/* A1: 中身の段差登場。--iはJS(stagger)が振る */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slide-l {
+  from { opacity: 0; transform: translateX(22px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.panel-body > *,
+.info-body > * {
+  animation: rise 0.3s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+  animation-delay: calc(var(--i, 0) * 40ms);
+}
+
+/* A4: 詳細ビューは右から入る(ページをめくる方向感) */
+.panel-body[data-view="detail"] > * {
+  animation-name: slide-l;
+}
+
+/* A3: 木製看板は上からぶら下がって揺れて止まる */
+@keyframes dangle {
+  0% { opacity: 0; transform: rotate(-7deg) translateY(-10px); }
+  30% { opacity: 1; transform: rotate(5deg) translateY(0); }
+  55% { transform: rotate(-3deg); }
+  78% { transform: rotate(1.6deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.badge-inner {
+  display: inline-block;
+  transform-origin: 50% -12px;
+}
+
+.badge[data-show="true"] .badge-inner {
+  animation: dangle 0.85s cubic-bezier(0.22, 0.9, 0.3, 1) both;
+}
+
+/* ガーランドもパネル登場時にひと揺れ */
+@keyframes sway {
+  0% { transform: translateX(-50%) rotate(-1.6deg); }
+  50% { transform: translateX(-50%) rotate(1.2deg); }
+  100% { transform: translateX(-50%) rotate(0deg); }
+}
+
+.panel-garland {
+  transform-origin: top center;
+  animation: sway 0.9s ease-out both;
+}
+
+/* A2: スタンプ「ドンッ」 */
+@keyframes stamp-slam {
+  0% { opacity: 0; transform: translate(-50%, -50%) scale(2.4) rotate(8deg); }
+  60% { opacity: 1; transform: translate(-50%, -50%) scale(0.94) rotate(-7deg); }
+  80% { transform: translate(-50%, -50%) scale(1.05) rotate(-5deg); }
+  100% { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(-6deg); }
+}
+
+.stamp-pop {
+  position: fixed;
+  left: 50%;
+  top: 44%;
+  width: min(180px, 44vw);
+  aspect-ratio: 1;
+  z-index: 6;
+  pointer-events: none;
+  animation: stamp-slam 0.5s cubic-bezier(0.2, 0.8, 0.3, 1.2) both;
+}
+
+.stamp-pop img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.stamp-pop .stamp-pop-icon {
+  padding: 16%;
+}
+
+/* A6: タッチ/クリックの微反応(ホバー演出のタッチ同等化) */
+.spot-list button:active,
+.course:active,
+.stamp-btn:active,
+.lang:active,
+.promo-thumb:active,
+.search-results button:active {
+  transform: scale(0.97);
+  transition: transform 0.1s;
+}
+
+.spot-list button img,
+.promo-thumb img {
+  transition: transform 0.22s ease-out;
+}
+
+.spot-list button:hover img,
+.promo-thumb:hover img {
+  transform: scale(1.06);
+}
+
+/* ウェルカムカードも下からスプリング登場 */
+@keyframes welcome-in {
+  from { opacity: 0; transform: translateY(28px) scale(0.97); }
+  60% { opacity: 1; transform: translateY(-4px) scale(1.005); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.welcome {
+  animation: welcome-in 0.55s cubic-bezier(0.22, 0.9, 0.3, 1) 0.35s both;
+}
+
+/* シートハンドル(モバイルのみ表示) */
+.sheet-handle {
+  display: none;
+}
+
+/* 検索トグルはデスクトップでは出さない */
+.search-toggle {
+  display: none;
+}
+
+/* ==== モバイル(B1-B5) ==== */
+@media (max-width: 640px) {
+  .panel {
+    animation-name: panel-in-y;
+  }
+
+  /* B1: ボトムシート。半開が既定=地図と同時に見える */
+  .sheet-handle {
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 26px;
+    z-index: 2;
+    touch-action: none;
+    cursor: grab;
+  }
+
+  .sheet-handle::after {
+    content: "";
+    position: absolute;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 44px;
+    height: 5px;
+    border-radius: 999px;
+    background: rgba(35, 66, 60, 0.22);
+  }
+
+  .panel {
+    transition: max-height 0.26s cubic-bezier(0.22, 0.9, 0.3, 1);
+  }
+
+  .panel[data-sheet="half"] {
+    max-height: 46vh;
+  }
+
+  .panel[data-sheet="full"] {
+    max-height: 82vh;
+  }
+
+  /* B2: 右下ボタン群=横並び+セーフエリア */
+  .stamp-btn {
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    right: 12px;
+  }
+
+  .phase-btn {
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    right: auto;
+    left: 12px;
+  }
+
+  /* B3: 検索は虫眼鏡トグルで展開 */
+  .search-toggle {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .search {
+    display: none;
+  }
+
+  body[data-search-open="1"] .search {
+    display: block;
+    top: 108px;
+  }
+
+  /* B5: しおりは3列で大きく */
+  .stamp-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .stamp-box {
+    width: 72px;
+    height: 72px;
+  }
+}
+
+/* reduced-motion: 追加演出をすべて無効化 */
+@media (prefers-reduced-motion: reduce) {
+  .panel,
+  .panel-body > *,
+  .info-body > *,
+  .badge[data-show="true"] .badge-inner,
+  .panel-garland,
+  .stamp-pop,
+  .welcome {
+    animation: none !important;
+  }
+}

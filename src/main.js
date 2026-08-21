@@ -186,7 +186,10 @@ const renderPanel = () => {
     const wstrip = document.createElement("div");
     wstrip.className = "weather-strip";
     wstrip.id = "weather-strip";
+    panelBody.dataset.view = "list";
     panelBody.replaceChildren(rk, wstrip, intro, gour, ul);
+    stagger(panelBody);
+    if (IS_MOBILE() && !panel.dataset.sheet) panel.dataset.sheet = "half";
     // 観光案内所(ユーザー要望 2026-08-21)
     const vcs = VISITOR_CENTERS[county.id] ?? [];
     if (vcs.length) {
@@ -276,7 +279,11 @@ const renderPanel = () => {
     frag.push(h, town, sum);
     if (details) frag.push(details);
     frag.push(link, src);
-    panelBody.replaceChildren(...frag);
+    panelBody.dataset.view = "detail";
+    panelBody.dataset.view = "list";
+  panelBody.replaceChildren(...frag);
+  stagger(panelBody);
+    stagger(panelBody);
   }
 };
 const hint = document.getElementById("hint");
@@ -300,6 +307,78 @@ const showFallback = () => {
 };
 
 let badgeCountyId = null; // バッジ表示中の県(パネルがコース表示でも言語追随させる)
+
+const MOTION_OK = !matchMedia("(prefers-reduced-motion: reduce)").matches;
+const IS_MOBILE = () => matchMedia("(max-width: 640px)").matches;
+
+// バッジ: 数字をカウントアップして書く(演出A5)。reduced-motionは即値
+const badgeInner = document.getElementById("badge-inner");
+let badgeCountTimer = 0;
+const setBadgeText = (count, label) => {
+  cancelAnimationFrame(badgeCountTimer);
+  if (!MOTION_OK || !Number.isFinite(count)) {
+    badgeInner.textContent = `${count} ${label}`;
+    return;
+  }
+  const t0 = performance.now();
+  const D = 600;
+  // 背面タブ等でrAFが止まっても最終値は必ず出す(claude-browser実測: hidden時rAF=0回)
+  const failSafe = setTimeout(() => {
+    badgeInner.textContent = `${count} ${label}`;
+  }, D + 150);
+  const tick = (t) => {
+    const k = Math.min(1, (t - t0) / D);
+    const e = 1 - (1 - k) ** 3;
+    badgeInner.textContent = `${Math.round(count * e)} ${label}`;
+    if (k < 1) badgeCountTimer = requestAnimationFrame(tick);
+    else clearTimeout(failSafe);
+  };
+  badgeCountTimer = requestAnimationFrame(tick);
+};
+
+// パネル中身の段差登場(演出A1): 子要素に--iを振る。CSS側のanimation-delayが拾う
+const stagger = (el) => {
+  [...el.children].forEach((c, i) => c.style.setProperty("--i", Math.min(i, 12)));
+};
+
+// モバイルのボトムシート挙動(B1): ハンドルをドラッグして半開/全開/閉じる
+const attachSheet = (panelEl, { snaps = false, onClose } = {}) => {
+  const handle = panelEl.querySelector("[data-sheet-handle]");
+  if (!handle) return;
+  let startY = 0;
+  let startH = 0;
+  let dragging = false;
+  handle.addEventListener("pointerdown", (e) => {
+    if (!IS_MOBILE()) return;
+    dragging = true;
+    startY = e.clientY;
+    startH = panelEl.getBoundingClientRect().height;
+    panelEl.style.transition = "none";
+    handle.setPointerCapture(e.pointerId);
+  });
+  handle.addEventListener("pointermove", (e) => {
+    if (!dragging) return;
+    const h = Math.max(80, Math.min(innerHeight * 0.86, startH + (startY - e.clientY)));
+    panelEl.style.maxHeight = h + "px";
+  });
+  const finish = (e) => {
+    if (!dragging) return;
+    dragging = false;
+    panelEl.style.transition = "";
+    const h = panelEl.getBoundingClientRect().height;
+    panelEl.style.maxHeight = "";
+    if (h < innerHeight * 0.24) {
+      panelEl.hidden = true;
+      onClose?.();
+      return;
+    }
+    if (snaps) {
+      panelEl.dataset.sheet = h > innerHeight * 0.6 ? "full" : "half";
+    }
+  };
+  handle.addEventListener("pointerup", finish);
+  handle.addEventListener("pointercancel", finish);
+};
 let updatePhaseButton = null; // start()が差し込む。言語切替時にラベルを追随させる
 
 // ---- 旅のしおり(スタンプラリー)。訪問=県市パネルを開いた県市。localStorageで永続 ----
@@ -350,6 +429,32 @@ const addStamp = (iso) => {
   stampBtn.dataset.pop = "true";
   setTimeout(() => delete stampBtn.dataset.pop, 700);
   if (!stampPanel.hidden) renderStampBook();
+  // 演出A2: 画面中央に朱スタンプが「ドンッ」→しおりボタンへ飛ぶ
+  if (MOTION_OK) {
+    const pop = document.createElement("div");
+    pop.className = "stamp-pop";
+    const ring = document.createElement("img");
+    ring.src = `${import.meta.env.BASE_URL}ui/stamp-ring.webp`;
+    ring.alt = "";
+    const icon = document.createElement("img");
+    icon.className = "stamp-pop-icon";
+    icon.src = `${import.meta.env.BASE_URL}landmarks/${iso}.webp`;
+    icon.alt = "";
+    pop.append(ring, icon);
+    document.body.appendChild(pop);
+    const fly = () => {
+      const b = stampBtn.getBoundingClientRect();
+      const p = pop.getBoundingClientRect();
+      const dx = b.left + b.width / 2 - (p.left + p.width / 2);
+      const dy = b.top + b.height / 2 - (p.top + p.height / 2);
+      pop.animate(
+        [{ transform: "translate(0,0) scale(1) rotate(-6deg)", opacity: 1 },
+         { transform: `translate(${dx}px,${dy}px) scale(0.12) rotate(-6deg)`, opacity: 0.4 }],
+        { duration: 420, easing: "cubic-bezier(.5,0,.8,.4)" },
+      ).onfinish = () => pop.remove();
+    };
+    setTimeout(fly, 620);
+  }
   updatePhaseButton?.();
 };
 
@@ -387,8 +492,7 @@ const setLang = (next) => {
   updatePhaseButton?.();
   // バッジの単位語はパネルの状態に関係なく言語に追随させる(ko残留バグ 2026-08-21)
   if (badgeCountyId) {
-    document.getElementById("badge").textContent =
-      `${COUNTS[badgeCountyId] ?? ""} ${STRINGS[lang].spotsLabel}`;
+    badgeInner.textContent = `${COUNTS[badgeCountyId] ?? ""} ${STRINGS[lang].spotsLabel}`;
   }
 };
 
@@ -435,6 +539,7 @@ const runSearch = () => {
       btn.addEventListener("click", () => {
         searchResults.hidden = true;
         searchInput.value = "";
+        document.body.dataset.searchOpen = ""; // モバイルのオーバーレイも畳む
         if (jumpToSpot) jumpToSpot(e.iso, e.type === "spot" ? e.id : null);
       });
       li.appendChild(btn);
@@ -443,6 +548,11 @@ const runSearch = () => {
   );
   searchResults.hidden = hits.length === 0;
 };
+document.getElementById("search-toggle").addEventListener("click", () => {
+  const open = document.body.dataset.searchOpen === "1";
+  document.body.dataset.searchOpen = open ? "" : "1";
+  if (!open) searchInput.focus();
+});
 searchInput.addEventListener("input", runSearch);
 searchInput.addEventListener("focus", runSearch);
 document.addEventListener("click", (e) => {
@@ -761,6 +871,7 @@ const renderInfo = () => {
       return [h, ul];
     }),
   );
+  stagger(body);
 };
 document.getElementById("info-btn").addEventListener("click", () => {
   renderInfo();
@@ -803,13 +914,15 @@ function start() {
   // 実際に地図の外接箱を投影して画面に収まる距離を求める。
   // 外接箱の角で合わせると、台湾は箱の中を斜めに走る細い島なので
   // 角(=何も無い海)が画面端に来て、島が中央に小さく浮くだけになる。実際の陸地の点で合わせる。
-  const SAMPLE = (() => {
+  const buildSample = (skipInsets) => {
     const { minX, maxX, minY, maxY } = counties.bounds;
     const cx = (minX + maxX) / 2;
     const cy = (minY + maxY) / 2;
     const top = stage.lift + stage.extrude;
+    const INSETS = new Set(["TW-KIN", "TW-LIE", "TW-PEN"]);
     const pts = [];
     for (const county of counties.counties) {
+      if (skipInsets && INSETS.has(county.id)) continue;
       for (const polygon of county.polygons) {
         for (let i = 0; i < polygon.outer.length; i += 2) {
           const [px, py] = polygon.outer[i];
@@ -819,7 +932,11 @@ function start() {
       }
     }
     return pts;
-  })();
+  };
+  const SAMPLE_ALL = buildSample(false);
+  // 縦画面: 西の離島インセットまで収めると本島が小さくなりすぎる(モバイル演出が遠い真因)。
+  // 本島だけでフィットさせ、離島は画面外〜縁でよいとする
+  const SAMPLE_PORTRAIT = buildSample(true);
 
   const MARGIN = 1.06; // 画面の縁に触れない程度の余白
 
@@ -834,6 +951,7 @@ function start() {
       probe.updateMatrixWorld(true);
       probe.updateProjectionMatrix();
       const scratch = new THREE.Vector3();
+      const SAMPLE = camera.aspect < 0.8 ? SAMPLE_PORTRAIT : SAMPLE_ALL;
       const worst = SAMPLE.reduce((m, p) => {
         const ndc = scratch.copy(p).project(probe);
         return Math.max(m, Math.abs(ndc.x), Math.abs(ndc.y));
@@ -1004,7 +1122,7 @@ function start() {
     if (group) welcome.hidden = true; // 案内は最初のクリックで退場
     badge.dataset.show = "false";
     badgeCountyId = group?.userData.county.id ?? null;
-    if (group) badge.textContent = badgeText(group.userData.county);
+    if (group) setBadgeText(COUNTS[group.userData.county.id] ?? 0, STRINGS[lang].spotsLabel);
     selected = group;
     if (group) addStamp(group.userData.county.id);
     // 選択県市の実天気に雨演出を連動(ユーザー承認 2026-08-21)
@@ -1021,6 +1139,7 @@ function start() {
     if (!group) {
       panel.hidden = true;
       delete panel.dataset.county;
+      delete panel.dataset.sheet;
       hint.textContent = STRINGS[lang].hint;
       hint.dataset.dimmed = "false";
     } else {
@@ -1109,6 +1228,10 @@ function start() {
   resize();
   // キャンバスが後から実寸を得た場合(プレビュー枠・分割ビュー)にも取りこぼさない。
   new ResizeObserver(resize).observe(canvas);
+
+  attachSheet(panel, { snaps: true, onClose: () => select(null) });
+  attachSheet(infoPanel, {});
+  attachSheet(stampPanel, {});
 
   jumpToSpot = (iso, spotId) => {
     const g = groups.find((x) => x.userData.county.id === iso);
