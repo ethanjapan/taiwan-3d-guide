@@ -494,7 +494,7 @@ body {
   }
 }
 
-.county-intro {
+.pref-intro {
   margin: 0 0 12px;
   font-size: 0.78rem;
   line-height: 1.7;
@@ -984,7 +984,7 @@ body {
   .promo-grid { grid-template-columns: 1fr; }
 }
 
-/* ---- GPT生成オーナメント(2026-08-21 ユーザー指示で多用OK) ---- */
+/* ---- GPT生成オーナメント(日本版: 桜・提灯ガーランド・木の看板) ---- */
 .title-compass {
   width: 26px;
   height: 26px;
@@ -994,10 +994,10 @@ body {
 
 .panel-garland {
   position: absolute;
-  top: -14px;
+  top: -10px;
   left: 50%;
   transform: translateX(-50%);
-  width: 78%;
+  width: 72%;
   pointer-events: none;
   z-index: 1;
 }
@@ -1006,12 +1006,13 @@ body {
   overflow: visible;
 }
 
+/* 台湾版はハイビスカス。日本版は桜の枝(クラス名は互換のため据え置き) */
 .welcome-hibiscus {
   position: absolute;
-  top: -26px;
-  right: -18px;
-  width: 84px;
-  transform: rotate(8deg);
+  top: -30px;
+  right: -22px;
+  width: 92px;
+  transform: rotate(-6deg);
   pointer-events: none;
 }
 
@@ -1161,25 +1162,27 @@ body {
 }
 
 /* ガーランドは文字に被せない: 小さめにして、その分の余白をパネル上部に確保 */
+/* 提灯ガーランドは台湾版の三角旗より縦横比が高い(0.506 対 0.38)ので、
+   同じ幅だと下に伸びて見出しに被る。幅を詰め、その分パネル上部の余白を足す。 */
 .panel-garland {
-  width: 56%;
+  width: 42%;
   top: -12px;
 }
 
 .panel,
 .info-panel {
-  padding-top: 58px;
+  padding-top: 78px;
 }
 
 @media (max-width: 640px) {
   .panel-garland {
-    width: 46%;
+    width: 36%;
     top: -10px;
   }
 
   .panel,
   .info-panel {
-    padding-top: 52px;
+    padding-top: 68px;
   }
 }
 
@@ -1331,12 +1334,17 @@ body {
 }
 
 /* 夜・夕方は暗い海の上に乗る素の文字を明るく */
+/* 夕方も海が中間の暗さになるので、夜と同じく白文字にしないとクレジットが読めない
+   (body の背景色は明るいままだが、その上を3Dの海が覆う) */
 html[data-phase="night"] .title,
-html[data-phase="night"] .title span {
+html[data-phase="dusk"] .title,
+html[data-phase="night"] .title span,
+html[data-phase="dusk"] .title span {
   color: #e8f0fb;
 }
 
-html[data-phase="night"] .credit {
+html[data-phase="night"] .credit,
+html[data-phase="dusk"] .credit {
   color: rgba(232, 240, 251, 0.55);
 }
 
@@ -1585,4 +1593,1459 @@ html[data-phase="night"] .credit {
   .welcome {
     animation: none !important;
   }
+}
+
+/* ---- 空港の切り替えタブ(日本版で追加) ----
+   台湾版は空港が桃園1つでフローが固定だった。日本は成田・羽田・関西・新千歳と
+   入口が4つあり到着都市も別なので、タブで選ばせる。 */
+.airport-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0 10px;
+}
+.airport-tab {
+  border: 1px solid rgba(30, 60, 80, 0.16);
+  background: #fff;
+  color: #33454f;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-size: 12.5px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease, transform 0.12s ease;
+}
+.airport-tab:hover { background: #eef6fa; }
+.airport-tab:active { transform: scale(0.97); }
+.airport-tab[data-on="true"] {
+  background: #33566b;
+  border-color: #33566b;
+  color: #fff;
+}
+.transit-flow-box { min-height: 120px; }
+
+/* ---- 季節切替ボタン(日本版で追加。時間帯ボタンの上に積む) ---- */
+.season-btn {
+  bottom: 116px;
+}
+@media (max-width: 640px) {
+  .season-btn {
+    bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ---- 天気アイコン(日本版で追加。台湾版は文字だけだった) ---- */
+.weather-icon {
+  display: block;
+  width: 38px;
+  height: 38px;
+  margin: 2px auto 0;
+  object-fit: contain;
+}
+.weather-day .weather-icon {
+  width: 32px;
+  height: 32px;
+}
+
+/* ---- モデルコースのバッジ ---- */
+.course {
+  position: relative;
+}
+.course-badge {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  pointer-events: none;
+  opacity: 0.95;
+}
+.course-title {
+  padding-right: 42px;
+}
+
+/* ---- 祭り・行事の帯(日本版で追加) ---- */
+.festival-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(224, 104, 95, 0.07);
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+.festival-row img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+.festival-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.festival-name {
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #2f4552;
+}
+.festival-when {
+  font-size: 11.5px;
+  color: #7b8a93;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   ガラス基調へのUI刷新 (2026-08-22 ユーザー指示「ボックスが安っぽい。ガラス素材で」)
+
+   方針(WebSearch 2026-08-22 で裏取り):
+   - backdrop-filter は blur 20〜40px / 背景の不透明度 10〜20% が現行の定石。
+     不透明な背景を敷くと blur が効かないので、必ず半透明の上に掛ける
+   - **-webkit- 接頭辞は 2026 でも要る**。iOS Safari は数か月遅れるので、外すと
+     ガラスではなく不透明の箱が出る
+   - まず不透明版を書き、@supports で上乗せする。非対応でも読めるままにする
+   - **ガラスは3枚まで重ねない**(blur は最も重いフィルタ)。
+     → 外側のパネルだけ backdrop-filter を持ち、内側のタイルは半透明の白+髪の毛罫で表現する
+   - 文字は 4.5:1 を割らない。ガラスの上に薄い文字は置かない
+   - `prefers-reduced-transparency` を尊重する(Chrome 118+)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* ガラス面の素 */
+  --glass-tint: rgba(255, 255, 255, 0.58);
+  --glass-tint-strong: rgba(255, 255, 255, 0.72);
+  --glass-edge: rgba(255, 255, 255, 0.85);
+  --glass-line: rgba(23, 58, 78, 0.10);
+  --glass-blur: blur(26px) saturate(180%);
+  /* 内側のタイル(blurは掛けない) */
+  --tile: rgba(255, 255, 255, 0.52);
+  --tile-line: rgba(23, 58, 78, 0.08);
+  --tile-accent: rgba(224, 104, 95, 0.10);
+  /* 影は2段に分ける。1本だけだと「板」に見え、ガラスの浮きが出ない */
+  --glass-shadow:
+    0 1px 2px rgba(16, 42, 58, 0.06),
+    0 8px 24px rgba(16, 42, 58, 0.10),
+    0 28px 60px rgba(16, 42, 58, 0.14);
+  --ink-glass: #17323f;
+  --ink-glass-soft: #4a6675;
+}
+
+/* ---- 1. 外側のガラス面(ここだけ backdrop-filter を持つ) ---- */
+.panel,
+.info-panel,
+.stamp-panel,
+.welcome,
+.search-results {
+  background: var(--glass-tint-strong);   /* 非対応ブラウザ向けの素の面 */
+  border: 1px solid var(--glass-line);
+  box-shadow: var(--glass-shadow);
+  color: var(--ink-glass);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .panel,
+  .info-panel,
+  .stamp-panel,
+  .welcome,
+  .search-results {
+    /* 上端だけ明るいグラデにすると、面が平らでなく「厚みのある板」に見える */
+    background:
+      linear-gradient(
+        160deg,
+        rgba(255, 255, 255, 0.74) 0%,
+        rgba(255, 255, 255, 0.52) 42%,
+        rgba(255, 255, 255, 0.60) 100%
+      );
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    /* 内側の1pxハイライト = ガラスの縁の光。これが無いと「半透明の紙」になる */
+    box-shadow:
+      inset 0 1px 0 var(--glass-edge),
+      inset 0 -1px 0 rgba(255, 255, 255, 0.35),
+      var(--glass-shadow);
+    contain: paint;   /* 再描画の範囲を閉じ込めて blur のコストを抑える */
+  }
+}
+
+/* ---- 2. 内側のタイル(blurは掛けない=重ねすぎない) ---- */
+.weather-day,
+.weather-card,
+.gourmet-item,
+.festival-row,
+.transit-route,
+.course,
+.stamp-cell,
+.promo-video {
+  background: var(--tile);
+  border: 1px solid var(--tile-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.festival-row {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.62), var(--tile-accent));
+}
+
+.rinka-bubble p {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.66), rgba(224, 104, 95, 0.12));
+  border: 1px solid rgba(224, 104, 95, 0.16);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.7);
+  color: var(--ink-glass);
+}
+
+/* ---- 3. ピル類(言語ボタン・ヒント・検索・空港タブ・下部ボタン) ---- */
+.lang,
+.hint,
+.search input,
+.stamp-btn,
+.airport-tab,
+.search-toggle,
+.info-btn {
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--glass-line);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 2px 10px rgba(16, 42, 58, 0.10);
+  color: var(--ink-glass);
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .lang,
+  .hint,
+  .search input,
+  .stamp-btn,
+  .airport-tab,
+  .search-toggle,
+  .info-btn {
+    background: rgba(255, 255, 255, 0.42);
+    -webkit-backdrop-filter: blur(16px) saturate(170%);
+    backdrop-filter: blur(16px) saturate(170%);
+  }
+}
+
+.lang:hover,
+.airport-tab:hover,
+.search-toggle:hover,
+.info-btn:hover {
+  background: rgba(255, 255, 255, 0.68);
+  border-color: rgba(23, 58, 78, 0.2);
+}
+
+/* 選択中は「濃いガラス」にする。塗り潰した単色だとガラス面から浮いて見える */
+.lang[aria-pressed="true"],
+.airport-tab[data-on="true"],
+.course[data-active="true"] {
+  background: linear-gradient(180deg, rgba(38, 78, 100, 0.92), rgba(26, 60, 80, 0.94));
+  border-color: rgba(26, 60, 80, 0.9);
+  color: #fff;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 4px 14px rgba(16, 42, 58, 0.28);
+}
+
+/* ---- 4. 文字まわりの整理 ---- */
+.panel-name {
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--ink-glass);
+}
+
+.gourmet-title {
+  color: var(--ink-glass-soft);
+  letter-spacing: 0.06em;
+  font-weight: 700;
+}
+
+/* 気温の「25–34°C」が2行に折れていた。数字は等幅にして折らない */
+.weather-now,
+.weather-range,
+.weather-city {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.weather-day .weather-now,
+.weather-card .weather-now {
+  font-size: 1.02rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #1f5f74;
+}
+
+.spot-row:hover,
+.search-results button:hover {
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* ---- 5. 透明を減らす設定を尊重する ---- */
+@media (prefers-reduced-transparency: reduce) {
+  .panel,
+  .info-panel,
+  .stamp-panel,
+  .welcome,
+  .search-results,
+  .lang,
+  .hint,
+  .search input,
+  .stamp-btn,
+  .airport-tab {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: #fbfdfe;
+  }
+}
+
+/* ---- 6. 夜は暗いガラスへ(明るい面のままだと海に対して白く浮く) ---- */
+html[data-phase="night"] {
+  --glass-tint: rgba(20, 40, 58, 0.52);
+  --glass-tint-strong: rgba(20, 40, 58, 0.74);
+  --glass-edge: rgba(255, 255, 255, 0.22);
+  --glass-line: rgba(255, 255, 255, 0.14);
+  --tile: rgba(255, 255, 255, 0.09);
+  --tile-line: rgba(255, 255, 255, 0.12);
+  --ink-glass: #eaf3fa;
+  --ink-glass-soft: #a9c2d3;
+}
+
+html[data-phase="night"] .panel,
+html[data-phase="night"] .info-panel,
+html[data-phase="night"] .stamp-panel,
+html[data-phase="night"] .welcome,
+html[data-phase="night"] .search-results {
+  background: linear-gradient(
+    160deg,
+    rgba(28, 52, 72, 0.72) 0%,
+    rgba(18, 38, 56, 0.58) 45%,
+    rgba(22, 44, 62, 0.66) 100%
+  );
+}
+
+html[data-phase="night"] .lang,
+html[data-phase="night"] .hint,
+html[data-phase="night"] .search input,
+html[data-phase="night"] .stamp-btn,
+html[data-phase="night"] .airport-tab,
+html[data-phase="night"] .search-toggle {
+  background: rgba(24, 46, 66, 0.5);
+  color: #eaf3fa;
+}
+
+html[data-phase="night"] .weather-day .weather-now,
+html[data-phase="night"] .weather-card .weather-now {
+  color: #8fd0e4;
+}
+
+html[data-phase="night"] .spot-label,
+html[data-phase="night"] .panel-name,
+html[data-phase="night"] .festival-name {
+  color: #eaf3fa;
+}
+
+/* ---- 7. 3日予報がパネルからはみ出す件 ----
+   .weather-now に white-space: nowrap を入れた結果、grid の子が min-width:auto で
+   内容幅まで広がり、3列が枠を越えた。grid/flex の子には min-width:0 を明示する。 */
+.weather-strip > *,
+.weather-grid > *,
+.gourmet-row > * {
+  min-width: 0;
+}
+
+.weather-strip {
+  gap: 5px;
+}
+
+.weather-day {
+  padding: 7px 6px;
+  align-items: flex-start;
+}
+
+.weather-day .weather-now {
+  font-size: 0.92rem;
+}
+
+.weather-day .weather-city,
+.weather-day .weather-desc,
+.weather-day .weather-range {
+  font-size: 0.62rem;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.weather-day .weather-desc {
+  white-space: nowrap;
+}
+
+/* パネルはガラスになって背景が透ける分、余白を少し広げた方が上品に見える */
+.panel,
+.info-panel,
+.stamp-panel {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+/* ---- 服装の目安カード(ユーザー要望 2026-08-22) ---- */
+.outfit-card {
+  display: flex;
+  gap: 12px;
+  align-items: stretch;
+  padding: 10px;
+  border-radius: 14px;
+  background: var(--tile);
+  border: 1px solid var(--tile-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+.outfit-photo {
+  width: 74px;
+  height: 132px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  object-fit: cover;
+  object-position: 50% 12%;
+  background: rgba(255, 255, 255, 0.5);
+}
+.outfit-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+.outfit-band {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #1f5f74;
+}
+.outfit-wear {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--ink-glass);
+}
+.outfit-tip {
+  font-size: 0.68rem;
+  line-height: 1.6;
+  color: var(--ink-glass-soft);
+}
+html[data-phase="night"] .outfit-band { color: #8fd0e4; }
+
+/* ---- 読み込めなかった画像のプレースホルダ ----
+   壊れアイコンを出さない。枠は残す(名物の3列などレイアウトが崩れるため)。 */
+.img-missing {
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.55), rgba(210, 228, 236, 0.55));
+  border: 1px dashed rgba(23, 58, 78, 0.14);
+  border-radius: 8px;
+}
+.gourmet-item .img-missing,
+.festival-row .img-missing {
+  border-radius: 10px;
+}
+html[data-phase="night"] .img-missing {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.10), rgba(255, 255, 255, 0.04));
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   旅の基本情報を「畳める+走査できる」形へ (2026-08-22 ユーザー指摘「文字だらけ」)
+
+   裏取り(WebSearch 2026-08-22):
+   - 密な情報は progressive disclosure。ただし畳んだ中身は走査できないので、
+     見出しに「中に何があるか」の1行(gist)を必ず出す
+   - native <details>/<summary> はキーボード操作と読み上げが ARIA 無しで付く
+   - モバイルのタップ標的は 44px 以上
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.info-sec {
+  border-radius: 14px;
+  background: var(--tile);
+  border: 1px solid var(--tile-line);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  margin: 0 0 8px;
+  overflow: hidden;
+}
+
+.info-sum {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 46px;          /* タップ標的 44px 以上 */
+  padding: 8px 12px;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+}
+.info-sum::-webkit-details-marker { display: none; }
+
+/* 開閉の三角は自前で描く。marker のスタイルはブラウザ差が大きい */
+.info-sum::after {
+  content: "";
+  margin-left: auto;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgba(23, 58, 78, 0.4);
+  border-bottom: 2px solid rgba(23, 58, 78, 0.4);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform 0.18s ease;
+  flex: 0 0 auto;
+}
+.info-sec[open] .info-sum::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+
+.info-sec-icon {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+.info-sum-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+}
+.info-sum-h {
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: var(--ink-glass);
+}
+.info-sum-gist {
+  font-size: 0.66rem;
+  line-height: 1.4;
+  color: var(--ink-glass-soft);
+}
+.info-sum:hover { background: rgba(255, 255, 255, 0.35); }
+.info-sum:focus-visible { outline: 2px solid #2f7fa0; outline-offset: -2px; }
+
+.info-sec-body {
+  padding: 2px 12px 12px;
+}
+
+/* 見出し語 + 説明。長い一文を並べず、語で拾えるようにする */
+.info-rows {
+  margin: 0;
+}
+.info-rows dt {
+  margin: 8px 0 1px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: #1f5f74;
+}
+.info-rows dd {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: var(--ink-glass-soft);
+}
+
+/* ---- ICカードの比較(カードの積み重ね) ----
+   4列の表はパネル幅160px級で1文字ずつ折り返して読めなくなった。狭い面ではカードが強い。 */
+.ic-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 4px 0 2px;
+}
+.ic-card {
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.42);
+  border: 1px solid var(--tile-line);
+}
+.ic-name {
+  margin: 0 0 4px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  color: var(--ink-glass);
+}
+.ic-kv {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 8px;
+  margin: 0;
+}
+.ic-kv > * { min-width: 0; }
+.ic-kv dt {
+  font-size: 0.6rem;
+  color: var(--ink-glass-soft);
+  white-space: nowrap;
+}
+.ic-kv dd {
+  margin: 0;
+  font-size: 0.64rem;
+  line-height: 1.5;
+  color: var(--ink-glass);
+}
+
+/* ---- 12か月の帯 ---- */
+.month-strip {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 3px;
+  margin: 6px 0 2px;
+}
+.month-strip > * { min-width: 0; }
+.month-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+/* 気候ストリップの中の色バー。★画面下のイベント月バー(#month-bar)と同名にしない。
+   以前は両方 .month-bar で、position:fixed の方が height:8px を受け継ぎ、
+   ガラスの受け皿が12pxしか無いまま月ボタンだけが外に浮いていた(2026-08-22 実測) */
+.month-hue {
+  width: 100%;
+  height: 8px;
+  border-radius: 4px;
+}
+.month-no {
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--ink-glass);
+  font-variant-numeric: tabular-nums;
+}
+.month-word {
+  font-size: 0.5rem;
+  line-height: 1.25;
+  text-align: center;
+  color: var(--ink-glass-soft);
+  overflow-wrap: anywhere;
+}
+.month-cell[data-best="true"] .month-no::after {
+  content: "◎";
+  display: block;
+  font-size: 0.55rem;
+  color: #d2694f;
+  line-height: 1;
+}
+.month-note {
+  margin: 4px 0 0;
+  font-size: 0.62rem;
+  color: var(--ink-glass-soft);
+}
+
+/* ---- 緊急番号のカード ---- */
+.sos-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 6px;
+  margin: 6px 0 2px;
+}
+.sos-row > * { min-width: 0; }
+.sos-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 8px 10px;
+  min-height: 46px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(224, 104, 95, 0.12));
+  border: 1px solid rgba(224, 104, 95, 0.2);
+  text-decoration: none;
+  color: inherit;
+  justify-content: center;
+}
+.sos-card:active { transform: scale(0.98); }
+.sos-num {
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  color: #b8443a;
+  font-variant-numeric: tabular-nums;
+}
+.sos-label {
+  font-size: 0.6rem;
+  line-height: 1.4;
+  color: var(--ink-glass-soft);
+}
+html[data-phase="night"] .sos-num { color: #ff9d8f; }
+html[data-phase="night"] .info-rows dt { color: #8fd0e4; }
+html[data-phase="night"] .info-sum::after {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* 旅の基本情報は中身が密なので、他のパネルより広く取る */
+.info-panel {
+  width: min(392px, calc(100vw - 32px));
+}
+@media (max-width: 640px) {
+  .info-panel { width: 100%; }
+}
+
+/* 緊急番号: 110/119 は2列、ホットラインは番号が長いので1行使う */
+.sos-row {
+  grid-template-columns: 1fr 1fr;
+}
+.sos-card:last-child {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+.sos-card:last-child .sos-num { white-space: nowrap; }
+.sos-card:last-child .sos-label { flex: 1; }
+
+/* ══════════════════════════════════════════════════════════════════════════
+   季節イベント: 月バーと地図のピン (日本版だけの軸)
+   日本の観光は「どこへ行くか」より先に「いつ行くか」で中身が変わる。
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.month-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 78px;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.62);
+  border: 1px solid var(--glass-line);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    0 4px 18px rgba(16, 42, 58, 0.16);
+  max-width: calc(100vw - 24px);
+}
+.month-bar[hidden] { display: none; }
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .month-bar {
+    background: rgba(255, 255, 255, 0.42);
+    -webkit-backdrop-filter: blur(16px) saturate(170%);
+    backdrop-filter: blur(16px) saturate(170%);
+  }
+}
+
+.month-btns {
+  display: flex;
+  gap: 2px;
+}
+.month-btn {
+  min-width: 30px;
+  min-height: 30px;
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--ink-glass);
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  cursor: pointer;
+  transition: background 0.14s ease, color 0.14s ease, transform 0.1s ease;
+}
+.month-btn:hover { background: rgba(255, 255, 255, 0.6); }
+.month-btn:active { transform: scale(0.94); }
+.month-btn[data-on="true"] {
+  background: linear-gradient(180deg, rgba(38, 78, 100, 0.94), rgba(26, 60, 80, 0.96));
+  color: #fff;
+}
+.month-off {
+  border: 0;
+  border-radius: 999px;
+  background: none;
+  color: var(--ink-glass-soft);
+  font: inherit;
+  font-size: 0.66rem;
+  padding: 6px 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.month-off:hover { background: rgba(255, 255, 255, 0.5); }
+
+.event-btn { bottom: 164px; }
+.event-btn[data-on="true"] {
+  background: linear-gradient(180deg, rgba(224, 104, 95, 0.9), rgba(200, 82, 74, 0.94));
+  color: #fff;
+  border-color: rgba(200, 82, 74, 0.9);
+}
+
+/* ---- パネルのイベント一覧 ---- */
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.event-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  background: var(--tile);
+  border: 1px solid var(--tile-line);
+}
+.event-icon {
+  width: 26px;
+  height: 26px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+.event-name {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--ink-glass);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.event-when {
+  margin-left: auto;
+  font-size: 0.64rem;
+  color: var(--ink-glass-soft);
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+/* イベントの種類(祭り・花火など)。固有名だけでは何のイベントか分からない */
+.event-cat {
+  flex: 0 0 auto;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(47, 127, 160, 0.14);
+  color: #2f7fa0;
+  font-size: 0.58rem;
+  font-weight: 700;
+  line-height: 1.6;
+  white-space: nowrap;
+}
+html[data-phase="night"] .event-cat {
+  background: rgba(143, 208, 228, 0.18);
+  color: #8fd0e4;
+}
+
+/* 地図のピンから来たとき、押したイベントに印を付ける。
+   一覧が出るだけだと「どのピンを押したのか」が伝わらない */
+.event-row[data-picked="true"] {
+  background: rgba(255, 214, 120, 0.24);
+  border-color: rgba(214, 150, 40, 0.5);
+  box-shadow: 0 0 0 1px rgba(255, 214, 120, 0.35);
+}
+.event-row[data-picked="true"] .event-name {
+  font-weight: 700;
+}
+.event-row[data-picked="true"] .event-icon {
+  transform: scale(1.12);
+}
+/* ピンから開いたときはイベント帯そのものも一段立てる */
+.spot-panel [data-picked="true"].event-box,
+div[data-picked="true"] > .gourmet-title {
+  color: #a5701a;
+}
+
+html[data-phase="night"] .event-row[data-picked="true"] {
+  background: rgba(255, 214, 120, 0.16);
+  border-color: rgba(255, 214, 120, 0.42);
+}
+html[data-phase="night"] div[data-picked="true"] > .gourmet-title {
+  color: #ffd77c;
+}
+
+@media (max-width: 640px) {
+  .month-bar {
+    bottom: calc(112px + env(safe-area-inset-bottom, 0px));
+    gap: 4px;
+    padding: 5px 6px;
+  }
+  .month-btn { min-width: 26px; font-size: 0.7rem; }
+  .month-off { display: none; }   /* 狭い画面ではイベントボタンで消せるので省く */
+  .event-btn { bottom: calc(160px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* 月バーが出ている間はヒントを上へ逃がす(同じ高さに2本並ぶと読めない) */
+body:has(.month-bar:not([hidden])) .hint {
+  bottom: 128px;
+}
+@media (max-width: 640px) {
+  body:has(.month-bar:not([hidden])) .hint {
+    /* ★月バーは6列2段(111px)になったので、旧値160pxではヒントと64px重なる(2026-08-22 実測) */
+    bottom: calc(236px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   よくある旅行QA
+   31問あるので、分類チップと検索で削れないと読まれない。
+   ★<summary> の中に別の操作要素を置かない(summary 自体がトグルなので壊れる)。
+   ★閉じている質問も検索対象。絞り込みは hidden の付け外しで、DOMは作り直さない
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.faq {
+  margin-top: 18px;
+}
+
+.faq-search {
+  width: 100%;
+  box-sizing: border-box;
+  margin: 6px 0 8px;
+  padding: 9px 12px;
+  border: 1px solid var(--tile-line);
+  border-radius: 999px;
+  background: var(--tile);
+  color: var(--ink-glass);
+  font-size: 0.78rem;
+  font-family: inherit;
+}
+.faq-search::placeholder { color: var(--ink-glass-soft); }
+.faq-search:focus-visible {
+  outline: 2px solid #2f7fa0;
+  outline-offset: 1px;
+}
+/* iOS Safari の検索欄は既定の丸角と装飾が付くので消す */
+.faq-search::-webkit-search-decoration,
+.faq-search::-webkit-search-cancel-button { -webkit-appearance: none; }
+
+.faq-cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+.faq-cat {
+  border: 1px solid rgba(30, 60, 80, 0.16);
+  background: #fff;
+  color: #33454f;
+  border-radius: 999px;
+  padding: 5px 10px;
+  font-size: 11.5px;
+  line-height: 1.2;
+  cursor: pointer;
+  transition: background 0.16s ease, color 0.16s ease, transform 0.12s ease;
+}
+.faq-cat:hover { background: #eef6fa; }
+.faq-cat:active { transform: scale(0.97); }
+.faq-cat[data-on="true"] {
+  background: #33566b;
+  border-color: #33566b;
+  color: #fff;
+}
+
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.faq-item {
+  border-radius: 12px;
+  background: var(--tile);
+  border: 1px solid var(--tile-line);
+  overflow: hidden;
+}
+.faq-item[hidden] { display: none; }
+
+.faq-q {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;          /* タップ標的 */
+  padding: 9px 12px;
+  cursor: pointer;
+  list-style: none;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--ink-glass);
+  user-select: none;
+}
+.faq-q::-webkit-details-marker { display: none; }
+.faq-q::before {
+  content: "Q";
+  flex: 0 0 auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(47, 127, 160, 0.16);
+  color: #2f7fa0;
+  font-size: 10px;
+  font-weight: 800;
+}
+.faq-q::after {
+  content: "";
+  margin-left: auto;
+  width: 7px;
+  height: 7px;
+  border-right: 2px solid rgba(23, 58, 78, 0.4);
+  border-bottom: 2px solid rgba(23, 58, 78, 0.4);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform 0.18s ease;
+  flex: 0 0 auto;
+}
+.faq-item[open] .faq-q::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+.faq-q:hover { background: rgba(255, 255, 255, 0.35); }
+.faq-q:focus-visible { outline: 2px solid #2f7fa0; outline-offset: -2px; }
+
+.faq-a {
+  margin: 0;
+  padding: 0 12px 12px 38px;
+  font-size: 0.72rem;
+  line-height: 1.72;
+  color: var(--ink-glass-soft);
+}
+
+.faq-none {
+  margin: 10px 0 0;
+  font-size: 0.72rem;
+  color: var(--ink-glass-soft);
+  text-align: center;
+}
+
+html[data-phase="night"] .faq-cat {
+  background: rgba(24, 46, 66, 0.5);
+  color: #eaf3fa;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+html[data-phase="night"] .faq-cat[data-on="true"] {
+  background: #6fb6d4;
+  border-color: #6fb6d4;
+  color: #10293b;
+}
+html[data-phase="night"] .faq-q::before {
+  background: rgba(143, 208, 228, 0.18);
+  color: #8fd0e4;
+}
+html[data-phase="night"] .faq-q::after,
+html[data-phase="night"] .faq-q:hover { border-color: rgba(234, 243, 250, 0.45); }
+html[data-phase="night"] .faq-q:hover { background: rgba(255, 255, 255, 0.07); }
+
+/* ── いま行くなら(月・時間帯で景点を並べ替える) ──
+   黙って順番だけ変えると「なぜこの順?」になるので、理由を語で出す。
+   ★理由は1景点につき1つだけ。2つ以上並べると行が伸びて一覧として読めない */
+.now-tip {
+  margin: 0 0 6px;
+  font-size: 0.64rem;
+  line-height: 1.5;
+  color: var(--ink-glass-soft);
+}
+.spot-season {
+  display: inline-block;
+  margin-top: 3px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(255, 199, 92, 0.26);
+  color: #8a5c12;
+  font-size: 0.6rem;
+  font-weight: 700;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+.spot-row[data-season="true"] {
+  border-color: rgba(214, 160, 60, 0.38);
+}
+html[data-phase="night"] .spot-season {
+  background: rgba(255, 214, 120, 0.2);
+  color: #ffd77c;
+}
+html[data-phase="night"] .spot-row[data-season="true"] {
+  border-color: rgba(255, 214, 120, 0.34);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   説明モード(driver.js のスポットライト案内)
+   既定の吹き出しは白い角丸で、このサイトのガラス基調から浮く。
+   ★driver.js のクラスは .driver-popover-* 固定。popoverClass で自分の名前空間を足し、
+     そこにだけ上書きを当てる(他のページに影響させない)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.driver-popover.jp-tour {
+  max-width: min(340px, calc(100vw - 32px));
+  border-radius: 16px;
+  background: linear-gradient(160deg,
+    rgba(255, 255, 255, 0.9) 0%,
+    rgba(244, 250, 253, 0.82) 55%,
+    rgba(255, 255, 255, 0.86) 100%);
+  -webkit-backdrop-filter: blur(22px) saturate(170%);
+  backdrop-filter: blur(22px) saturate(170%);
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 18px 46px rgba(18, 46, 66, 0.24);
+  color: #1d3a4c;
+  padding: 16px 16px 12px;
+}
+.driver-popover.jp-tour .driver-popover-title {
+  font-size: 0.92rem;
+  font-weight: 800;
+  line-height: 1.45;
+  color: #14384c;
+}
+.driver-popover.jp-tour .driver-popover-description {
+  font-size: 0.76rem;
+  line-height: 1.85;
+  color: #3d5b6d;
+}
+.driver-popover.jp-tour .driver-popover-progress-text {
+  font-size: 0.66rem;
+  color: #6a8698;
+  font-variant-numeric: tabular-nums;
+}
+.driver-popover.jp-tour .driver-popover-navigation-btns button {
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-shadow: none;
+  border: 1px solid rgba(30, 60, 80, 0.16);
+  background: #fff;
+  color: #33454f;
+}
+.driver-popover.jp-tour .driver-popover-navigation-btns button:last-child {
+  background: #33566b;
+  border-color: #33566b;
+  color: #fff;
+}
+.driver-popover.jp-tour .driver-popover-arrow-side-top { border-top-color: rgba(255, 255, 255, 0.86); }
+.driver-popover.jp-tour .driver-popover-arrow-side-bottom { border-bottom-color: rgba(255, 255, 255, 0.9); }
+.driver-popover.jp-tour .driver-popover-arrow-side-left { border-left-color: rgba(255, 255, 255, 0.88); }
+.driver-popover.jp-tour .driver-popover-arrow-side-right { border-right-color: rgba(255, 255, 255, 0.88); }
+
+html[data-phase="night"] .driver-popover.jp-tour {
+  background: linear-gradient(160deg,
+    rgba(28, 52, 72, 0.9) 0%,
+    rgba(18, 38, 56, 0.84) 55%,
+    rgba(22, 44, 62, 0.88) 100%);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #eaf3fa;
+}
+html[data-phase="night"] .driver-popover.jp-tour .driver-popover-title { color: #eaf3fa; }
+html[data-phase="night"] .driver-popover.jp-tour .driver-popover-description { color: #b6cdda; }
+html[data-phase="night"] .driver-popover.jp-tour .driver-popover-navigation-btns button {
+  background: rgba(24, 46, 66, 0.6);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #eaf3fa;
+}
+html[data-phase="night"] .driver-popover.jp-tour .driver-popover-navigation-btns button:last-child {
+  background: #6fb6d4;
+  border-color: #6fb6d4;
+  color: #10293b;
+}
+
+/* 「?」ボタン(言語切替の並び) */
+.help-btn {
+  width: 30px;
+  padding-left: 0;
+  padding-right: 0;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+/* ツアー一覧 */
+.tour-menu {
+  position: fixed;
+  top: 56px;
+  right: 14px;
+  z-index: 40;
+  width: min(300px, calc(100vw - 28px));
+  padding: 16px 16px 14px;
+  border-radius: 18px;
+  background: var(--glass-tint);
+  -webkit-backdrop-filter: blur(26px) saturate(180%);
+  backdrop-filter: blur(26px) saturate(180%);
+  border: 1px solid var(--glass-edge);
+  box-shadow: 0 18px 44px rgba(18, 46, 66, 0.22);
+}
+.tour-menu[hidden] { display: none; }
+.tour-title {
+  margin: 0 0 2px;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--ink-glass);
+}
+.tour-lead {
+  margin: 0 0 10px;
+  font-size: 0.66rem;
+  line-height: 1.6;
+  color: var(--ink-glass-soft);
+}
+.tour-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.tour-item {
+  display: grid;
+  grid-template-columns: 22px 1fr;
+  grid-template-areas: "n h" "n s";
+  gap: 0 9px;
+  align-items: center;
+  text-align: left;
+  padding: 9px 11px;
+  min-height: 46px;
+  border-radius: 12px;
+  background: var(--tile);
+  border: 1px solid var(--tile-line);
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.16s ease, transform 0.12s ease;
+}
+.tour-item:hover { border-color: rgba(47, 127, 160, 0.5); }
+.tour-item:active { transform: scale(0.985); }
+.tour-item:focus-visible { outline: 2px solid #2f7fa0; outline-offset: 1px; }
+.tour-item-n {
+  grid-area: n;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(47, 127, 160, 0.16);
+  color: #2f7fa0;
+  font-size: 10px;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.tour-item-h {
+  grid-area: h;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--ink-glass);
+}
+.tour-item-sub {
+  grid-area: s;
+  font-size: 0.62rem;
+  line-height: 1.5;
+  color: var(--ink-glass-soft);
+}
+html[data-phase="night"] .tour-item-n {
+  background: rgba(143, 208, 228, 0.18);
+  color: #8fd0e4;
+}
+
+@media (max-width: 640px) {
+  .tour-menu { top: auto; bottom: calc(74px + env(safe-area-inset-bottom, 0px)); right: 10px; left: 10px; width: auto; }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   モバイルの作り直し(2026-08-22 実機375x812で実測して発見した3件)
+   1. ウェルカムカードが「イベント」「季節」ボタンを完全に覆っていた
+      (重なり98x42px = ボタンが丸ごと下敷き。初回訪問時に2機能が押せない)
+   2. タップ標的44px未満が24箇所(月ボタン12個 26x30 / パネルの閉じる 25x24 / ヘッダ 34px高)
+   3. ヘッダが2段に折り返して125px = 画面の15%
+   基準: iOS 44x44pt / Android 48x48dp、画面端から16pt以上
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* 言語トグル(スマホだけ出す) */
+.lang-toggle { display: none; }
+
+@media (max-width: 640px) {
+  /* --- 3. ヘッダを1段に --- */
+  .lang-toggle { display: inline-flex; }
+  .langs .lang[data-lang] { display: none; }
+  /* 開いたときだけ、ヘッダの下に縦に落とす */
+  .langs[data-open="true"] .lang[data-lang] {
+    display: inline-flex;
+    position: absolute;
+    right: 12px;
+    z-index: 30;
+  }
+  .langs { position: relative; }
+  .langs[data-open="true"] .lang[data-lang]:nth-of-type(1) { top: 46px; }
+  .langs[data-open="true"] .lang[data-lang]:nth-of-type(2) { top: 96px; }
+  .langs[data-open="true"] .lang[data-lang]:nth-of-type(3) { top: 146px; }
+  .langs[data-open="true"] .lang[data-lang]:nth-of-type(4) { top: 196px; }
+  .langs[data-open="true"] .lang[data-lang]:nth-of-type(5) { top: 246px; }
+
+  /* --- 2. タップ標的 44px --- */
+  .lang,
+  .search-toggle,
+  .info-btn,
+  .help-btn,
+  .lang-toggle {
+    min-height: 44px;
+    padding-top: 0;
+    padding-bottom: 0;
+    display: inline-flex;
+    align-items: center;
+  }
+  .help-btn { min-width: 44px; justify-content: center; }
+  .search-toggle { min-width: 44px; justify-content: center; }
+
+  /* パネルの閉じるは 25x24 しかなかった。見た目の×は据え置き、当たり判定だけ広げる */
+  .panel .close,
+  .info-panel .close,
+  .stamp-panel .close,
+  .welcome .close,
+  .tour-menu .close {
+    width: 46px;
+    height: 46px;
+    display: grid;
+    place-items: center;
+  }
+  .panel .close { top: 22px; right: 4px; }
+
+  .spot-back,
+  .spot-map {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* 月バーは 12個 x 26x30 で全部が基準未満だった。
+     ★横スクロールにすると桜前線が一望できなくなるので、6列2段にして12か月を残す */
+  .month-btns {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 5px;
+    width: 100%;
+  }
+  .month-btn {
+    min-height: 44px;
+    width: 100%;
+    font-size: 13px;
+  }
+  .month-off { min-height: 44px; }
+  .month-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+    left: 12px;
+    right: 12px;
+    transform: none;    /* ★left/right を使うので、基準の translateX(-50%) を消す */
+    max-width: none;
+    padding: 8px 10px;
+  }
+
+  /* --- 1. ウェルカムカードを右側のボタン列の上へ逃がす --- */
+  /* ボタン列は下から stamp 74 / phase 120 / season 112 / event 160 と積む。
+     いちばん上(event)の上端が 202px なので、その上に置く */
+  .welcome {
+    bottom: calc(240px + env(safe-area-inset-bottom, 0px));
+    left: 12px;
+    right: 12px;
+    width: auto;
+  }
+  /* 月バーが出ているときは、さらに月バーの分だけ上げる */
+  html[data-monthbar="true"] .welcome {
+    bottom: calc(316px + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* ウェルカムカードの中のリンクも標的が22px しかなかった */
+  .welcome-links a {
+    min-height: 46px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .welcome .close { width: 46px; height: 46px; }
+}
+
+/* ── 下辺のコントロール(dock) ──
+   デスクトップは今までどおり個別に fixed で置く。display:contents なので
+   包んだこと自体が無かったことになる。
+   スマホは縦積みだと月バーとウェルカムカードで場所を奪い合い、地図の中心まで
+   UIが覆っていた(2026-08-22 実測: 375x812 で地図中心 y=411 の上に重なる)。
+   → 下辺に1列で並べ、上へ月バー・ウェルカム・ヒントの順に積む */
+.dock { display: contents; }
+
+@media (max-width: 640px) {
+  .dock {
+    display: flex;
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+    z-index: 3;
+    gap: 6px;
+  }
+  .dock .stamp-btn {
+    position: static;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 46px;
+    justify-content: center;
+    padding: 6px 6px;
+    gap: 4px;
+    /* ★4つで1列=1つ83px。0.68remだと「イベント」が入りきらず切れる(実測) */
+    font-size: 0.63rem;
+  }
+  .dock .stamp-btn img { width: 18px; height: 18px; flex: 0 0 auto; }
+  .dock .stamp-btn span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* 上へ積み直す。dock(46) + 余白 */
+  .month-bar { bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }
+  .welcome { bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }
+  html[data-monthbar="true"] .welcome { bottom: calc(185px + env(safe-area-inset-bottom, 0px)); }
+  .hint { bottom: calc(152px + env(safe-area-inset-bottom, 0px)); }
+  body:has(.month-bar:not([hidden])) .hint { bottom: calc(271px + env(safe-area-inset-bottom, 0px)); }
+  html[data-monthbar="true"] .hint { bottom: calc(271px + env(safe-area-inset-bottom, 0px)); }
+
+  /* ウェルカムカードはスマホでは1行の帯にする。
+     大きいカードのままだと地図の中心を覆ってしまう(リンクはRINKAプロフィールにもある) */
+  .welcome {
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+  }
+  .welcome-photo { width: 48px; height: 48px; object-fit: cover; flex: 0 0 auto; }
+  .welcome-links { display: none; }
+  .welcome-hibiscus { display: none; }
+  .welcome-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-size: 0.7rem;
+    line-height: 1.55;
+  }
+  .welcome .close { top: 2px; right: 2px; }
+}
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   台湾版だけのもの(日本版CSSを土台にしたうえで残す)
+   .county-intro = 日本版の .pref-intro に相当 / .info-list = 折り畳み前の平たい一覧
+   .spot-desc = 觀光署の長文をたたむ / .transit-south = 空港が桃園1つ前提の南下ルート
+   ══════════════════════════════════════════════════════════════════════════ */
+
+.county-intro {
+  margin: 0 0 12px;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.info-list {
+  margin: 0;
+  padding-left: 1.1em;
+  font-size: 0.78rem;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.spot-desc {
+  margin: 0 0 12px;
+  font-size: 0.78rem;
+}
+
+.spot-desc summary {
+  cursor: pointer;
+  color: var(--land-deep);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.spot-desc p {
+  margin: 6px 0 0;
+  line-height: 1.75;
+  color: var(--ink-soft);
+  white-space: pre-line;
+}
+
+.transit-south {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 2px 0 14px;
+  font-size: 0.64rem;
+  color: var(--ink-soft);
 }

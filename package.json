@@ -14,6 +14,7 @@
     "docs:pdf": "node tools/md2pdf.mjs docs/要件定義.md docs/実装メモ.md docs/素材生成パイプライン.md docs/パレット候補.md --out docs/pdf"
   },
   "dependencies": {
+    "driver.js": "^1.8.0",
     "three": "^0.185.0"
   },
   "devDependencies": {

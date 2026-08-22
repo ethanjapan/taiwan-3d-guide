@@ -1,0 +1,85 @@
+Copyright (c) 2026 linsuyi (ethanjapan). All rights reserved.
+無断複製・転載・再配布・商用利用を禁じます。
+
+================================================================================
+日本語
+================================================================================
+
+このリポジトリのソースコードは閲覧できる状態で公開していますが、
+オープンソースではありません。著作権者は上記のとおりで、すべての権利を留保します。
+
+【許可すること】
+  - 閲覧・学習のために読むこと
+  - 技術的な手法や考え方を参考にすること
+    (アイデアや一般的な手法は著作権の対象ではありません)
+
+【著作権者の書面による許諾なく行ってはならないこと】
+  - ソースコード・画像素材・文章の複製、改変、再配布
+  - 本作品またはその一部を用いた商用利用
+  - 本作品の全体または実質的な部分を複製したサイトの公開
+
+問い合わせ先: https://github.com/ethanjapan
+
+================================================================================
+English
+================================================================================
+
+The source code in this repository is publicly viewable but is NOT open source.
+All rights are reserved by the copyright holder named above.
+
+PERMITTED
+  - Reading the source for study or reference
+  - Learning from the techniques and approaches shown
+    (ideas and general methods are not covered by copyright)
+
+NOT PERMITTED without prior written permission from the copyright holder
+  - Copying, modifying or redistributing the source code, image assets or text
+  - Any commercial use of this work or any part of it
+  - Publishing a site that reproduces this work in whole or in substantial part
+
+Contact: https://github.com/ethanjapan
+
+================================================================================
+第三者の権利 / Third-party rights
+================================================================================
+
+上の留保は本作品のうち著作権者自身が作成した部分にのみ及びます。
+以下は各提供元のライセンスに従い、本ライセンスでは上書きできません。
+
+The reservation above applies only to the parts authored by the copyright
+holder. The following are governed by their own licences and are NOT covered
+by this file.
+
+  行政境界データ / Administrative boundaries
+    出典: geoBoundaries (OpenStreetMap contributors)
+    ライセンス: Open Data Commons Open Database License (ODbL) 1.0
+    該当ファイル: data/counties.json, data/source/*.geojson
+    ※これらは ODbL の派生データベースとして ODbL 1.0 のまま提供します。
+      ODbL requires derivative databases to remain under ODbL; these files
+      are therefore offered under ODbL 1.0, not under the terms above.
+
+  景点の名称・説明・座標 / Attraction names, descriptions, coordinates
+    出典: 交通部觀光署 觀光資訊資料庫
+    ライセンス: 政府資料開放授權條款－第1版
+      (出典表示を条件に、商用を含む利用と改変が認められています)
+      Taiwan Open Government Data Licence, version 1.0 — attribution required.
+
+  写真 / Photographs (public/photos/, public/thumbs/)
+    出典: Wikimedia Commons
+    ライセンス: 写真ごとに異なります。撮影者とライセンスはアプリ内の
+      詳細画面および data/photo-credits.json に記載しています。
+      Each photograph carries its own licence; see the in-app detail view
+      and data/photo-credits.json for author and licence.
+
+  気象データ / Weather data
+    出典: Open-Meteo.com — CC BY 4.0
+
+  同梱するソフトウェア / Bundled software
+    three.js, driver.js — MIT
+    全文は public/THIRD-PARTY-NOTICES.txt に掲載しています。
+    Full texts are included in public/THIRD-PARTY-NOTICES.txt.
+
+  公式PR動画 / Official promotional videos
+    台湾観光当局の公式YouTubeチャンネルの埋め込み。
+    動画そのものの権利は各権利者に帰属します。
+    Embedded from official tourism YouTube channels; rights remain with them.
