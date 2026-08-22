@@ -7,6 +7,7 @@ import { createAtmosphere } from "./atmosphere.js";
 import { createCourseLayer } from "./courses3d.js";
 import { createEventLayer } from "./events3d.js";
 import { createSeason } from "./season.js";
+import { createTour } from "./tour.js";
 import { STRINGS, applyLang, detectLang } from "./i18n.js";
 import counties from "../data/counties.json";
 import SPECIALTIES from "../data/specialties.json";
@@ -15,7 +16,7 @@ import DECORATIONS from "../data/decorations.json";
 import ATTRACTIONS from "../data/attractions.json";
 import { TRAVEL_INFO, TRANSIT, PROMO_VIDEOS,
          IC_TABLE, MONTHS, SOS } from "./travelinfo.js";
-import { fetchWeather, codeLabel, outfitBand } from "./weather.js";
+import { fetchWeather, codeLabel, codeIcon, outfitBand } from "./weather.js";
 import { rinkaCounty, rinkaSpot, RINKA_PROFILE, RINKA_LINKS } from "./rinka.js";
 import COUNTY_INTRO from "../data/i18n/county-intro.json";
 import FAQ from "../data/i18n/faq.json";
@@ -35,6 +36,18 @@ const panelBody = document.getElementById("panel-body");
 const panelState = { countyId: null, spotId: null };
 
 const mapsUrl = (s) => `https://www.google.com/maps?q=${s.lat},${s.lon}`;
+
+/** 天気アイコン。素材(public/weather/*.webp)が無い間は error で自分を消すので、
+ *  生成の完了を待たずに組み込める(landmarks と同じ方針)。 */
+const weatherIcon = (code) => {
+  const img = document.createElement("img");
+  img.className = "weather-icon";
+  img.src = `${import.meta.env.BASE_URL}weather/${codeIcon(code)}.webp`;
+  img.alt = "";
+  img.loading = "lazy";
+  img.addEventListener("error", () => img.remove());
+  return img;
+};
 
 /** RINKAの吹き出し要素 */
 const rinkaBubble = (text) => {
@@ -151,7 +164,7 @@ const renderPanel = () => {
           const pop = document.createElement("span");
           pop.className = "weather-range";
           pop.textContent = `${STRINGS[lang].pop} ${d.pop}%`;
-          card.append(dt, desc, rng, pop);
+          card.append(dt, weatherIcon(d.code), desc, rng, pop);
           return card;
         }),
       );
@@ -545,6 +558,10 @@ const attachSheet = (panelEl, { snaps = false, onClose } = {}) => {
 let activeMonth = 0;   // 0=イベント表示なし
 let pickedEvent = null;
 let updateMonthBar = null;
+let updateTourMenu = null;
+// 月バーの apply。説明モードが「イベントを出した状態」を作るのに使う
+// ★start() の中で宣言すると、先に走る配線から見えず ReferenceError になる
+let applyMonth = null;
 // 時間帯("morning"|"day"|"dusk"|"night")。auto のときは実時間で解決済みの値が返る
 let getPhase = () => "day";
 /**
@@ -676,6 +693,7 @@ const addStamp = (iso) => {
   updateSeasonButton?.();
   updateLangToggle?.();
   updateMonthBar?.();
+  updateTourMenu?.();
 };
 
 stampBtn.addEventListener("click", () => {
@@ -685,6 +703,7 @@ stampBtn.addEventListener("click", () => {
   updateSeasonButton?.();
   updateLangToggle?.();
   updateMonthBar?.();
+  updateTourMenu?.();
 });
 document.getElementById("stamp-close").addEventListener("click", () => {
   stampPanel.hidden = true;
@@ -716,6 +735,7 @@ const setLang = (next) => {
   updateSeasonButton?.();
   updateLangToggle?.();
   updateMonthBar?.();
+  updateTourMenu?.();
   // バッジの単位語はパネルの状態に関係なく言語に追随させる(ko残留バグ 2026-08-21)
   if (badgeCountyId) {
     badgeInner.textContent = `${COUNTS[badgeCountyId] ?? ""} ${STRINGS[lang].spotsLabel}`;
@@ -923,7 +943,7 @@ const renderWeatherOverview = async (host) => {
       const rng = document.createElement("span");
       rng.className = "weather-range";
       rng.textContent = `${d0.min}–${d0.max}°C｜${STRINGS[lang].pop} ${d0.pop}%`;
-      card.append(n, now, desc, rng);
+      card.append(n, weatherIcon(w.now.code), now, desc, rng);
       return card;
     }),
   );
@@ -1945,11 +1965,58 @@ function start() {
       apply(jpMonth);            // 開いたら今月から
     });
     updateMonthBar = render;
+    applyMonth = apply;      // 説明モードが「イベントを出した状態」を作るのに使う
     render();
   }
 
   // ---- 説明モード ----
   // ★移植の第7段。全機能が揃ってから入れる(当て先の無いツアーは黙って終わるため)
+
+  // ---- 説明モード ----
+  // ★案内は「当て先の要素が実際にある」状態を作ってから出す。
+  //   パネルを開いていない・その月にイベントが無い、で枠が空振りするため。
+  {
+    const byIso = (iso) => groups.find((g) => g.userData.county.id === iso);
+    const openAndWait = (group) => {
+      if (!group) return;
+      select(group);
+      panel.hidden = false;
+    };
+    updateTourMenu = createTour({
+      lang: () => lang,
+      openPref: () => openAndWait(byIso("TW-TPE") ?? groups[0]),   // 台北(見どころが揃っている)
+      openInfo: () => {
+        renderInfo();
+        infoPanel.hidden = false;
+      },
+      eventsOn: () => {
+        if (!activeMonth) {
+          document.getElementById("month-bar").dataset.forced = "1";
+          document.getElementById("month-bar").hidden = false;
+          document.documentElement.dataset.monthbar = "true";
+          applyMonth?.(Number(new Intl.DateTimeFormat("en-US", {
+            timeZone: "Asia/Taipei", month: "numeric" }).format(new Date())));
+        }
+      },
+      /** その月にイベントがある県市を、ピンを押したのと同じ形で開く */
+      openEventPref: () => {
+        const iso = Object.keys(EVENTS.pref).find((k) =>
+          (EVENTS.pref[k] ?? []).some((e) => e.m.includes(activeMonth)));
+        if (!iso) return;
+        const ev = EVENTS.pref[iso].find((e) => e.m.includes(activeMonth));
+        pickedEvent = { pref: iso, cat: ev.cat, key: ev.name.zh };
+        eventLayer.select(iso);
+        openAndWait(byIso(iso));
+      },
+      /** 「いま行くなら」が出る県市を探して開く。月と時間帯によって在り処が変わる */
+      openSeasonPref: () => {
+        const hit = groups.find((g) =>
+          (ATTRACTIONS[g.userData.county.id] ?? []).some((sp) => timingOf(sp.id)));
+        pickedEvent = null;
+        openAndWait(hit ?? byIso("TW-TPE"));
+      },
+    }).render;
+  }
 
   courseLayer = createCourseLayer(scene, counties.bounds, groups, reduceMotion);
   if (import.meta.env.DEV) window.__course = courseLayer;

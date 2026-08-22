@@ -62,3 +62,20 @@ export const fetchWeather = async (iso) => {
 export const outfitBand = (t) =>
   t >= 28 ? "hot" : t >= 23 ? "warm" : t >= 18 ? "mild" : t >= 13 ? "cool" : t >= 8 ? "chilly" : "cold";
 
+const CODE_ICON = [
+  [[0], "clear"],
+  [[1, 2], "partly"],
+  [[3], "cloudy"],
+  [[45, 48], "fog"],
+  [[51, 53, 55, 56, 57], "drizzle"],
+  [[61, 63, 65, 66, 67, 80, 81, 82], "rain"],
+  [[71, 73, 75, 77, 85, 86], "snow"],
+  [[95, 96, 99], "thunder"],
+];
+
+export const codeIcon = (code) => {
+  for (const [codes, name] of CODE_ICON) {
+    if (codes.includes(code)) return name;
+  }
+  return "cloudy";
+};

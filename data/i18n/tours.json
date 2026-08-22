@@ -1,0 +1,403 @@
+{
+ "tours": [
+  {
+   "id": "map",
+   "title": {
+    "ja": "地図の使い方",
+    "zh": "地圖怎麼用",
+    "cn": "地图怎么用",
+    "en": "Using the map",
+    "ko": "지도 사용법"
+   },
+   "sub": {
+    "ja": "回す・選ぶ・探す",
+    "zh": "旋轉・選擇・搜尋",
+    "cn": "旋转・选择・搜寻",
+    "en": "Spin, pick, search",
+    "ko": "돌리고 고르고 찾기"
+   },
+   "steps": [
+    {
+     "el": "#hint",
+     "side": "top",
+     "h": {
+      "ja": "1. 地図を回す",
+      "zh": "1. 轉動地圖",
+      "cn": "1. 转动地图",
+      "en": "1. Spin the map",
+      "ko": "1. 지도를 돌린다"
+     },
+     "d": {
+      "ja": "ドラッグで回転、スクロールで拡大縮小。スマホは1本指で回転、2本指で拡大です。",
+      "zh": "拖曳旋轉、滾輪縮放。手機用單指旋轉、雙指縮放。",
+      "cn": "拖曳旋转、滚轮缩放。手机用单指旋转、双指缩放。",
+      "en": "Drag to rotate, scroll to zoom. On a phone: one finger rotates, two fingers zoom.",
+      "ko": "드래그로 회전, 스크롤로 확대·축소. 스마트폰은 한 손가락 회전, 두 손가락 확대."
+     },
+     "act": null
+    },
+    {
+     "el": "#panel",
+     "side": "left",
+     "h": {
+      "ja": "2. 県市を押すと開く",
+      "zh": "2. 點縣市就會打開",
+      "cn": "2. 点县市就会打开",
+      "en": "2. Tap a county",
+      "ko": "2. 현시를 누르면 열린다"
+     },
+     "d": {
+      "ja": "見どころ、名物、今の天気がまとまって出ます。いま開いているのは台北市です。",
+      "zh": "會一次列出景點、名產和目前天氣。現在打開的是臺北市。",
+      "cn": "会一次列出景点、名产和目前天气。现在打开的是台北市。",
+      "en": "Highlights, local food and the live weather, all in one card. This one is Taipei.",
+      "ko": "명소, 명물, 현재 날씨가 한 장에 나옵니다. 지금 열린 곳은 타이베이시입니다."
+     },
+     "act": "openPref"
+    },
+    {
+     "el": ".langs #lang-btn|.langs",
+     "side": "bottom",
+     "h": {
+      "ja": "3. 5言語で読める",
+      "zh": "3. 五種語言",
+      "cn": "3. 五种语言",
+      "en": "3. Five languages",
+      "ko": "3. 5개 언어"
+     },
+     "d": {
+      "ja": "繁体中文・簡体中文・日本語・English・한국어。景点名には現地の繁体字表記も併記されるので、看板と突き合わせられます。",
+      "zh": "繁中、簡中、日文、英文、韓文。景點名會同時附上當地的繁體寫法，可以跟招牌對照。",
+      "cn": "繁中、简中、日文、英文、韩文。景点名会同时附上当地的繁体写法，可以跟招牌对照。",
+      "en": "Traditional and Simplified Chinese, Japanese, English and Korean. Each spot also shows its local Chinese name, so you can match it against the signage.",
+      "ko": "번체·간체 중국어, 일본어, 영어, 한국어. 명소 이름에는 현지 표기도 함께 나옵니다."
+     },
+     "act": null
+    },
+    {
+     "el": "#search-toggle|.search input",
+     "side": "bottom",
+     "h": {
+      "ja": "4. 名前で探す",
+      "zh": "4. 用名字找",
+      "cn": "4. 用名字找",
+      "en": "4. Search by name",
+      "ko": "4. 이름으로 찾기"
+     },
+     "d": {
+      "ja": "220件の景点を名前で検索できます。漢字・ピンイン・英語・韓国語のどれでも引けます。",
+      "zh": "220個景點都能用名字搜尋。漢字、拼音、英文、韓文都查得到。",
+      "cn": "220个景点都能用名字搜寻。汉字、拼音、英文、韩文都查得到。",
+      "en": "All 220 spots are searchable by name — in Chinese, pinyin, English or Korean.",
+      "ko": "220곳의 명소를 이름으로 검색할 수 있습니다. 한자·병음·영어·한국어 모두 가능합니다."
+     },
+     "act": null
+    }
+   ]
+  },
+  {
+   "id": "when",
+   "title": {
+    "ja": "いつ行くか",
+    "zh": "什麼時候去",
+    "cn": "什么时候去",
+    "en": "When to go",
+    "ko": "언제 갈까"
+   },
+   "sub": {
+    "ja": "旧暦の祭りと花の季節",
+    "zh": "農曆的節慶與花季",
+    "cn": "农历的节庆与花季",
+    "en": "Lunar festivals and flower seasons",
+    "ko": "음력 축제와 꽃 시즌"
+   },
+   "steps": [
+    {
+     "el": "#event-btn",
+     "side": "left",
+     "h": {
+      "ja": "1. イベントを出す",
+      "zh": "1. 顯示活動",
+      "cn": "1. 显示活动",
+      "en": "1. Turn on events",
+      "ko": "1. 이벤트를 켠다"
+     },
+     "d": {
+      "ja": "押すと今月のイベントが地図に立ちます。交通部觀光署の公式データから選んだ73件です。",
+      "zh": "按下去，本月的活動就會出現在地圖上。是從交通部觀光署的官方資料挑出來的73件。",
+      "cn": "按下去，本月的活动就会出现在地图上。是从交通部观光署的官方资料挑出来的73件。",
+      "en": "Press it and this month's events rise on the map — 73 of them, drawn from the Tourism Administration's official data.",
+      "ko": "누르면 이달의 이벤트가 지도에 표시됩니다. 관광청 공식 데이터에서 고른 73건입니다."
+     },
+     "act": "eventsOn"
+    },
+    {
+     "el": "#month-bar",
+     "side": "top",
+     "h": {
+      "ja": "2. 月を動かす",
+      "zh": "2. 移動月份",
+      "cn": "2. 移动月份",
+      "en": "2. Move the month",
+      "ko": "2. 달을 움직인다"
+     },
+     "d": {
+      "ja": "2〜3月に山が来ます。元宵の天燈と蜂炮、そして桜が重なるからです。★台湾の祭りは旧暦なので、月は平年の目安として見てください。",
+      "zh": "2〜3月是高峰，因為元宵的天燈、蜂炮和櫻花都擠在一起。★台灣的節慶多依農曆，月份請當成常年的參考。",
+      "cn": "2〜3月是高峰，因为元宵的天灯、蜂炮和樱花都挤在一起。★台湾的节庆多依农历，月份请当成常年的参考。",
+      "en": "February and March are the peak: sky lanterns, beehive fireworks and cherry blossom all land together. Note that Taiwanese festivals follow the lunar calendar, so treat the months as a typical-year guide.",
+      "ko": "2~3월이 절정입니다. 정월대보름의 천등과 벌집폭죽, 벚꽃이 겹치기 때문입니다. 축제는 음력 기준이라 달은 평년의 기준으로 보세요."
+     },
+     "act": null
+    },
+    {
+     "el": ".event-list",
+     "side": "left",
+     "h": {
+      "ja": "3. ピンを押す",
+      "zh": "3. 點選圖釘",
+      "cn": "3. 点选图钉",
+      "en": "3. Tap a pin",
+      "ko": "3. 핀을 누른다"
+     },
+     "d": {
+      "ja": "ピンを押すと、その県市のそのイベントが最初に出ます。イベント表示中はランドマークを伏せて、ピンだけが読めるようにしています。",
+      "zh": "點圖釘就會先顯示那個縣市的那項活動。顯示活動時會把地標收起來，讓圖釘看得清楚。",
+      "cn": "点图钉就会先显示那个县市的那项活动。显示活动时会把地标收起来，让图钉看得清楚。",
+      "en": "Tap a pin and that county opens with that event first. Landmarks are hidden while events are on, so the pins stay readable.",
+      "ko": "핀을 누르면 그 현시의 해당 이벤트가 먼저 나옵니다. 이벤트 표시 중에는 랜드마크를 숨깁니다."
+     },
+     "act": null
+    },
+    {
+     "el": "#season-btn",
+     "side": "left",
+     "h": {
+      "ja": "4. 季節の演出",
+      "zh": "4. 季節演出",
+      "cn": "4. 季节演出",
+      "en": "4. Seasonal effects",
+      "ko": "4. 계절 연출"
+     },
+     "d": {
+      "ja": "春は桜、夏は澎湖の花火、秋は芒花、冬は平溪の天燈。★台湾には雪が降らないので、冬は雪ではなく天燈にしています。",
+      "zh": "春天櫻花、夏天澎湖花火、秋天芒花、冬天平溪天燈。★台灣不下雪，所以冬天用天燈而不是雪。",
+      "cn": "春天樱花、夏天澎湖花火、秋天芒花、冬天平溪天灯。★台湾不下雪，所以冬天用天灯而不是雪。",
+      "en": "Cherry blossom in spring, Penghu fireworks in summer, silver grass in autumn, and Pingxi sky lanterns in winter — Taiwan does not get snow, so lanterns take its place.",
+      "ko": "봄은 벚꽃, 여름은 펑후 불꽃, 가을은 억새, 겨울은 핑시 천등. 타이완은 눈이 오지 않아 눈 대신 천등입니다."
+     },
+     "act": null
+    },
+    {
+     "el": "#phase-btn",
+     "side": "left",
+     "h": {
+      "ja": "5. 朝・昼・夕・夜",
+      "zh": "5. 早晨・白天・傍晚・夜晚",
+      "cn": "5. 早晨・白天・傍晚・夜晚",
+      "en": "5. Morning to night",
+      "ko": "5. 아침·낮·저녁·밤"
+     },
+     "d": {
+      "ja": "時間帯を変えると光と海の色が変わり、おすすめの景点も入れ替わります。夜にすると九份や象山の夜景が上に来ます。",
+      "zh": "切換時段，光線與海色都會變，推薦的景點也會換。切到夜晚，九份和象山的夜景就會排到前面。",
+      "cn": "切换时段，光线与海色都会变，推荐的景点也会换。切到夜晚，九份和象山的夜景就会排到前面。",
+      "en": "Change the time of day and the light, the sea and the recommendations all shift. Switch to night and Jiufen and Elephant Mountain rise to the top.",
+      "ko": "시간대를 바꾸면 빛과 바다 색이 바뀌고 추천 명소도 달라집니다. 밤으로 하면 주펀과 샹산의 야경이 위로 옵니다."
+     },
+     "act": null
+    }
+   ]
+  },
+  {
+   "id": "pack",
+   "title": {
+    "ja": "何を着る・何を見る",
+    "zh": "穿什麼・看什麼",
+    "cn": "穿什么・看什么",
+    "en": "What to wear, what to see",
+    "ko": "무엇을 입고 무엇을 볼까"
+   },
+   "sub": {
+    "ja": "天気と時期で変わる案内",
+    "zh": "隨天氣與季節改變的建議",
+    "cn": "随天气与季节改变的建议",
+    "en": "Advice that follows the weather",
+    "ko": "날씨와 시기에 따라 바뀌는 안내"
+   },
+   "steps": [
+    {
+     "el": ".outfit-card",
+     "side": "left",
+     "h": {
+      "ja": "1. 服装の目安",
+      "zh": "1. 穿著建議",
+      "cn": "1. 穿著建议",
+      "en": "1. What to wear",
+      "ko": "1. 복장 기준"
+     },
+     "d": {
+      "ja": "その県市の今の気温・天気・湿度から、RINKAが実際に着ている写真で服装を出します。★13〜17℃の北部は濕冷で体感が数字より低く、建物に暖房が無いことも助言に入れてあります。",
+      "zh": "根據該縣市現在的氣溫、天氣和濕度，用RINKA實際穿的照片給你建議。★北部13〜17℃常常是濕冷，體感比數字低，加上室內多半沒暖氣，這些都寫進去了。",
+      "cn": "根据该县市现在的气温、天气和湿度，用RINKA实际穿的照片给你建议。★北部13〜17℃常常是湿冷，体感比数字低，加上室内多半没暖气，这些都写进去了。",
+      "en": "From the county's live temperature, weather and humidity, RINKA shows what to wear as a real photo. The advice accounts for the damp cold of the north and the fact that buildings here rarely have heating.",
+      "ko": "그 현시의 현재 기온·날씨·습도를 바탕으로 RINKA가 실제로 입은 사진으로 보여줍니다. 북부의 습한 추위와 난방 없는 건물도 조언에 넣었습니다."
+     },
+     "act": "openPref"
+    },
+    {
+     "el": ".now-tip",
+     "side": "left",
+     "h": {
+      "ja": "2. いま行くなら",
+      "zh": "2. 現在去的話",
+      "cn": "2. 现在去的话",
+      "en": "2. Best right now",
+      "ko": "2. 지금 간다면"
+     },
+     "d": {
+      "ja": "選んだ月と時間帯で、景点の並びが変わります。「紅葉が見頃」「湯めぐりの季節」のように理由も出るので、順番の意味が分かります。",
+      "zh": "依你選的月份與時段，景點順序會改變。還會標出「楓紅正美」「天冷才過癮」等理由，讓你知道為什麼是這個順序。",
+      "cn": "依你选的月份与时段，景点顺序会改变。还会标出「枫红正美」「天冷才过瘾」等理由，让你知道为什么是这个顺序。",
+      "en": "The spot order changes with the month and time you picked, and each one says why: autumn colours, hot-spring season, best after dark.",
+      "ko": "고른 달과 시간대에 따라 명소 순서가 바뀌고, 이유도 함께 나옵니다."
+     },
+     "act": "seasonPref"
+    },
+    {
+     "el": ".weather-strip",
+     "side": "left",
+     "h": {
+      "ja": "3. 3日先の天気",
+      "zh": "3. 未來三天天氣",
+      "cn": "3. 未来三天天气",
+      "en": "3. Three-day forecast",
+      "ko": "3. 사흘 뒤 날씨"
+     },
+     "d": {
+      "ja": "Open-Meteo の実データです。雨の県市を選ぶと、地図の上にも雨雲が出ます。",
+      "zh": "來自 Open-Meteo 的實際資料。選到下雨的縣市，地圖上也會出現雨雲。",
+      "cn": "来自 Open-Meteo 的实际资料。选到下雨的县市，地图上也会出现雨云。",
+      "en": "Live data from Open-Meteo. Pick a county where it's raining and a rain cloud appears over it on the map.",
+      "ko": "Open-Meteo의 실제 데이터입니다. 비가 오는 현시를 고르면 지도 위에도 비구름이 나타납니다."
+     },
+     "act": null
+    },
+    {
+     "el": "#stamp-btn",
+     "side": "left",
+     "h": {
+      "ja": "4. 訪れた県市が貯まる",
+      "zh": "4. 收集去過的縣市",
+      "cn": "4. 收集去过的县市",
+      "en": "4. Counties you've opened",
+      "ko": "4. 방문한 현시가 쌓인다"
+     },
+     "d": {
+      "ja": "開いた県市がスタンプになります。22個ぜんぶ集めるとRINKAの完走カードが出ます。",
+      "zh": "打開過的縣市會變成印章。集滿22個，RINKA的完成卡就會出現。",
+      "cn": "打开过的县市会变成印章。集满22个，RINKA的完成卡就会出现。",
+      "en": "Every county you open becomes a stamp. Collect all 22 and RINKA's completion card appears.",
+      "ko": "열어 본 현시가 스탬프가 됩니다. 22개를 모두 모으면 RINKA의 완주 카드가 나옵니다."
+     },
+     "act": null
+    }
+   ]
+  },
+  {
+   "id": "info",
+   "title": {
+    "ja": "旅の基本情報",
+    "zh": "旅遊實用資訊",
+    "cn": "旅游实用资讯",
+    "en": "Travel basics",
+    "ko": "여행 기본 정보"
+   },
+   "sub": {
+    "ja": "入境・交通・QA",
+    "zh": "入境・交通・問答",
+    "cn": "入境・交通・问答",
+    "en": "Entry, transport, FAQ",
+    "ko": "입국·교통·QA"
+   },
+   "steps": [
+    {
+     "el": "#info-btn",
+     "side": "bottom",
+     "h": {
+      "ja": "1. ここに全部ある",
+      "zh": "1. 全部都在這裡",
+      "cn": "1. 全部都在这里",
+      "en": "1. Everything lives here",
+      "ko": "1. 여기에 다 있다"
+     },
+     "d": {
+      "ja": "入境、鉄道、ICカード、お金、通信、気候、マナー、緊急連絡先。★免簽入境でも台灣入境卡(TWAC)のオンライン提出が要るので、いちばん上に置いてあります。",
+      "zh": "入境、鐵路、IC卡、金錢、網路、氣候、禮儀、緊急聯絡。★免簽入境也要先線上填台灣入境卡(TWAC)，所以放在最上面。",
+      "cn": "入境、铁路、IC卡、金钱、网路、气候、礼仪、紧急联络。★免签入境也要先线上填台湾入境卡(TWAC)，所以放在最上面。",
+      "en": "Entry, rail, IC cards, money, connectivity, climate, etiquette, emergency numbers. The arrival card (TWAC) is required even visa-free, so it sits at the top.",
+      "ko": "입국, 철도, IC카드, 돈, 통신, 기후, 매너, 긴급 연락처. 무비자여도 입국카드(TWAC)가 필요해 맨 위에 두었습니다."
+     },
+     "act": "openInfo"
+    },
+    {
+     "el": ".airport-tabs",
+     "side": "bottom",
+     "h": {
+      "ja": "2. 空港から市内へ",
+      "zh": "2. 從機場到市區",
+      "cn": "2. 从机场到市区",
+      "en": "2. Airport to city",
+      "ko": "2. 공항에서 시내로"
+     },
+     "d": {
+      "ja": "桃園・松山・高雄小港・台中の4空港について、どの路線が何分かかるかを比べられます。",
+      "zh": "桃園、松山、高雄小港、台中四座機場，可以比較各路線要花幾分鐘。",
+      "cn": "桃园、松山、高雄小港、台中四座机场，可以比较各路线要花几分钟。",
+      "en": "Compare the routes and travel times from Taoyuan, Songshan, Kaohsiung and Taichung.",
+      "ko": "타오위안·쑹산·가오슝·타이중 4개 공항의 노선과 소요 시간을 비교할 수 있습니다."
+     },
+     "act": null
+    },
+    {
+     "el": ".course",
+     "side": "bottom",
+     "h": {
+      "ja": "3. モデルコース",
+      "zh": "3. 推薦行程",
+      "cn": "3. 推荐行程",
+      "en": "3. Model routes",
+      "ko": "3. 모델 코스"
+     },
+     "d": {
+      "ja": "選ぶと地図の上にルートが線で描かれます。台北の定番から花東縦谷、離島まで8本あります。",
+      "zh": "點選後路線會畫在地圖上。從台北經典到花東縱谷、離島共8條。",
+      "cn": "点选后路线会画在地图上。从台北经典到花东纵谷、离岛共8条。",
+      "en": "Pick one and the route draws itself across the map — eight of them, from classic Taipei to the East Rift Valley and the outlying islands.",
+      "ko": "고르면 지도 위에 경로가 그려집니다. 타이베이 정번부터 화둥종곡, 외딴섬까지 8개."
+     },
+     "act": null
+    },
+    {
+     "el": ".faq-search",
+     "side": "top",
+     "h": {
+      "ja": "4. よくある質問",
+      "zh": "4. 常見問答",
+      "cn": "4. 常见问答",
+      "en": "4. FAQ",
+      "ko": "4. 자주 묻는 질문"
+     },
+     "d": {
+      "ja": "ビザ、入境カード、悠遊卡、夜市、素食、水道水、台風、地震など30問。分類でもキーワードでも引けます。",
+      "zh": "簽證、入境卡、悠遊卡、夜市、素食、自來水、颱風、地震等30題。可以用分類或關鍵字查。",
+      "cn": "签证、入境卡、悠游卡、夜市、素食、自来水、台风、地震等30题。可以用分类或关键字查。",
+      "en": "30 questions — visas, the arrival card, EasyCard, night markets, vegetarian food, tap water, typhoons, earthquakes. Browse by category or search.",
+      "ko": "비자, 입국카드, 이지카드, 야시장, 채식, 수돗물, 태풍, 지진 등 30문항."
+     },
+     "act": null
+    }
+   ]
+  }
+ ]
+}
