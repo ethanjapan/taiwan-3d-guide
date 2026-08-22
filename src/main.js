@@ -1879,7 +1879,11 @@ function start() {
   const season = createSeason(stage, reduceMotion, () => atmosphere.phase);
   {
     const CYCLE = ["auto", "spring", "summer", "autumn", "winter"];
-    const ICONS = { spring: "sakura-spray", summer: "koinobori", autumn: "maple", winter: "moon" };
+    // ★日本版の名前(sakura-spray / koinobori / maple)をそのまま持ってきていたが、
+    //   台湾版には**どれも無く、ボタンに壊れた画像が出ていた**(2026-08-23 ユーザー指摘)。
+    //   季節の演出に使っているスプライトをそのまま流用する(演出とボタンの絵が揃う)
+    const ICONS = { spring: "season-spring", summer: "season-summer",
+                    autumn: "season-autumn", winter: "season-winter" };
     const btn = document.getElementById("season-btn");
     const icon = document.getElementById("season-icon");
     const label = document.getElementById("season-label");
