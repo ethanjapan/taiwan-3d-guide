@@ -16,6 +16,7 @@ import { TRAVEL_INFO, TRANSIT, PROMO_VIDEOS,
 import { fetchWeather, codeLabel } from "./weather.js";
 import { rinkaCounty, rinkaSpot, RINKA_PROFILE, RINKA_LINKS } from "./rinka.js";
 import COUNTY_INTRO from "../data/i18n/county-intro.json";
+import FAQ from "../data/i18n/faq.json";
 import COURSES from "../data/courses.json";
 import VISITOR_CENTERS from "../data/visitor-centers.json";
 
@@ -928,6 +929,89 @@ const sosCards = () => {
   return box;
 };
 
+/**
+ * よくある旅行QA。31問あるので、分類チップ + キーワード検索で絞れないと読まれない。
+ * ★<details> は開いていても textContent は取れるので、検索は開閉に関係なく効く。
+ * ★絞り込みはDOMを作り直さず hidden の付け外しでやる。作り直すと開いていた答えが閉じる。
+ */
+const faqBlock = () => {
+  const t = STRINGS[lang];
+  const wrap = document.createElement("div");
+  wrap.className = "faq";
+
+  const h = document.createElement("h3");
+  h.className = "info-h";
+  h.textContent = t.faqH;
+  const tip = document.createElement("p");
+  tip.className = "course-tip";
+  tip.textContent = t.faqTip;
+
+  const search = document.createElement("input");
+  search.type = "search";
+  search.className = "faq-search";
+  search.placeholder = t.faqSearch;
+  search.setAttribute("aria-label", t.faqH);
+
+  const cats = document.createElement("div");
+  cats.className = "faq-cats";
+  const list = document.createElement("div");
+  list.className = "faq-list";
+  const none = document.createElement("p");
+  none.className = "faq-none";
+  none.textContent = t.faqNone;
+  none.hidden = true;
+
+  let activeCat = "";
+  const items = FAQ.items.map((it) => {
+    const d = document.createElement("details");
+    d.className = "faq-item";
+    d.dataset.cat = it.cat;
+    const sm = document.createElement("summary");
+    sm.className = "faq-q";
+    sm.textContent = it.q[lang] ?? it.q.ja;
+    const a = document.createElement("p");
+    a.className = "faq-a";
+    a.textContent = it.a[lang] ?? it.a.ja;
+    d.append(sm, a);
+    list.appendChild(d);
+    return { el: d, cat: it.cat, text: `${sm.textContent}\n${a.textContent}`.toLowerCase() };
+  });
+
+  const apply = () => {
+    const q = search.value.trim().toLowerCase();
+    let shown = 0;
+    for (const it of items) {
+      const ok = (!activeCat || it.cat === activeCat) && (!q || it.text.includes(q));
+      it.el.hidden = !ok;
+      if (ok) shown++;
+    }
+    none.hidden = shown > 0;
+  };
+
+  const chip = (id, label) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "faq-cat";
+    b.textContent = label;
+    if (id === activeCat) b.dataset.on = "true";
+    b.addEventListener("click", () => {
+      activeCat = activeCat === id ? "" : id;
+      for (const other of cats.children) delete other.dataset.on;
+      if (activeCat) b.dataset.on = "true";
+      else cats.firstElementChild.dataset.on = "true";
+      apply();
+    });
+    cats.appendChild(b);
+    return b;
+  };
+  chip("", t.faqAll).dataset.on = "true";
+  for (const c of FAQ.cats) chip(c.id, c.label[lang] ?? c.label.ja);
+
+  search.addEventListener("input", apply);
+  wrap.append(h, tip, search, cats, list, none);
+  return wrap;
+};
+
 const renderInfo = () => {
   const info = TRAVEL_INFO[lang];
   document.getElementById("info-title").textContent = info.title;
@@ -1142,6 +1226,7 @@ const renderInfo = () => {
     ...videoNodes,
     ...courseNodes,
     ...info.sections.map((sec, i) => buildSection(sec, i === 0)),
+    faqBlock(),
   );
   stagger(body);
 };

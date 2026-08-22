@@ -1,0 +1,616 @@
+{
+ "cats": [
+  {
+   "id": "before",
+   "label": {
+    "ja": "入境・準備",
+    "zh": "入境與行前準備",
+    "cn": "入境与行前准备",
+    "en": "Before you go",
+    "ko": "입국·준비"
+   }
+  },
+  {
+   "id": "money",
+   "label": {
+    "ja": "お金",
+    "zh": "金錢",
+    "cn": "金钱",
+    "en": "Money",
+    "ko": "돈"
+   }
+  },
+  {
+   "id": "transit",
+   "label": {
+    "ja": "移動",
+    "zh": "交通移動",
+    "cn": "交通移动",
+    "en": "Getting around",
+    "ko": "이동"
+   }
+  },
+  {
+   "id": "net",
+   "label": {
+    "ja": "通信とアプリ",
+    "zh": "網路與App",
+    "cn": "网路与App",
+    "en": "Connectivity",
+    "ko": "통신과 앱"
+   }
+  },
+  {
+   "id": "food",
+   "label": {
+    "ja": "食べる",
+    "zh": "吃",
+    "cn": "吃",
+    "en": "Eating",
+    "ko": "먹기"
+   }
+  },
+  {
+   "id": "manner",
+   "label": {
+    "ja": "マナー",
+    "zh": "禮儀",
+    "cn": "礼仪",
+    "en": "Etiquette",
+    "ko": "매너"
+   }
+  },
+  {
+   "id": "trouble",
+   "label": {
+    "ja": "困ったとき",
+    "zh": "遇到狀況時",
+    "cn": "遇到状况时",
+    "en": "When things go wrong",
+    "ko": "곤란할 때"
+   }
+  }
+ ],
+ "items": [
+  {
+   "id": "visa",
+   "cat": "before",
+   "q": {
+    "ja": "ビザは要りますか？",
+    "zh": "需要簽證嗎？",
+    "cn": "需要签证吗？",
+    "en": "Do I need a visa?",
+    "ko": "비자가 필요한가요?"
+   },
+   "a": {
+    "ja": "多くの国が短期観光は免除で、滞在できる日数は国籍により90日・30日・14日に分かれます。条件は外交部領事事務局の一覧が正本なので、出発前に自分の旅券で確認してください。",
+    "zh": "多數國家短期觀光免簽，可停留天數依國籍分為90天、30天、14天。實際條件以外交部領事事務局公告為準，出發前請用自己的護照確認。",
+    "cn": "多数国家短期观光免签，可停留天数依国籍分为90天、30天、14天。实际条件以外交部领事事务局公告为准，出发前请用自己的护照确认。",
+    "en": "Most nationalities enter visa-free for short stays: 90, 30 or 14 days depending on your passport. The Bureau of Consular Affairs list is the authoritative source — check it for your own passport before you fly.",
+    "ko": "다수 국가는 단기 관광 시 무비자이며 체류 일수는 국적에 따라 90일·30일·14일로 나뉩니다. 조건은 외교부 영사사무국 목록이 기준입니다."
+   }
+  },
+  {
+   "id": "twac",
+   "cat": "before",
+   "q": {
+    "ja": "入境カード(TWAC)は必要ですか？",
+    "zh": "需要填入境卡(TWAC)嗎？",
+    "cn": "需要填入境卡(TWAC)吗？",
+    "en": "Do I need the arrival card (TWAC)?",
+    "ko": "입국카드(TWAC)가 필요한가요?"
+   },
+   "a": {
+    "ja": "免除で入る場合も必要です。台湾入境カード(TWAC)はオンライン提出で、紙の配布はもうありません。出発前に済ませておくと空港で並ばずに済みます。無料です。",
+    "zh": "免簽入境也需要。台灣入境卡(TWAC)採線上填寫，已不發紙本。出發前先填好，落地就不用排隊。免費。",
+    "cn": "免签入境也需要。台湾入境卡(TWAC)采线上填写，已不发纸本。出发前先填好，落地就不用排队。免费。",
+    "en": "Yes, even visa-free arrivals. The Taiwan Arrival Card is submitted online and paper forms are no longer handed out. Do it before you fly and you skip the queue. It is free.",
+    "ko": "무비자 입국이어도 필요합니다. 타이완 입국카드(TWAC)는 온라인 제출이며 종이 양식은 배부하지 않습니다. 무료입니다."
+   }
+  },
+  {
+   "id": "season",
+   "cat": "before",
+   "q": {
+    "ja": "いつ行くのがいいですか？",
+    "zh": "什麼時候去最好？",
+    "cn": "什么时候去最好？",
+    "en": "When is the best time to visit?",
+    "ko": "언제 가는 것이 좋나요?"
+   },
+   "a": {
+    "ja": "10〜11月がいちばん過ごしやすい。暑さが引いて台風も減ります。3〜5月も快適で、桜(2〜3月)や蛍(4〜5月)が重なります。6〜9月は蒸し暑く台風の時期です。",
+    "zh": "10〜11月最舒服，暑氣退了、颱風也少。3〜5月同樣宜人，還有櫻花(2〜3月)和螢火蟲(4〜5月)。6〜9月濕熱且是颱風季。",
+    "cn": "10〜11月最舒服，暑气退了、台风也少。3〜5月同样宜人，还有樱花(2〜3月)和萤火虫(4〜5月)。6〜9月湿热且是台风季。",
+    "en": "October and November are the most comfortable: the heat has broken and typhoons are rarer. March to May is also pleasant, with cherry blossom (Feb–Mar) and fireflies (Apr–May). June to September is humid and typhoon season.",
+    "ko": "10~11월이 가장 쾌적합니다. 더위가 물러가고 태풍도 줄어듭니다. 3~5월도 좋으며 벚꽃(2~3월)과 반딧불이(4~5월)를 볼 수 있습니다."
+   }
+  },
+  {
+   "id": "days",
+   "cat": "before",
+   "q": {
+    "ja": "何日あれば足りますか？",
+    "zh": "要幾天才夠？",
+    "cn": "要几天才够？",
+    "en": "How many days do I need?",
+    "ko": "며칠이면 충분한가요?"
+   },
+   "a": {
+    "ja": "初めてなら5〜7日で台北・九份・台中・高雄が回れます。3日なら台北と近郊(九份・平溪・淡水)に絞るのが現実的。東部(花蓮・台東)を入れるなら+2日みてください。",
+    "zh": "第一次來，5〜7天可以走台北、九份、台中、高雄。只有3天就專心玩台北和近郊(九份、平溪、淡水)。要加東部(花蓮、台東)請再抓2天。",
+    "cn": "第一次来，5〜7天可以走台北、九份、台中、高雄。只有3天就专心玩台北和近郊(九份、平溪、淡水)。要加东部(花莲、台东)请再抓2天。",
+    "en": "First trip: 5–7 days covers Taipei, Jiufen, Taichung and Kaohsiung. With 3 days, stay around Taipei and its edges — Jiufen, Pingxi, Tamsui. Add two more days if you want the east coast.",
+    "ko": "처음이라면 5~7일이면 타이베이·주펀·타이중·가오슝을 돌 수 있습니다. 3일이면 타이베이와 근교로 좁히세요."
+   }
+  },
+  {
+   "id": "budget",
+   "cat": "before",
+   "q": {
+    "ja": "1日いくらぐらい？",
+    "zh": "一天大概多少錢？",
+    "cn": "一天大概多少钱？",
+    "en": "What is a realistic daily budget?",
+    "ko": "하루 예산은?"
+   },
+   "a": {
+    "ja": "食事と移動と入場料で、節約なら1日NT$800〜1,200、ふつうに食べて動くならNT$1,800〜2,500が目安(2026年8月時点・宿別)。夜市なら1食NT$150〜300で足ります。",
+    "zh": "餐費+交通+門票，省一點一天抓NT$800〜1,200，正常吃正常玩約NT$1,800〜2,500(2026年8月時點，不含住宿)。夜市一餐NT$150〜300就很夠。",
+    "cn": "餐费+交通+门票，省一点一天抓NT$800〜1,200，正常吃正常玩约NT$1,800〜2,500(2026年8月时点，不含住宿)。夜市一餐NT$150〜300就很够。",
+    "en": "Food, transport and admissions: roughly NT$800–1,200 a day if you are careful, NT$1,800–2,500 if you eat and move normally (as of August 2026, lodging excluded). A night-market meal runs NT$150–300.",
+    "ko": "식비·교통·입장료 기준으로 아껴 쓰면 하루 NT$800~1,200, 평범하게 다니면 NT$1,800~2,500 정도입니다(2026년 8월 기준, 숙박 제외)."
+   }
+  },
+  {
+   "id": "cash",
+   "cat": "money",
+   "q": {
+    "ja": "現金は必要ですか？",
+    "zh": "還需要帶現金嗎？",
+    "cn": "还需要带现金吗？",
+    "en": "Do I still need cash?",
+    "ko": "현금이 필요한가요?"
+   },
+   "a": {
+    "ja": "必要です。都市部はカードも使えますが、**夜市・屋台・朝ごはん屋・старый街の小店・一部のタクシー**は現金のみが普通です。夜市に行く日は1人NT$500〜1,000を財布に入れておくと詰みません。",
+    "zh": "需要。都市裡刷卡沒問題，但**夜市、路邊攤、早餐店、老街小店、部分計程車**通常只收現金。去夜市那天，每人帶NT$500〜1,000比較保險。",
+    "cn": "需要。都市里刷卡没问题，但**夜市、路边摊、早餐店、老街小店、部分计程车**通常只收现金。去夜市那天，每人带NT$500〜1,000比较保险。",
+    "en": "Yes. Cards work in cities, but night markets, street stalls, breakfast shops, small old-street vendors and some taxis are cash-only. Carry NT$500–1,000 per person on a night-market day.",
+    "ko": "필요합니다. 도시에서는 카드가 되지만 야시장·노점·아침식당·옛거리 상점·일부 택시는 현금만 받습니다. 야시장 가는 날은 1인당 NT$500~1,000 준비하세요."
+   }
+  },
+  {
+   "id": "atm",
+   "cat": "money",
+   "q": {
+    "ja": "海外のカードで現金を下ろせますか？",
+    "zh": "可以用國外的卡領錢嗎？",
+    "cn": "可以用国外的卡领钱吗？",
+    "en": "Can I withdraw with a foreign card?",
+    "ko": "해외 카드로 출금할 수 있나요?"
+   },
+   "a": {
+    "ja": "できます。空港・銀行・コンビニのATMが海外カードに対応しており、コンビニATMは24時間動いています。空港の到着ロビーでいくらか下ろしておくと、そのまま移動できます。",
+    "zh": "可以。機場、銀行、超商的ATM都支援國外卡，超商ATM還是24小時。在機場入境大廳先領一些，落地就能直接移動。",
+    "cn": "可以。机场、银行、超商的ATM都支援国外卡，超商ATM还是24小时。在机场入境大厅先领一些，落地就能直接移动。",
+    "en": "Yes. Airport, bank and convenience-store ATMs accept foreign cards, and the convenience-store ones run 24 hours. Withdraw some in the arrivals hall and you can move straight on.",
+    "ko": "가능합니다. 공항·은행·편의점 ATM이 해외 카드를 지원하며 편의점 ATM은 24시간입니다."
+   }
+  },
+  {
+   "id": "tip",
+   "cat": "money",
+   "q": {
+    "ja": "チップは要りますか？",
+    "zh": "需要給小費嗎？",
+    "cn": "需要给小费吗？",
+    "en": "Do I tip?",
+    "ko": "팁을 줘야 하나요?"
+   },
+   "a": {
+    "ja": "要りません。台湾にチップの習慣はなく、レストラン・ホテル・タクシーのどれでも期待されていません。座って食べる店ではサービス料10%が最初から付くことがあります。",
+    "zh": "不用。台灣沒有小費文化，餐廳、飯店、計程車都不用。有些內用餐廳會直接加10%服務費。",
+    "cn": "不用。台湾没有小费文化，餐厅、饭店、计程车都不用。有些内用餐厅会直接加10%服务费。",
+    "en": "No. Tipping is not part of Taiwanese culture and is not expected at restaurants, hotels or taxis. Some sit-down restaurants add a 10% service charge to the bill instead.",
+    "ko": "필요 없습니다. 타이완에는 팁 문화가 없습니다. 일부 식당은 10% 서비스료가 청구서에 포함됩니다."
+   }
+  },
+  {
+   "id": "card",
+   "cat": "money",
+   "q": {
+    "ja": "悠遊カードにいくら入れればいい？",
+    "zh": "悠遊卡要儲多少？",
+    "cn": "悠游卡要储多少？",
+    "en": "How much should I load on an EasyCard?",
+    "ko": "이지카드에 얼마를 충전하나요?"
+   },
+   "a": {
+    "ja": "数日ならNT$500程度で足ります。1回のチャージも残高も上限はNT$10,000です。コンビニでいつでも足せるので、最初から多く入れる必要はありません。",
+    "zh": "待幾天的話NT$500就夠。單次儲值和餘額上限都是NT$10,000。超商隨時能加值，不必一開始就存很多。",
+    "cn": "待几天的话NT$500就够。单次储值和余额上限都是NT$10,000。超商随时能加值，不必一开始就存很多。",
+    "en": "About NT$500 covers a few days. Both a single top-up and the stored balance cap at NT$10,000. You can add value at any convenience store, so there is no need to load a lot up front.",
+    "ko": "며칠이면 NT$500 정도면 충분합니다. 1회 충전과 잔액 모두 NT$10,000 상한입니다."
+   }
+  },
+  {
+   "id": "ic",
+   "cat": "transit",
+   "q": {
+    "ja": "悠遊カードと一卡通、どっちがいい？",
+    "zh": "悠遊卡和一卡通選哪個？",
+    "cn": "悠游卡和一卡通选哪个？",
+    "en": "EasyCard or iPASS?",
+    "ko": "이지카드와 아이패스 중 어느 것?"
+   },
+   "a": {
+    "ja": "どちらでも構いません。今はどちらも全土のMRT・バス・台鉄・コンビニで使えます。北部で買うなら悠遊カード、南部なら一卡通が手に入りやすい、という程度の違いです。",
+    "zh": "都可以。現在兩張在全台的捷運、公車、台鐵、超商都能用。差別只在北部比較好買悠遊卡、南部比較好買一卡通。",
+    "cn": "都可以。现在两张在全台的捷运、公车、台铁、超商都能用。差别只在北部比较好买悠游卡、南部比较好买一卡通。",
+    "en": "Either is fine. Both now work on metro, buses, TRA and in convenience stores island-wide. The only real difference is that EasyCard is easier to find in the north and iPASS in the south.",
+    "ko": "어느 쪽이든 괜찮습니다. 지금은 둘 다 전국의 전철·버스·타이완철도·편의점에서 사용할 수 있습니다."
+   }
+  },
+  {
+   "id": "hsr",
+   "cat": "transit",
+   "q": {
+    "ja": "高鉄と台鉄はどう使い分ける？",
+    "zh": "高鐵和台鐵怎麼選？",
+    "cn": "高铁和台铁怎么选？",
+    "en": "HSR or TRA?",
+    "ko": "고속철과 타이완철도는 어떻게 구분하나요?"
+   },
+   "a": {
+    "ja": "西部を速く縦に移動するなら高鉄(台北—左営が最速約1時間45分)。東部(宜蘭・花蓮・台東)には高鉄が通っていないので台鉄です。外国旅券の旅行者向け割引券があるので、乗る前に確認を。",
+    "zh": "西部要快速南北移動就搭高鐵(台北—左營最快約1小時45分)。東部(宜蘭、花蓮、台東)沒有高鐵，要搭台鐵。持外國護照有旅客優惠票，搭車前先查。",
+    "cn": "西部要快速南北移动就搭高铁(台北—左营最快约1小时45分)。东部(宜兰、花莲、台东)没有高铁，要搭台铁。持外国护照有旅客优惠票，搭车前先查。",
+    "en": "For fast north–south travel down the west coast, take the HSR (Taipei–Zuoying is about 1h45 at best). The east coast — Yilan, Hualien, Taitung — has no HSR, so it is TRA. Foreign-passport tourist tickets exist; check before you buy.",
+    "ko": "서부를 빠르게 종단하려면 고속철(타이베이—쭤잉 최속 약 1시간 45분). 동부는 고속철이 없어 타이완철도를 이용합니다."
+   }
+  },
+  {
+   "id": "airport",
+   "cat": "transit",
+   "q": {
+    "ja": "空港から市内へはどう行く？",
+    "zh": "從機場怎麼進市區？",
+    "cn": "从机场怎么进市区？",
+    "en": "How do I get into the city?",
+    "ko": "공항에서 시내까지는?"
+   },
+   "a": {
+    "ja": "桃園は空港MRTの直達車で台北駅まで36〜39分。松山空港はMRT文湖線で9分ほどと市内に一番近い。高雄小港はMRT紅線で12分です。地図の「旅の基本情報」に4空港の比較があります。",
+    "zh": "桃園搭機場捷運直達車到台北車站36〜39分。松山機場搭捷運文湖線約9分，離市區最近。高雄小港搭捷運紅線12分。地圖的「旅遊實用資訊」有四座機場的比較。",
+    "cn": "桃园搭机场捷运直达车到台北车站36〜39分。松山机场搭捷运文湖线约9分，离市区最近。高雄小港搭捷运红线12分。地图的「旅游实用资讯」有四座机场的比较。",
+    "en": "From Taoyuan, the Airport MRT express reaches Taipei Main in 36–39 minutes. Songshan is closest of all — 9 minutes on the Wenhu line. Kaohsiung is 12 minutes on the Red line. The travel-basics panel compares all four.",
+    "ko": "타오위안은 공항 MRT 직통으로 타이베이역까지 36~39분. 쑹산공항은 원후선으로 약 9분으로 가장 가깝습니다."
+   }
+  },
+  {
+   "id": "taxi",
+   "cat": "transit",
+   "q": {
+    "ja": "タクシーは使いやすい？",
+    "zh": "計程車好用嗎？",
+    "cn": "计程车好用吗？",
+    "en": "Are taxis easy to use?",
+    "ko": "택시는 편한가요?"
+   },
+   "a": {
+    "ja": "安くて多いです。台北の初乗りはNT$85前後で、流しも捕まえやすい。Uberも使えます。行き先は漢字で見せるのが確実で、運転手さんが英語を話すとは限りません。",
+    "zh": "便宜又多。台北起跳約NT$85，路邊也好招。Uber也能用。目的地用漢字給司機看最保險，司機不一定會英文。",
+    "cn": "便宜又多。台北起跳约NT$85，路边也好招。Uber也能用。目的地用汉字给司机看最保险，司机不一定会英文。",
+    "en": "Cheap and plentiful. Taipei starts around NT$85 and street hails are easy. Uber works too. Show your destination in Chinese characters — drivers do not always speak English.",
+    "ko": "저렴하고 많습니다. 타이베이 기본요금은 약 NT$85입니다. 목적지는 한자로 보여주는 것이 확실합니다."
+   }
+  },
+  {
+   "id": "youbike",
+   "cat": "transit",
+   "q": {
+    "ja": "YouBikeは旅行者でも借りられますか？",
+    "zh": "YouBike觀光客能借嗎？",
+    "cn": "YouBike观光客能借吗？",
+    "en": "Can visitors use YouBike?",
+    "ko": "여행자도 유바이크를 빌릴 수 있나요?"
+   },
+   "a": {
+    "ja": "借りられます。悠遊カードか一卡通を登録すれば使えます。ただし現地の携帯番号での認証が要る場面があるので、アプリでクレジットカード登録する方法も併せて確認してください。",
+    "zh": "可以。用悠遊卡或一卡通註冊就能借。不過有些步驟需要本地手機號碼認證，建議也先了解用App綁信用卡的方式。",
+    "cn": "可以。用悠游卡或一卡通注册就能借。不过有些步骤需要本地手机号码认证，建议也先了解用App绑信用卡的方式。",
+    "en": "Yes. Register an EasyCard or iPASS and you can ride. Some steps ask for a local mobile number, so also look into registering a credit card in the app.",
+    "ko": "가능합니다. 이지카드나 아이패스를 등록하면 됩니다. 현지 휴대폰 번호 인증이 필요한 경우가 있습니다."
+   }
+  },
+  {
+   "id": "esim",
+   "cat": "net",
+   "q": {
+    "ja": "ネットはどうする？",
+    "zh": "網路怎麼辦？",
+    "cn": "网路怎么办？",
+    "en": "How do I get online?",
+    "ko": "인터넷은 어떻게?"
+   },
+   "a": {
+    "ja": "空港の到着ロビーで中華電信・台湾大哥大・遠傳のプリペイドSIMが買えます。15日間の使い放題でNT$500〜700が目安。eSIM対応端末なら出発前にオンラインで買っておく方が早いです。",
+    "zh": "在機場入境大廳可以買中華電信、台灣大哥大、遠傳的預付卡。15天吃到飽約NT$500〜700。手機支援eSIM的話，出發前先在線上買更快。",
+    "cn": "在机场入境大厅可以买中华电信、台湾大哥大、远传的预付卡。15天吃到饱约NT$500〜700。手机支援eSIM的话，出发前先在线上买更快。",
+    "en": "Prepaid SIMs from Chunghwa Telecom, Taiwan Mobile and FarEasTone are sold in the arrivals hall — about NT$500–700 for 15 days unlimited. If your phone takes an eSIM, buying online before you fly is faster.",
+    "ko": "공항 도착 로비에서 중화텔레콤·타이완모바일·파이스톤의 선불 SIM을 살 수 있습니다. 15일 무제한 약 NT$500~700."
+   }
+  },
+  {
+   "id": "wifi",
+   "cat": "net",
+   "q": {
+    "ja": "無料Wi-Fiはありますか？",
+    "zh": "有免費Wi-Fi嗎？",
+    "cn": "有免费Wi-Fi吗？",
+    "en": "Is there free Wi-Fi?",
+    "ko": "무료 와이파이가 있나요?"
+   },
+   "a": {
+    "ja": "あります。駅・コンビニ・MRT・公共施設で iTaiwan などの無料Wi-Fiが使えます。ただし移動しながら地図を見るならSIMかeSIMの方が確実です。",
+    "zh": "有。車站、超商、捷運、公共設施都有 iTaiwan 之類的免費Wi-Fi。但一邊移動一邊看地圖的話，還是SIM或eSIM比較穩。",
+    "cn": "有。车站、超商、捷运、公共设施都有 iTaiwan 之类的免费Wi-Fi。但一边移动一边看地图的话，还是SIM或eSIM比较稳。",
+    "en": "Yes — iTaiwan and similar networks cover stations, convenience stores, the metro and public buildings. For maps while you move, a SIM or eSIM is more reliable.",
+    "ko": "있습니다. 역·편의점·전철·공공시설에서 iTaiwan 등을 쓸 수 있습니다."
+   }
+  },
+  {
+   "id": "power",
+   "cat": "net",
+   "q": {
+    "ja": "電圧とプラグは？",
+    "zh": "電壓和插頭是？",
+    "cn": "电压和插头是？",
+    "en": "Plugs and voltage?",
+    "ko": "전압과 플러그는?"
+   },
+   "a": {
+    "ja": "110V・Aタイプ(平たい2本)で、日本と同じです。日本の機器はそのまま挿せます。韓国や欧州から来る場合は変換プラグが要ります。",
+    "zh": "110V、A型插頭(兩支扁平)，和日本一樣。日本電器可以直接用。從韓國或歐洲來要帶轉接頭。",
+    "cn": "110V、A型插头(两支扁平)，和日本一样。日本电器可以直接用。从韩国或欧洲来要带转接头。",
+    "en": "110V with Type A flat pins — the same as Japan, so Japanese devices plug straight in. Travellers from Korea or Europe need an adapter.",
+    "ko": "110V, A타입(납작한 2핀)으로 일본과 같습니다. 한국이나 유럽에서 오면 변환 어댑터가 필요합니다."
+   }
+  },
+  {
+   "id": "nightmarket",
+   "cat": "food",
+   "q": {
+    "ja": "夜市はどう回ればいい？",
+    "zh": "夜市怎麼逛？",
+    "cn": "夜市怎么逛？",
+    "en": "How do I do a night market?",
+    "ko": "야시장은 어떻게 다니나요?"
+   },
+   "a": {
+    "ja": "少しずつ買って歩きながら食べるのが作法です。1軒で満腹にしないこと。現金を用意し、行列ができている店は素直に並ぶと外しません。1人NT$150〜300で十分食べられます。",
+    "zh": "邊走邊吃、每攤買一點是正解，不要在一攤吃飽。帶現金，看到排隊的攤子跟著排通常不會踩雷。一個人NT$150〜300就能吃得很飽。",
+    "cn": "边走边吃、每摊买一点是正解，不要在一摊吃饱。带现金，看到排队的摊子跟著排通常不会踩雷。一个人NT$150〜300就能吃得很饱。",
+    "en": "Buy a little at each stall and eat as you walk — do not fill up at the first one. Bring cash, and joining the queue at a busy stall rarely disappoints. NT$150–300 per person is plenty.",
+    "ko": "조금씩 사서 걸으며 먹는 것이 정석입니다. 현금을 준비하고, 줄이 있는 가게를 따라가면 실패가 적습니다."
+   }
+  },
+  {
+   "id": "vegetarian",
+   "cat": "food",
+   "q": {
+    "ja": "ベジタリアンでも大丈夫？",
+    "zh": "吃素方便嗎？",
+    "cn": "吃素方便吗？",
+    "en": "Is it easy to eat vegetarian?",
+    "ko": "채식도 괜찮나요?"
+   },
+   "a": {
+    "ja": "台湾はアジアでもとくにベジタリアンに優しい場所です。人口の約13%が菜食で、素食(スーシー)の看板を出す店が街のあちこちにあります。素食自助餐なら1皿NT$70〜120。ただしオイスターソースやラードが入ることがあるので、完全菜食なら「我吃素、不要任何動物的東西」と伝えてください。",
+    "zh": "台灣是亞洲最方便吃素的地方之一，約13%的人吃素，街上到處有素食招牌。素食自助餐一盤NT$70〜120。不過有些料理會用蠔油或豬油，全素請說「我吃素，不要任何動物的東西」。",
+    "cn": "台湾是亚洲最方便吃素的地方之一，约13%的人吃素，街上到处有素食招牌。素食自助餐一盘NT$70〜120。不过有些料理会用蚝油或猪油，全素请说「我吃素，不要任何动物的东西」。",
+    "en": "Taiwan is one of the easiest places in Asia to eat vegetarian — around 13% of people do, and 素食 signs are everywhere. A vegetarian buffet plate is NT$70–120. Oyster sauce and lard do turn up, so for strict vegan say: 我吃素，不要任何動物的東西.",
+    "ko": "타이완은 아시아에서 채식하기 가장 편한 곳 중 하나입니다. 인구의 약 13%가 채식이며 素食 간판을 쉽게 볼 수 있습니다."
+   }
+  },
+  {
+   "id": "water",
+   "cat": "food",
+   "q": {
+    "ja": "水道水は飲めますか？",
+    "zh": "自來水能喝嗎？",
+    "cn": "自来水能喝吗？",
+    "en": "Can I drink the tap water?",
+    "ko": "수돗물을 마셔도 되나요?"
+   },
+   "a": {
+    "ja": "そのまま飲むのは避けてください。水自体は処理されていますが、古い建物の配管の状態が読めません。コンビニのボトル水か、宿・駅の給水機(飲水機)を使うのが普通です。",
+    "zh": "不建議直接生飲。水本身有處理過，但老建築的管線狀況不一定。用超商瓶裝水，或飯店、車站的飲水機比較安心。",
+    "cn": "不建议直接生饮。水本身有处理过，但老建筑的管线状况不一定。用超商瓶装水，或饭店、车站的饮水机比较安心。",
+    "en": "Avoid drinking it straight. The supply is treated, but the plumbing in older buildings is an unknown. Bottled water from a convenience store, or the filtered dispensers in hotels and stations, is the normal choice.",
+    "ko": "그대로 마시는 것은 피하세요. 물 자체는 처리되지만 오래된 건물의 배관 상태를 알 수 없습니다."
+   }
+  },
+  {
+   "id": "convenience",
+   "cat": "food",
+   "q": {
+    "ja": "コンビニは何ができますか？",
+    "zh": "超商能做什麼？",
+    "cn": "超商能做什么？",
+    "en": "What can I do at a convenience store?",
+    "ko": "편의점에서 무엇을 할 수 있나요?"
+   },
+   "a": {
+    "ja": "ほぼ何でもできます。悠遊カードの購入とチャージ、ATM、荷物の発送、チケットの受け取り、公共料金の支払い、そして温かい食事。24時間なので、困ったらまずコンビニです。",
+    "zh": "幾乎什麼都能做。買卡儲值、ATM、寄件、取票、繳費，還有熱食。24小時營業，有狀況先找超商就對了。",
+    "cn": "几乎什么都能做。买卡储值、ATM、寄件、取票、缴费，还有热食。24小时营业，有状况先找超商就对了。",
+    "en": "Almost everything: buy and top up an EasyCard, use the ATM, ship a parcel, collect tickets, pay bills, and get hot food. They are open 24 hours, so when in doubt, head to one.",
+    "ko": "거의 모든 것이 가능합니다. 카드 구입·충전, ATM, 택배, 티켓 수령, 공과금 납부, 따뜻한 음식. 24시간입니다."
+   }
+  },
+  {
+   "id": "mrt",
+   "cat": "manner",
+   "q": {
+    "ja": "MRTで気をつけることは？",
+    "zh": "搭捷運要注意什麼？",
+    "cn": "搭捷运要注意什么？",
+    "en": "Anything to know on the metro?",
+    "ko": "전철에서 주의할 점은?"
+   },
+   "a": {
+    "ja": "車内と駅構内は飲食禁止です。水やガムも含まれ、罰金の対象になります。優先席(博愛座)は空いていても座らない人が多く、エスカレーターは右側に立って左を空けるのが慣習です。",
+    "zh": "車廂和站內禁止飲食，連喝水、嚼口香糖都算，會開罰。博愛座就算空著也很多人不坐。手扶梯習慣靠右站、左側通行。",
+    "cn": "车厢和站内禁止饮食，连喝水、嚼口香糖都算，会开罚。博爱座就算空著也很多人不坐。手扶梯习惯靠右站、左侧通行。",
+    "en": "No eating or drinking on trains or inside stations — that includes water and gum, and it carries a fine. Many people leave the priority seats empty even when standing, and on escalators you stand right and leave the left clear.",
+    "ko": "차내와 역 구내는 취식 금지이며 물과 껌도 포함되어 벌금 대상입니다. 에스컬레이터는 오른쪽에 서고 왼쪽을 비웁니다."
+   }
+  },
+  {
+   "id": "temple",
+   "cat": "manner",
+   "q": {
+    "ja": "廟でのマナーは？",
+    "zh": "在廟裡要注意什麼？",
+    "cn": "在庙里要注意什么？",
+    "en": "Temple etiquette?",
+    "ko": "사원에서의 매너는?"
+   },
+   "a": {
+    "ja": "自由に入れますが、中央の入口は神様の通り道とされるので端から入ります。線香は本数を真似すれば大丈夫。参拝している人と祭壇はできるだけ撮らないでください。",
+    "zh": "可以自由參觀，但中間的門是神明走的，從側門進出。拿香跟著大家的支數就好。正在拜拜的人和神壇盡量不要拍。",
+    "cn": "可以自由参观，但中间的门是神明走的，从侧门进出。拿香跟著大家的支数就好。正在拜拜的人和神坛尽量不要拍。",
+    "en": "You are welcome to walk in, but the centre doorway is considered the deity's, so use the side. Copy how many incense sticks others take. Try not to photograph people praying or the altars.",
+    "ko": "자유롭게 들어갈 수 있지만 가운데 문은 신이 다니는 곳이라 옆문을 씁니다. 참배 중인 사람과 제단은 찍지 마세요."
+   }
+  },
+  {
+   "id": "shoes",
+   "cat": "manner",
+   "q": {
+    "ja": "靴を脱ぐ場面はありますか？",
+    "zh": "什麼時候要脫鞋？",
+    "cn": "什么时候要脱鞋？",
+    "en": "When do I take my shoes off?",
+    "ko": "신발은 언제 벗나요?"
+   },
+   "a": {
+    "ja": "日本ほど多くありません。民宿やゲストハウス、一部の畳の店、人の家に上がるときくらいです。玄関に他の人の靴が並んでいたら、それが合図です。",
+    "zh": "沒有日本那麼多。民宿、青年旅館、少數榻榻米店家，還有到別人家裡才需要。門口如果排著別人的鞋子，就是要脫。",
+    "cn": "没有日本那么多。民宿、青年旅馆、少数榻榻米店家，还有到别人家里才需要。门口如果排著别人的鞋子，就是要脱。",
+    "en": "Less often than in Japan — homestays, guesthouses, a few tatami rooms, and private homes. If shoes are lined up at the entrance, that is your cue.",
+    "ko": "일본만큼 많지는 않습니다. 민박, 게스트하우스, 일부 다다미 가게, 남의 집에 들어갈 때 정도입니다."
+   }
+  },
+  {
+   "id": "photo",
+   "cat": "manner",
+   "q": {
+    "ja": "写真を撮っていい場所は？",
+    "zh": "哪裡可以拍照？",
+    "cn": "哪里可以拍照？",
+    "en": "Where can I take photos?",
+    "ko": "사진은 어디서 찍어도 되나요?"
+   },
+   "a": {
+    "ja": "ほとんどの場所で撮れます。ただし廟の祭壇や参拝中の人、原住民族の祭典で撮影を断られる場面、軍事施設の周辺は避けてください。掲示があれば必ず従ってください。",
+    "zh": "大部分地方都能拍。但廟裡的神壇、正在拜拜的人、原住民祭典中被婉拒的場合、軍事設施周邊要避開。看到告示一定要遵守。",
+    "cn": "大部分地方都能拍。但庙里的神坛、正在拜拜的人、原住民祭典中被婉拒的场合、军事设施周边要避开。看到告示一定要遵守。",
+    "en": "Most places are fine. Avoid temple altars and people praying, indigenous ceremonies where filming is declined, and anywhere near military installations. Where there is a sign, follow it.",
+    "ko": "대부분의 장소에서 촬영할 수 있습니다. 다만 사원 제단, 참배 중인 사람, 원주민 제전, 군사시설 주변은 피하세요."
+   }
+  },
+  {
+   "id": "typhoon",
+   "cat": "trouble",
+   "q": {
+    "ja": "台風のときはどうすれば？",
+    "zh": "遇到颱風怎麼辦？",
+    "cn": "遇到台风怎么办？",
+    "en": "What if there is a typhoon?",
+    "ko": "태풍이 오면?"
+   },
+   "a": {
+    "ja": "6〜10月は進路を毎日確認してください。台風が近づくと「停班停課」が発表され、店も交通も止まります。飛行機と鉄道は前日に運休が決まることが多いので、公式サイトで確かめて日程をずらすのが確実です。",
+    "zh": "6〜10月要每天看路徑。颱風接近會發布停班停課，店家和交通都會停。班機和鐵路多半前一天就決定停駛，看官網並調整行程最保險。",
+    "cn": "6〜10月要每天看路径。台风接近会发布停班停课，店家和交通都会停。班机和铁路多半前一天就决定停驶，看官网并调整行程最保险。",
+    "en": "From June to October, check the track daily. As a typhoon nears, a work-and-school suspension is announced and shops and transport stop. Flights and trains are usually cancelled the day before, so check official sites and shift your dates.",
+    "ko": "6~10월은 매일 진로를 확인하세요. 태풍이 가까워지면 휴무·휴교가 발표되고 상점과 교통이 멈춥니다."
+   }
+  },
+  {
+   "id": "quake",
+   "cat": "trouble",
+   "q": {
+    "ja": "地震が来たら？",
+    "zh": "地震來了怎麼辦？",
+    "cn": "地震来了怎么办？",
+    "en": "What do I do in an earthquake?",
+    "ko": "지진이 나면?"
+   },
+   "a": {
+    "ja": "台湾では体に感じる地震が年に100回ほどあります。屋内では頭を守って机の下など落ちてこない場所へ。揺れが収まるまで外に出ないでください。緊急速報は人口のほぼ全域に届き、大きな揺れの15〜20秒前に鳴ります。",
+    "zh": "台灣一年約有100次有感地震。在室內先護頭、躲到桌下等不會被砸到的地方，搖完再出去。國家級警報幾乎覆蓋全部人口，大震前15〜20秒會響。",
+    "cn": "台湾一年约有100次有感地震。在室内先护头、躲到桌下等不会被砸到的地方，摇完再出去。国家级警报几乎覆盖全部人口，大震前15〜20秒会响。",
+    "en": "Taiwan feels about 100 earthquakes a year. Indoors, protect your head and get under a desk or somewhere nothing can fall. Stay in until the shaking stops. The national alert reaches virtually the whole population 15–20 seconds before strong shaking.",
+    "ko": "타이완은 연간 약 100회의 유감지진이 있습니다. 실내에서는 머리를 보호하고 책상 밑으로. 긴급 경보는 강한 흔들림 15~20초 전에 울립니다."
+   }
+  },
+  {
+   "id": "hospital",
+   "cat": "trouble",
+   "q": {
+    "ja": "体調を崩したら？",
+    "zh": "生病了怎麼辦？",
+    "cn": "生病了怎么办？",
+    "en": "What if I get sick?",
+    "ko": "몸이 아프면?"
+   },
+   "a": {
+    "ja": "観光署の旅行者ホットライン0800-011-765(24時間・中英日韓)が医療機関を案内してくれます。薬局(藥局)で買える市販薬も多いですが、処方薬は診察が要ります。海外旅行保険には必ず入っておいてください。",
+    "zh": "打觀光署旅遊諮詢熱線0800-011-765(24小時、中英日韓)可以幫你找醫療院所。藥局有很多成藥，處方藥要看診。務必投保旅遊平安險。",
+    "cn": "打观光署旅游咨询热线0800-011-765(24小时、中英日韩)可以帮你找医疗院所。药局有很多成药，处方药要看诊。务必投保旅游平安险。",
+    "en": "The Tourism Administration hotline 0800-011-765 (24h, Chinese/English/Japanese/Korean) will point you to a clinic. Pharmacies stock plenty of over-the-counter medicine; prescriptions need a doctor. Take out travel insurance.",
+    "ko": "관광청 여행 핫라인 0800-011-765(24시간, 중·영·일·한)이 의료기관을 안내해 줍니다. 여행자보험은 반드시 드세요."
+   }
+  },
+  {
+   "id": "lost",
+   "cat": "trouble",
+   "q": {
+    "ja": "忘れ物をしました",
+    "zh": "東西掉了",
+    "cn": "东西掉了",
+    "en": "I lost something",
+    "ko": "물건을 잃어버렸어요"
+   },
+   "a": {
+    "ja": "台湾も落とし物が戻ってくる場所です。MRTなら各駅の窓口か遺失物センター、店なら店舗、路上なら最寄りの派出所へ。財布や旅券は届けられていることが多いので、諦める前に問い合わせてください。",
+    "zh": "台灣的失物也常常找得回來。捷運找站務或遺失物中心，在店裡問店家，路上就去最近的派出所。錢包和護照經常有人送交，別太早放棄。",
+    "cn": "台湾的失物也常常找得回来。捷运找站务或遗失物中心，在店里问店家，路上就去最近的派出所。钱包和护照经常有人送交，别太早放弃。",
+    "en": "Lost property does come back in Taiwan. Ask station staff or the metro lost-and-found, the shop itself, or the nearest police station for the street. Wallets and passports are often handed in — ask before giving up.",
+    "ko": "타이완에서도 분실물이 돌아오는 경우가 많습니다. 전철은 역무실이나 유실물센터, 길에서는 가까운 파출소에 문의하세요."
+   }
+  },
+  {
+   "id": "emergency",
+   "cat": "trouble",
+   "q": {
+    "ja": "緊急の電話番号は？",
+    "zh": "緊急電話號碼是？",
+    "cn": "紧急电话号码是？",
+    "en": "Emergency numbers?",
+    "ko": "긴급 전화번호는?"
+   },
+   "a": {
+    "ja": "警察110、消防・救急119(どちらも無料・24時間)。旅行者向けには観光署の0800-011-765が24時間で、中国語・英語・日本語・韓国語に対応します。",
+    "zh": "警察110，消防與救護119(都免費、24小時)。旅客可打觀光署0800-011-765，24小時提供中英日韓服務。",
+    "cn": "警察110，消防与救护119(都免费、24小时)。旅客可打观光署0800-011-765，24小时提供中英日韩服务。",
+    "en": "Police 110, fire and ambulance 119 — both free and 24 hours. For visitors, the Tourism Administration line 0800-011-765 runs 24/7 in Chinese, English, Japanese and Korean.",
+    "ko": "경찰 110, 소방·구급 119(모두 무료·24시간). 여행자용으로는 관광청 0800-011-765이 24시간 운영됩니다."
+   }
+  }
+ ]
+}
