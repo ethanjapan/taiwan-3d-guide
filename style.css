@@ -3249,3 +3249,13 @@ html[data-phase="night"] .tour-item-n {
 @media (prefers-reduced-motion: reduce) {
   .photo-lightbox { animation: none; }
 }
+
+/* ★ラベルは折り返さない。実測(公開版 800px幅)で「MV STUDIO」が2行に割れ、
+   「オープンソースライセンス」もクレジット本文に重なって読めなくなっていた */
+.credit-link,
+.welcome-links a,
+.airport-tab,
+.tour-item-h {
+  white-space: nowrap;
+}
+.credit { line-height: 1.6; }
