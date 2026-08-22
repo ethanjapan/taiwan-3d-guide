@@ -19,6 +19,7 @@ import { rinkaCounty, rinkaSpot, RINKA_PROFILE, RINKA_LINKS } from "./rinka.js";
 import COUNTY_INTRO from "../data/i18n/county-intro.json";
 import FAQ from "../data/i18n/faq.json";
 import OUTFIT from "../data/i18n/outfit.json";
+import TIMING from "../data/timing.json";
 import EVENTS from "../data/events.json";
 import COURSES from "../data/courses.json";
 import VISITOR_CENTERS from "../data/visitor-centers.json";
@@ -248,7 +249,11 @@ const renderPanel = () => {
       }
     }    const ul = document.createElement("ul");
     ul.className = "spot-list";
-    for (const s of spots) {
+    // ★旬の景点を先頭へ。Array.prototype.sort は安定なので、旬でないものの順は元のまま
+    const timed = spots.map((sp) => ({ sp, t: timingOf(sp.id) }));
+    timed.sort((a, b) => Number(!!b.t) - Number(!!a.t));
+    const nowCount = timed.filter((x) => x.t).length;
+    for (const { sp: s, t: tm } of timed) {
       const li = document.createElement("li");
       const btn = document.createElement("button");
       btn.type = "button";
@@ -279,6 +284,14 @@ const renderPanel = () => {
         sub.textContent = ruby;
         label.appendChild(sub);
       }
+      if (tm) {
+        // 理由は1つだけ出す(2つ以上並べると行が伸びて一覧として読めなくなる)
+        const chip = document.createElement("span");
+        chip.className = "spot-season";
+        chip.textContent = TIMING.reasons[tm[0].why][lang] ?? TIMING.reasons[tm[0].why].zh;
+        label.appendChild(chip);
+        btn.dataset.season = "true";
+      }
       btn.appendChild(label);
       btn.addEventListener("click", () => {
         panelState.spotId = s.id;
@@ -287,6 +300,23 @@ const renderPanel = () => {
       li.appendChild(btn);
       ul.appendChild(li);
     }
+    // 並べ替えたことを言葉で出す。黙って順番だけ変えると「なぜこの順?」になる
+    const nowHead = document.createElement("div");
+    if (nowCount) {
+      const T2 = STRINGS[lang];
+      const ctx = [];
+      if (activeMonth) ctx.push(MONTHS.name[lang][activeMonth - 1]);
+      ctx.push({ morning: T2.phaseMorning, day: T2.phaseDay,
+                 dusk: T2.phaseDusk, night: T2.phaseNight }[getPhase()]);
+      const h = document.createElement("p");
+      h.className = "gourmet-title";
+      h.textContent = `${T2.nowPick}（${ctx.join("・")}）`;
+      const tip = document.createElement("p");
+      tip.className = "now-tip";
+      tip.textContent = T2.nowPickTip;
+      nowHead.append(h, tip);
+    }
+
     const wstrip = document.createElement("div");
     wstrip.className = "weather-strip";
     wstrip.id = "weather-strip";
@@ -297,8 +327,8 @@ const renderPanel = () => {
     // 「押したのに何も起きない」のと同じ
     panelBody.replaceChildren(
       ...(pickedEvent?.pref === county.id
-        ? [rk, evbox, wstrip, oslot, intro, gour, ul]
-        : [rk, wstrip, oslot, intro, gour, evbox, ul]),
+        ? [rk, evbox, wstrip, oslot, intro, gour, nowHead, ul]
+        : [rk, wstrip, oslot, intro, gour, evbox, nowHead, ul]),
     );
     stagger(panelBody);
     if (IS_MOBILE() && !panel.dataset.sheet) panel.dataset.sheet = "half";
@@ -514,6 +544,28 @@ const attachSheet = (panelEl, { snaps = false, onClose } = {}) => {
 let activeMonth = 0;   // 0=イベント表示なし
 let pickedEvent = null;
 let updateMonthBar = null;
+// 時間帯("morning"|"day"|"dusk"|"night")。auto のときは実時間で解決済みの値が返る
+let getPhase = () => "day";
+/**
+ * その景点が「いま」旬かどうか。理由の配列(なければ null)。
+ * ★月だけの理由(桜・紅葉・雪)は、月スライダーが出ているときだけ効かせる。
+ *   常に効かせると、8月に「桜が見頃」と出て嘘になる。
+ * ★時間帯だけの理由(夜景・夕景・朝)は常に効かせる。時間帯は auto でも必ず今の値がある。
+ */
+const timingOf = (spotId) => {
+  const list = TIMING.spot[spotId];
+  if (!list) return null;
+  const ph = getPhase();
+  const hits = list.filter((e) => {
+    const mOk = e.m.length === 0 || (activeMonth > 0 && e.m.includes(activeMonth));
+    const pOk = e.ph.length === 0 || e.ph.includes(ph);
+    if (e.m.length && !e.ph.length) return activeMonth > 0 && e.m.includes(activeMonth);
+    if (!e.m.length && e.ph.length) return e.ph.includes(ph);
+    return mOk && pOk;
+  });
+  return hits.length ? hits : null;
+};
+
 let updateLangToggle = null;
 let updatePhaseButton = null; // start()が差し込む。言語切替時にラベルを追随させる
 
@@ -1790,7 +1842,10 @@ function start() {
       localStorage.setItem("phase", sel);
       atmosphere.setPhase(sel);
       render();
+      // 時間帯で景点の並びが変わるので、開いていれば作り直す
+      if (!panel.hidden && panel.dataset.county) renderPanel();
     });
+    getPhase = () => atmosphere.phase;   // auto でも必ず解決済みの値が返る
     updatePhaseButton = render;
   }
   // ---- 季節イベントの月バー(台湾版へ移植) ----
