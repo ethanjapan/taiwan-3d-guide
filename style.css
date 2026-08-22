@@ -3104,3 +3104,35 @@ html[data-phase="night"] .tour-item-n {
 [hidden] {
   display: none !important;
 }
+
+/* 言語トグル(スマホ)。★「繁中」のような現在の言語名だけだと ただの札に見えて
+   押せると分からない。地球の印 + LANGUAGE + 下向きの印で、開くものだと示す */
+.lang-toggle {
+  gap: 5px;
+  letter-spacing: 0.06em;
+  font-size: 11px;
+  font-weight: 800;
+}
+.lang-globe {
+  flex: 0 0 auto;
+  opacity: 0.8;
+}
+.lang-toggle::after {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg) translate(-1px, -1px);
+  opacity: 0.7;
+  transition: transform 0.18s ease;
+}
+.langs[data-open="true"] .lang-toggle::after {
+  transform: rotate(-135deg) translate(-2px, -2px);
+}
+.langs[data-open="true"] .lang-toggle {
+  background: #33566b;
+  border-color: #33566b;
+  color: #fff;
+}

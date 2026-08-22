@@ -41,7 +41,16 @@
         <!-- 説明モードは移植の第7段(全機能が揃ってから) -->
         <button type="button" class="lang help-btn" id="help-btn" aria-label="help" hidden>?</button>
         <!-- スマホでは言語5つが横に並ばずヘッダが2段になる。1つに畳んで押したときだけ開く -->
-        <button type="button" class="lang lang-toggle" id="lang-btn" aria-expanded="false"></button>
+        <!-- ★現在の言語だけを出すと「ただの札」に見えて押せると分からない(2026-08-22 ユーザー指摘)。
+             地球の印と下向きの矢印を付けて、開くものだと分かる形にする -->
+        <button type="button" class="lang lang-toggle" id="lang-btn" aria-expanded="false" aria-haspopup="true">
+          <svg class="lang-globe" width="15" height="15" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/>
+            <path d="M12 3c2.6 2.6 2.6 15.4 0 18-2.6-2.6-2.6-15.4 0-18z"/>
+          </svg>
+          <span id="lang-btn-label"></span>
+        </button>
         <!-- ★言語ボタンは独立の入れ物に入れる。ヘッダの他のボタンと混ざっていると
              スマホの縦並びを nth-of-type で数えることになり、順番が変わるたび壊れる -->
         <div class="lang-list" id="lang-list">

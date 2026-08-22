@@ -575,9 +575,14 @@ document.addEventListener("click", (e) => {
     nav.dataset.open = "false";
     toggle.setAttribute("aria-expanded", "false");
   };
+  const toggleLabel = document.getElementById("lang-btn-label");
   updateLangToggle = () => {
-    toggle.textContent = labelOf(lang);
-    toggle.setAttribute("aria-label", labelOf(lang));
+    // ★ここは翻訳しない。「LANGUAGE」と出すのが目的(2026-08-22 ユーザー指摘)。
+    //   現在の言語名(한국어 など)を出すと、その言語を読めない人には何のボタンか分からない。
+    //   ラテン文字の LANGUAGE なら、どの言語で開いても言語切替だと伝わる。
+    //   ★textContent を button 自体に入れると中の地球アイコン(svg)まで消えるので span に入れる
+    toggleLabel.textContent = "LANGUAGE";
+    toggle.setAttribute("aria-label", `Language: ${labelOf(lang)}`);
   };
   updateLangToggle();
   toggle.addEventListener("click", () => {
