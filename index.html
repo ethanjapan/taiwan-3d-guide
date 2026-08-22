@@ -38,6 +38,9 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
         </button>
         <button type="button" class="lang info-btn" id="info-btn" data-i18n="infoBtn"></button>
+        <button type="button" class="lang help-btn" id="help-btn" aria-label="help">?</button>
+        <!-- スマホでは言語5つが横に並ばずヘッダが2段になる。1つに畳んで押したときだけ開く -->
+        <button type="button" class="lang lang-toggle" id="lang-btn" aria-expanded="false"></button>
         <button type="button" class="lang" data-lang="zh" lang="zh-Hant">繁中</button>
         <button type="button" class="lang" data-lang="cn" lang="zh-Hans">简中</button>
         <button type="button" class="lang" data-lang="ja" lang="ja">日本語</button>
@@ -89,15 +92,41 @@
       <button type="button" class="close" id="welcome-close" data-i18n-aria="close" aria-label="關閉">×</button>
     </aside>
 
-    <button type="button" class="stamp-btn phase-btn" id="phase-btn">
-      <img id="phase-icon" src="/ui/sun.webp" alt="" />
-      <span id="phase-label"></span>
-    </button>
+    <aside class="tour-menu" id="tour-menu" hidden>
+      <button type="button" class="close" id="tour-close" aria-label="close">×</button>
+      <p class="tour-title" id="tour-title"></p>
+      <p class="tour-lead" id="tour-lead"></p>
+      <div class="tour-list" id="tour-list"></div>
+    </aside>
 
-    <button type="button" class="stamp-btn" id="stamp-btn">
-      <img src="/ui/stamp-ring.webp" alt="" />
-      <span id="stamp-count">0/22</span>
-    </button>
+    <div class="month-bar" id="month-bar" hidden>
+      <button type="button" class="month-off" id="month-off"></button>
+      <div class="month-btns" id="month-btns"></div>
+    </div>
+
+    <!-- スマホでは縦積みだと月バー・ウェルカムカードと場所を奪い合うので、
+         下辺に1列で並べる。デスクトップは display:contents で今までどおり個別配置 -->
+    <div class="dock" id="dock">
+      <button type="button" class="stamp-btn event-btn" id="event-btn">
+        <img id="event-icon" src="/event/sakura.webp" alt="" />
+        <span id="event-label"></span>
+      </button>
+
+      <button type="button" class="stamp-btn season-btn" id="season-btn">
+        <img id="season-icon" src="/ui/hibiscus.webp" alt="" />
+        <span id="season-label"></span>
+      </button>
+
+      <button type="button" class="stamp-btn phase-btn" id="phase-btn">
+        <img id="phase-icon" src="/ui/sun.webp" alt="" />
+        <span id="phase-label"></span>
+      </button>
+
+      <button type="button" class="stamp-btn" id="stamp-btn">
+        <img src="/ui/stamp-ring.webp" alt="" />
+        <span id="stamp-count">0/22</span>
+      </button>
+    </div>
 
     <aside class="panel stamp-panel" id="stamp-panel" hidden>
       <div class="sheet-handle" data-sheet-handle></div>
@@ -120,6 +149,10 @@
 
     <footer class="credit">
       <span data-i18n="credit"></span>
+      <!-- MITは複製物に著作権表示を含めることを求めるが、バンドラがコメントを落とすため
+           別ファイルに束ねて同梱する(tools/make_notices.mjs が生成) -->
+      <a class="credit-link" href="./THIRD-PARTY-NOTICES.txt" target="_blank" rel="noopener"
+         data-i18n="notices">オープンソースライセンス</a>
     </footer>
 
     <script type="module" src="./src/main.js"></script>

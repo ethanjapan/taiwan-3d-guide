@@ -153,7 +153,9 @@ const renderPanel = () => {
       btn.className = "spot-row";
       if (s.photo) {
         const img = document.createElement("img");
-        img.src = `${import.meta.env.BASE_URL}photos/${s.id}.webp`;
+        // ★一覧は 52x40 で出す。原寸を読むと必要の十数倍で、1県市を開くたびに
+        //   大きな転送がモバイル回線に乗る(日本版 2026-08-22 実測)。詳細だけ原寸を使う
+        img.src = `${import.meta.env.BASE_URL}thumbs/${s.id}.webp`;
         img.alt = "";
         img.loading = "lazy";
         btn.appendChild(img);
@@ -379,6 +381,7 @@ const attachSheet = (panelEl, { snaps = false, onClose } = {}) => {
   handle.addEventListener("pointerup", finish);
   handle.addEventListener("pointercancel", finish);
 };
+let updateLangToggle = null;
 let updatePhaseButton = null; // start()が差し込む。言語切替時にラベルを追随させる
 
 // ---- 旅のしおり(スタンプラリー)。訪問=県市パネルを開いた県市。localStorageで永続 ----
@@ -456,12 +459,14 @@ const addStamp = (iso) => {
     setTimeout(fly, 620);
   }
   updatePhaseButton?.();
+  updateLangToggle?.();
 };
 
 stampBtn.addEventListener("click", () => {
   stampPanel.hidden = !stampPanel.hidden;
   if (!stampPanel.hidden) renderStampBook();
   updatePhaseButton?.();
+  updateLangToggle?.();
 });
 document.getElementById("stamp-close").addEventListener("click", () => {
   stampPanel.hidden = true;
@@ -490,6 +495,7 @@ const setLang = (next) => {
   }
   if (!stampPanel.hidden) renderStampBook();
   updatePhaseButton?.();
+  updateLangToggle?.();
   // バッジの単位語はパネルの状態に関係なく言語に追随させる(ko残留バグ 2026-08-21)
   if (badgeCountyId) {
     badgeInner.textContent = `${COUNTS[badgeCountyId] ?? ""} ${STRINGS[lang].spotsLabel}`;
@@ -529,7 +535,7 @@ const runSearch = () => {
       btn.type = "button";
       if (e.photo) {
         const img = document.createElement("img");
-        img.src = `${import.meta.env.BASE_URL}photos/${e.photo}.webp`;
+        img.src = `${import.meta.env.BASE_URL}thumbs/${e.photo}.webp`;
         img.alt = "";
         btn.appendChild(img);
       }
@@ -559,8 +565,36 @@ document.addEventListener("click", (e) => {
   if (!document.getElementById("search").contains(e.target)) searchResults.hidden = true;
 });
 
-for (const btn of document.querySelectorAll(".lang[data-lang]")) {
-  btn.addEventListener("click", () => setLang(btn.dataset.lang));
+// 言語切替。スマホではヘッダに5つ並べられないので1つに畳み、押したときだけ開く
+{
+  const nav = document.querySelector(".langs");
+  const toggle = document.getElementById("lang-btn");
+  const labelOf = (lg) =>
+    document.querySelector(`.lang[data-lang="${lg}"]`)?.textContent ?? lg;
+  const closeLangs = () => {
+    nav.dataset.open = "false";
+    toggle.setAttribute("aria-expanded", "false");
+  };
+  updateLangToggle = () => {
+    toggle.textContent = labelOf(lang);
+    toggle.setAttribute("aria-label", labelOf(lang));
+  };
+  updateLangToggle();
+  toggle.addEventListener("click", () => {
+    const open = nav.dataset.open !== "true";
+    nav.dataset.open = String(open);
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+  for (const btn of document.querySelectorAll(".lang[data-lang]")) {
+    btn.addEventListener("click", () => {
+      setLang(btn.dataset.lang);
+      closeLangs();
+    });
+  }
+  // 外を押したら閉じる(開いたまま地図を触ると、次のタップが吸われる)
+  document.addEventListener("click", (e) => {
+    if (!nav.contains(e.target)) closeLangs();
+  });
 }
 
 // ---- 台湾全体の旅行実用情報パネル ----
@@ -604,7 +638,7 @@ const renderCoursePanel = (cse) => {
     row.className = "spot-row course-step";
     if (st.photo) {
       const img = document.createElement("img");
-      img.src = `${import.meta.env.BASE_URL}photos/${st.photo}.webp`;
+      img.src = `${import.meta.env.BASE_URL}thumbs/${st.photo}.webp`;
       img.alt = "";
       img.loading = "lazy";
       row.appendChild(img);
@@ -1279,6 +1313,29 @@ function start() {
   const badgeAnchor = new THREE.Vector3();
 
   let prevTime = 0;
+  // ---- 端末に合わせて描画解像度を落とす ----
+  // ★1フレームだけ遅い(タブ復帰・GC)で落とさない。20msを30フレーム続けて超えたときだけ。
+  //   戻すのは 12ms を90フレーム続けたときだけにする(境目で上下に振動させない)。
+  const PR_STEPS = [Math.min(devicePixelRatio, 2), 1.5, 1];
+  let prIndex = 0;
+  let slow = 0;
+  let fast = 0;
+  const adaptQuality = (dt) => {
+    const ms = dt * 1000;
+    if (ms > 20) { slow += 1; fast = 0; } else if (ms < 12) { fast += 1; slow = 0; }
+    if (slow >= 30 && prIndex < PR_STEPS.length - 1) {
+      prIndex += 1;
+      slow = 0;
+      renderer.setPixelRatio(PR_STEPS[prIndex]);
+      resize();
+    } else if (fast >= 90 && prIndex > 0) {
+      prIndex -= 1;
+      fast = 0;
+      renderer.setPixelRatio(PR_STEPS[prIndex]);
+      resize();
+    }
+  };
+
   renderer.setAnimationLoop((time) => {
     const dt = Math.min((time - prevTime) / 1000, 0.1);
     prevTime = time;
@@ -1354,6 +1411,7 @@ function start() {
     if (!reduceMotion) stage.updateSea(time / 1000);
     controls.update();
     renderer.render(scene, camera);
+    adaptQuality(dt);
   });
 
 
