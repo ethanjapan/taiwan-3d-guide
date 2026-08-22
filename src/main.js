@@ -298,7 +298,27 @@ const renderPanel = () => {
   }
 };
 const hint = document.getElementById("hint");
+
+/**
+ * 操作ヒントを出す。★出しっぱなしにしない(2026-08-22 ユーザー指摘)。
+ * CSSには [data-dimmed="true"] で消える指定があったのに、true にする場所が
+ * どこにも無く、地図の上に永久に残っていた。
+ * 一度でも地図を触ったら即座に、触らなくても数秒で引っ込める。
+ */
+let hintTimer = null;
+const HINT_MS = 6000;
+const dimHint = () => {
+  hint.dataset.dimmed = "true";
+  clearTimeout(hintTimer);
+};
+const showHint = (text) => {
+  hint.textContent = text;
+  hint.dataset.dimmed = "false";
+  clearTimeout(hintTimer);
+  hintTimer = setTimeout(dimHint, HINT_MS);
+};
 const fallback = document.getElementById("fallback");
+hintTimer = setTimeout(dimHint, HINT_MS);   // 何も触らなくても引っ込む
 
 let lang = detectLang();
 
@@ -407,14 +427,17 @@ const renderStampBook = () => {
   document.getElementById("stamp-title").textContent = STRINGS[lang].stampBook;
   document.getElementById("stamp-hint").textContent = STRINGS[lang].stampHint;
   const grid = document.getElementById("stamp-grid");
-  // ★全部集めた瞬間まで何も起きなかった。達成はマスコットを出す定石の場所なので、
-  //   ここで案内人を大きく出して締める(2026-08-22 ユーザー要望)
+  // ★「集めると何があるか」を先に見せる(2026-08-22 ユーザー指摘)。
+  //   ごほうびが分からないと集める理由が生まれない。未達のときは案内人を伏せて予告、
+  //   全部集まったら同じ場所が完走カードに変わる。達成はマスコットを出す定石の場所
   const done = document.getElementById("stamp-done");
   done?.remove();
-  if (stamps.size === counties.counties.length) {
+  {
+    const left = counties.counties.length - stamps.size;
     const box = document.createElement("div");
     box.id = "stamp-done";
     box.className = "stamp-done";
+    box.dataset.locked = left > 0 ? "true" : "false";
     const img = document.createElement("img");
     img.className = "stamp-done-photo";
     img.src = `${import.meta.env.BASE_URL}guide/rinka-guide.webp`;
@@ -422,10 +445,12 @@ const renderStampBook = () => {
     img.addEventListener("error", () => img.remove());
     const t = document.createElement("p");
     t.className = "stamp-done-title";
-    t.textContent = STRINGS[lang].stampDone;
+    t.textContent = left > 0
+      ? STRINGS[lang].stampLocked.replace("{n}", String(left))
+      : STRINGS[lang].stampDone;
     const d = document.createElement("p");
     d.className = "stamp-done-text";
-    d.textContent = STRINGS[lang].stampDoneText;
+    d.textContent = left > 0 ? STRINGS[lang].stampLockedText : STRINGS[lang].stampDoneText;
     box.append(img, t, d);
     document.getElementById("stamp-hint").after(box);
   }
@@ -513,7 +538,7 @@ const setLang = (next) => {
   if (!panel.hidden && panel.dataset.county) {
     renderPanel();
     // applyLang が data-i18n で初期文言に戻してしまうので、選択中の案内を書き戻す。
-    hint.textContent = STRINGS[lang].hintSelected;
+    showHint(STRINGS[lang].hintSelected);
   }
   if (!panel.hidden && !panel.dataset.county && activeCourseId) {
     const cse = COURSES.courses.find((x) => x.id === activeCourseId);
@@ -1210,8 +1235,7 @@ function start() {
       panel.hidden = true;
       delete panel.dataset.county;
       delete panel.dataset.sheet;
-      hint.textContent = STRINGS[lang].hint;
-      hint.dataset.dimmed = "false";
+      showHint(STRINGS[lang].hint);
     } else {
       const c = group.userData.county;
       panel.dataset.county = c.id;
@@ -1219,7 +1243,7 @@ function start() {
       panelState.spotId = null;
       renderPanel();
       panel.hidden = false;
-      hint.textContent = STRINGS[lang].hintSelected;
+      showHint(STRINGS[lang].hintSelected);
     }
     // 選択した県市はホバー扱いから外す(持ち上がりが二重にかからないように)。
     if (hovered === group) hovered = null;
@@ -1256,7 +1280,9 @@ function start() {
   let downAt = null;
   canvas.addEventListener("pointerdown", (e) => {
     downAt = { x: e.clientX, y: e.clientY };
+    dimHint();   // 触れた時点で役目は終わり
   });
+  canvas.addEventListener("wheel", dimHint, { passive: true });
   canvas.addEventListener("pointermove", (e) => {
     if (e.pointerType === "mouse") setHover(pick(e));
   });

@@ -3180,3 +3180,17 @@ html[data-phase="night"] .tour-item-n {
   line-height: 1.7;
   color: var(--ink-glass-soft);
 }
+
+/* 未達のときは「何がもらえるか」の予告。案内人は伏せて見せる(中身は見えるが、
+   まだ自分のものではない、と分かる程度に) */
+.stamp-done[data-locked="true"] {
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.22));
+  border-color: var(--tile-line);
+}
+.stamp-done[data-locked="true"] .stamp-done-photo {
+  filter: blur(6px) grayscale(0.55) brightness(1.06);
+  opacity: 0.8;
+}
+.stamp-done[data-locked="true"] .stamp-done-title {
+  color: var(--ink-glass-soft);
+}
