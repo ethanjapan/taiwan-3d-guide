@@ -1432,3 +1432,24 @@ export const SOS = {
   en: [["110", "Police"], ["119", "Fire and ambulance"], ["0800-011-765", "Travel hotline (24h, ZH/EN/JA/KO)"]],
   ko: [["110", "경찰"], ["119", "소방·구급"], ["0800-011-765", "여행 상담 핫라인(24시간·중영일한)"]],
 };
+
+/**
+ * 表示は短いドメインのまま、飛び先だけ**実際に開けたURL**を持つ表。
+ *
+ * ★裸のドメインをそのまま href にしてはいけない(2026-08-23 実測):
+ *   thsrc.com.tw / taoyuan-airport.com / taiwantrip.com.tw は www 無しでは繋がらない。
+ *   taiwan.net.tw は www に入れても英語版へ飛ぶため、日本語だけ別の入口を持つ。
+ *   (kr / zh-tw / sc のサブドメインは応答しないことを確認済み)
+ *
+ * 値は文字列、または言語別の入口を持つ場合だけ { _: 既定, <lang>: 入口 }。
+ */
+export const SITE_URL = {
+  // 天気の出典表示(CC BY 4.0)。文字だけでは出典として弱いのでリンクにする
+  "open-meteo.com": "https://open-meteo.com/",
+  "thsrc.com.tw": "https://www.thsrc.com.tw/",
+  "tip.railway.gov.tw": "https://tip.railway.gov.tw/",
+  "taoyuan-airport.com": "https://www.taoyuan-airport.com/",
+  "taiwantrip.com.tw": "https://www.taiwantrip.com.tw/",
+  "taiwanstay.net.tw": "https://www.taiwanstay.net.tw/",
+  "taiwan.net.tw": { _: "https://www.taiwan.net.tw/", ja: "https://jp.taiwan.net.tw/" },
+};

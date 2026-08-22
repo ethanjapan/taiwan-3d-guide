@@ -15,7 +15,7 @@ import COUNTS from "../data/attraction-counts.json";
 import DECORATIONS from "../data/decorations.json";
 import ATTRACTIONS from "../data/attractions.json";
 import { TRAVEL_INFO, TRANSIT, PROMO_VIDEOS,
-         IC_TABLE, MONTHS, SOS } from "./travelinfo.js";
+         IC_TABLE, MONTHS, SOS, SITE_URL } from "./travelinfo.js";
 import { fetchWeather, codeLabel, codeIcon, outfitBand } from "./weather.js";
 import { rinkaCounty, rinkaSpot, RINKA_PROFILE, RINKA_LINKS } from "./rinka.js";
 import COUNTY_INTRO from "../data/i18n/county-intro.json";
@@ -1044,7 +1044,7 @@ const faqBlock = () => {
     sm.textContent = it.q[lang] ?? it.q.ja;
     const a = document.createElement("p");
     a.className = "faq-a";
-    a.textContent = it.a[lang] ?? it.a.ja;
+    a.append(...linkify(it.a[lang] ?? it.a.ja));
     d.append(sm, a);
     list.appendChild(d);
     return { el: d, cat: it.cat, text: `${sm.textContent}\n${a.textContent}`.toLowerCase() };
@@ -1091,6 +1091,43 @@ const faqBlock = () => {
  *   中にボタンを置くとキーボードでもスクリーンリーダーでも操作が壊れる。
  * ★畳んだ中身は走査できないので、見出しに gist(中に何があるか)を必ず出す。
  */
+/**
+ * 文中のドメインを、実際に開けるリンクに変える。
+ *
+ * ★ここが無いと「官方網站」節がただの黒い文字列になる(2026-08-23 ユーザー指摘)。
+ *   ドメインは links 節以外(鉄道・空港アクセス等)にも文中に混ざるので、
+ *   節を限定せず dd 全体に掛ける。
+ * SITE_URL に無いドメインは**リンクにしない**。実測していない飛び先を作らないため。
+ */
+const DOMAIN_RE = /(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+(?:jp|tw|com|net|org|travel)\b/gi;
+
+const siteHref = (domain) => {
+  const v = SITE_URL[domain.toLowerCase()];
+  if (!v) return null;
+  return typeof v === "string" ? v : (v[lang] ?? v._);
+};
+
+const linkify = (text) => {
+  const out = [];
+  let last = 0;
+  for (const m of String(text).matchAll(DOMAIN_RE)) {
+    const href = siteHref(m[0]);
+    if (!href) continue;
+    if (m.index > last) out.push(document.createTextNode(text.slice(last, m.index)));
+    const a = document.createElement("a");
+    a.className = "info-link";
+    a.href = href;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.textContent = m[0];
+    out.push(a);
+    last = m.index + m[0].length;
+  }
+  if (!out.length) return [document.createTextNode(text)];
+  if (last < text.length) out.push(document.createTextNode(text.slice(last)));
+  return out;
+};
+
 const buildSection = (sec, open) => {
   const d = document.createElement("details");
   d.className = "info-sec";
@@ -1130,7 +1167,7 @@ const buildSection = (sec, open) => {
     const dt = document.createElement("dt");
     dt.textContent = term;
     const dd = document.createElement("dd");
-    dd.textContent = desc;
+    dd.append(...linkify(desc));
     dl.append(dt, dd);
   }
   body.appendChild(dl);
@@ -1234,7 +1271,7 @@ const renderInfo = () => {
     weatherNodes.push(grid);
     const src = document.createElement("p");
     src.className = "course-tip";
-    src.textContent = "Weather data by Open-Meteo.com (CC BY 4.0)";
+    src.append(...linkify("Weather data by Open-Meteo.com (CC BY 4.0)"));
     weatherNodes.push(src);
     renderWeatherOverview(grid);
   }

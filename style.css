@@ -2156,6 +2156,26 @@ html[data-phase="night"] .img-missing {
   color: var(--ink-glass-soft);
 }
 
+/* 官方サイトのドメインは実リンクにしている。
+   ★ここが無かった頃はただの黒い文字列で、押せると気づけなかった(2026-08-23 ユーザー指摘)。
+   色だけに頼らず下線を必ず出す。長いドメインで横スクロールさせない。 */
+.info-rows dd a.info-link {
+  color: #0f5f7a;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  overflow-wrap: anywhere;
+  /* 指で押す前提。本文と同じ 0.72rem/高さ16px では小さすぎたので、
+     文字を上げ、行の重なりが出ない範囲で当たり判定を広げる(2026-08-23 実測で調整) */
+  font-size: 0.78rem;
+  padding: 5px 0;
+}
+.info-rows dd a.info-link:hover,
+.info-rows dd a.info-link:focus-visible {
+  color: var(--accent);
+}
+
 /* ---- ICカードの比較(カードの積み重ね) ----
    4列の表はパネル幅160px級で1文字ずつ折り返して読めなくなった。狭い面ではカードが強い。 */
 .ic-cards {
