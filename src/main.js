@@ -1879,8 +1879,8 @@ function start() {
   const season = createSeason(stage, reduceMotion, () => atmosphere.phase);
   {
     const CYCLE = ["auto", "spring", "summer", "autumn", "winter"];
-    // ★日本版の名前(sakura-spray / koinobori / maple)をそのまま持ってきていたが、
-    //   台湾版には**どれも無く、ボタンに壊れた画像が出ていた**(2026-08-23 ユーザー指摘)。
+    // ★日本版のアイコン名をそのまま持ってきていたが、台湾版には**どれも無く、
+    //   ボタンに壊れた画像が出ていた**(2026-08-23 ユーザー指摘)。既定値も含めて直す。
     //   季節の演出に使っているスプライトをそのまま流用する(演出とボタンの絵が揃う)
     const ICONS = { spring: "season-spring", summer: "season-summer",
                     autumn: "season-autumn", winter: "season-winter" };
@@ -1896,7 +1896,7 @@ function start() {
     if (!CYCLE.includes(sel)) sel = "auto";
     season.setSeason(sel);
     const render = () => {
-      icon.src = `${import.meta.env.BASE_URL}ui/${ICONS[season.season] ?? "sakura-spray"}.webp`;
+      icon.src = `${import.meta.env.BASE_URL}ui/${ICONS[season.season] ?? "season-spring"}.webp`;
       // ★スマホの下辺は4つ横並びで1つ83px。「季節(夏)」は入りきらず「季節(…」になる(実測)
       label.textContent = IS_MOBILE()
         ? nameOf(sel === "auto" ? season.season : sel)
