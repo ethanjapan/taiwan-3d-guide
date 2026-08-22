@@ -6,6 +6,7 @@ import { createAmbient } from "./ambient.js";
 import { createAtmosphere } from "./atmosphere.js";
 import { createCourseLayer } from "./courses3d.js";
 import { createEventLayer } from "./events3d.js";
+import { createSeason } from "./season.js";
 import { STRINGS, applyLang, detectLang } from "./i18n.js";
 import counties from "../data/counties.json";
 import SPECIALTIES from "../data/specialties.json";
@@ -567,6 +568,7 @@ const timingOf = (spotId) => {
 };
 
 let updateLangToggle = null;
+let updateSeasonButton = null;
 let updatePhaseButton = null; // start()が差し込む。言語切替時にラベルを追随させる
 
 // ---- 旅のしおり(スタンプラリー)。訪問=県市パネルを開いた県市。localStorageで永続 ----
@@ -671,6 +673,7 @@ const addStamp = (iso) => {
     setTimeout(fly, 620);
   }
   updatePhaseButton?.();
+  updateSeasonButton?.();
   updateLangToggle?.();
   updateMonthBar?.();
 };
@@ -679,6 +682,7 @@ stampBtn.addEventListener("click", () => {
   stampPanel.hidden = !stampPanel.hidden;
   if (!stampPanel.hidden) renderStampBook();
   updatePhaseButton?.();
+  updateSeasonButton?.();
   updateLangToggle?.();
   updateMonthBar?.();
 });
@@ -709,6 +713,7 @@ const setLang = (next) => {
   }
   if (!stampPanel.hidden) renderStampBook();
   updatePhaseButton?.();
+  updateSeasonButton?.();
   updateLangToggle?.();
   updateMonthBar?.();
   // バッジの単位語はパネルの状態に関係なく言語に追随させる(ko残留バグ 2026-08-21)
@@ -1848,6 +1853,40 @@ function start() {
     getPhase = () => atmosphere.phase;   // auto でも必ず解決済みの値が返る
     updatePhaseButton = render;
   }
+  // 季節切替(台湾版へ移植)。台湾も季節で見えるものが変わるので、
+  // 時間帯と対にして常設のボタンにする。既定は台湾の実月。
+  // 時間帯を渡す。花火は夕方・夜だけに出す(昼に出すと地図の上で明滅する)
+  const season = createSeason(stage, reduceMotion, () => atmosphere.phase);
+  {
+    const CYCLE = ["auto", "spring", "summer", "autumn", "winter"];
+    const ICONS = { spring: "sakura-spray", summer: "koinobori", autumn: "maple", winter: "moon" };
+    const btn = document.getElementById("season-btn");
+    const icon = document.getElementById("season-icon");
+    const label = document.getElementById("season-label");
+    const nameOf = (k) => {
+      const T = STRINGS[lang];
+      return { auto: T.seasonAuto, spring: T.seasonSpring, summer: T.seasonSummer,
+               autumn: T.seasonAutumn, winter: T.seasonWinter }[k];
+    };
+    let sel = localStorage.getItem("season") ?? "auto";
+    if (!CYCLE.includes(sel)) sel = "auto";
+    season.setSeason(sel);
+    const render = () => {
+      icon.src = `${import.meta.env.BASE_URL}ui/${ICONS[season.season] ?? "sakura-spray"}.webp`;
+      // ★スマホの下辺は4つ横並びで1つ83px。「季節(夏)」は入りきらず「季節(…」になる(実測)
+      label.textContent = IS_MOBILE()
+        ? nameOf(sel === "auto" ? season.season : sel)
+        : sel === "auto" ? `${nameOf("auto")}(${nameOf(season.season)})` : nameOf(sel);
+    };
+    render();
+    btn.addEventListener("click", () => {
+      sel = CYCLE[(CYCLE.indexOf(sel) + 1) % CYCLE.length];
+      localStorage.setItem("season", sel);
+      season.setSeason(sel);
+      render();
+    });
+    updateSeasonButton = render;
+  }
   // ---- 季節イベントの月バー(台湾版へ移植) ----
   // 日本の観光は「どこへ行くか」より先に「いつ行くか」で中身が変わる。
   // 月を動かすと、その月にイベントがある県市にピンが立つ。台湾の祭りは旧暦なので月は平年の目安。
@@ -2011,6 +2050,7 @@ function start() {
 
     ambient.update(time / 1000);
     atmosphere.update(dt);
+    season.update(dt);
     courseLayer.update(dt);
     if (!reduceMotion) stage.updateSea(time / 1000);
     controls.update();
