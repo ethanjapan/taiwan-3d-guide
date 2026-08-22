@@ -58,3 +58,7 @@ export const fetchWeather = async (iso) => {
     return null;
   }
 };
+
+export const outfitBand = (t) =>
+  t >= 28 ? "hot" : t >= 23 ? "warm" : t >= 18 ? "mild" : t >= 13 ? "cool" : t >= 8 ? "chilly" : "cold";
+

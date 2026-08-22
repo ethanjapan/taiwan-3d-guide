@@ -14,10 +14,11 @@ import DECORATIONS from "../data/decorations.json";
 import ATTRACTIONS from "../data/attractions.json";
 import { TRAVEL_INFO, TRANSIT, PROMO_VIDEOS,
          IC_TABLE, MONTHS, SOS } from "./travelinfo.js";
-import { fetchWeather, codeLabel } from "./weather.js";
+import { fetchWeather, codeLabel, outfitBand } from "./weather.js";
 import { rinkaCounty, rinkaSpot, RINKA_PROFILE, RINKA_LINKS } from "./rinka.js";
 import COUNTY_INTRO from "../data/i18n/county-intro.json";
 import FAQ from "../data/i18n/faq.json";
+import OUTFIT from "../data/i18n/outfit.json";
 import EVENTS from "../data/events.json";
 import COURSES from "../data/courses.json";
 import VISITOR_CENTERS from "../data/visitor-centers.json";
@@ -153,6 +154,17 @@ const renderPanel = () => {
         }),
       );
     }
+    // 服装の目安。天気が取れてから差し込む(気温が決まらないと帯が決まらない)
+    const oslot = document.getElementById("outfit-slot");
+    if (oslot) {
+      const card = outfitCard(w, county.id);
+      if (card) {
+        const h = document.createElement("p");
+        h.className = "gourmet-title";
+        h.textContent = STRINGS[lang].outfit;
+        oslot.replaceChildren(h, card);
+      }
+    }
   });
   const spots = ATTRACTIONS[county.id] ?? [];
   const T = STRINGS[lang];
@@ -278,8 +290,16 @@ const renderPanel = () => {
     const wstrip = document.createElement("div");
     wstrip.className = "weather-strip";
     wstrip.id = "weather-strip";
+    const oslot = document.createElement("div");
+    oslot.id = "outfit-slot";
     panelBody.dataset.view = "list";
-    panelBody.replaceChildren(rk, wstrip, intro, gour, ul);
+    // ピンから来たときはイベント帯を最初に出す。下まで巻かないと見えないのでは、
+    // 「押したのに何も起きない」のと同じ
+    panelBody.replaceChildren(
+      ...(pickedEvent?.pref === county.id
+        ? [rk, evbox, wstrip, oslot, intro, gour, ul]
+        : [rk, wstrip, oslot, intro, gour, evbox, ul]),
+    );
     stagger(panelBody);
     if (IS_MOBILE() && !panel.dataset.sheet) panel.dataset.sheet = "half";
     // 観光案内所(ユーザー要望 2026-08-21)
@@ -853,6 +873,142 @@ const renderWeatherOverview = async (host) => {
 };
 
 /**
+ * 服装の目安カード。選択中の県の「いまの気温」で帯を決め、RINKAの棚から
+ * その気温で実際に着る一着を出す(ユーザー要望 2026-08-22)。
+ *
+ * ★1帯1着だと、夏は全国が同じ帯に入って**どの県を押しても同じ服**になった。
+ *   帯ごとに複数の候補を持ち、**県市ISOのハッシュで割り当てを決める**。
+ *   乱数にしないのは、同じ県を開き直すたびに服が変わると「その県市の目安」に見えないため。
+ * ★天気の注記は気温と別に足す。雨の日に「半袖・ワンピース」だけ出しても役に立たない。
+ * 画像は既存カタログの切り出しで、生成し直していない(鉄則0)。
+ */
+const hashCode = (str) => {
+  let h = 0;
+  for (let i = 0; i < str.length; i += 1) h = (h * 31 + str.charCodeAt(i)) | 0;
+  return Math.abs(h);
+};
+
+const outfitCard = (w, countyId) => {
+  const band = outfitBand(w.now.t);
+  const b = OUTFIT.bands[band];
+  if (!b) return null;
+  const c = b[lang] ?? b.ja;
+  const vs = b.variants ?? [];
+  const v = vs[hashCode(countyId) % Math.max(1, vs.length)];
+  const box = document.createElement("div");
+  box.className = "outfit-card";
+  const img = document.createElement("img");
+  img.className = "outfit-photo";
+  img.src = `${import.meta.env.BASE_URL}outfit/${v ? v.img : band}.webp`;
+  img.alt = "";
+  img.loading = "lazy";
+  const txt = document.createElement("div");
+  txt.className = "outfit-text";
+  const head = document.createElement("span");
+  head.className = "outfit-band";
+  head.textContent = `${c.t}｜${b.range}`;
+  const wear = document.createElement("span");
+  wear.className = "outfit-wear";
+  wear.textContent = v ? (v.wear[lang] ?? v.wear.ja) : "";
+  const tip = document.createElement("span");
+  tip.className = "outfit-tip";
+  // 気温の助言 → 天気の上書き → 湿度、の順に足す。数字だけでは体感が伝わらない
+  const extra = [];
+  const code = w.now.code;
+  if (code >= 71 && code <= 86) extra.push(OUTFIT.weather.snow);
+  else if (code >= 51) extra.push(OUTFIT.weather.rain);
+  else if (w.now.t >= 30) extra.push(OUTFIT.weather.hotday);
+  if (w.now.rh >= 70) extra.push(OUTFIT.humid);
+  tip.textContent = [c.tip, ...extra.map((e) => e[lang] ?? e.ja)].join(" ");
+  txt.append(head, wear, tip);
+  box.append(img, txt);
+  return box;
+};
+
+/**
+ * よくある旅行QA。31問あるので、分類チップ + キーワード検索で絞れないと読まれない。
+ * ★<details> は開いていても textContent は取れるので、検索は開閉に関係なく効く。
+ * ★絞り込みはDOMを作り直さず hidden の付け外しでやる。作り直すと開いていた答えが閉じる。
+ */
+const faqBlock = () => {
+  const t = STRINGS[lang];
+  const wrap = document.createElement("div");
+  wrap.className = "faq";
+
+  const h = document.createElement("h3");
+  h.className = "info-h";
+  h.textContent = t.faqH;
+  const tip = document.createElement("p");
+  tip.className = "course-tip";
+  tip.textContent = t.faqTip;
+
+  const search = document.createElement("input");
+  search.type = "search";
+  search.className = "faq-search";
+  search.placeholder = t.faqSearch;
+  search.setAttribute("aria-label", t.faqH);
+
+  const cats = document.createElement("div");
+  cats.className = "faq-cats";
+  const list = document.createElement("div");
+  list.className = "faq-list";
+  const none = document.createElement("p");
+  none.className = "faq-none";
+  none.textContent = t.faqNone;
+  none.hidden = true;
+
+  let activeCat = "";
+  const items = FAQ.items.map((it) => {
+    const d = document.createElement("details");
+    d.className = "faq-item";
+    d.dataset.cat = it.cat;
+    const sm = document.createElement("summary");
+    sm.className = "faq-q";
+    sm.textContent = it.q[lang] ?? it.q.ja;
+    const a = document.createElement("p");
+    a.className = "faq-a";
+    a.textContent = it.a[lang] ?? it.a.ja;
+    d.append(sm, a);
+    list.appendChild(d);
+    return { el: d, cat: it.cat, text: `${sm.textContent}\n${a.textContent}`.toLowerCase() };
+  });
+
+  const apply = () => {
+    const q = search.value.trim().toLowerCase();
+    let shown = 0;
+    for (const it of items) {
+      const ok = (!activeCat || it.cat === activeCat) && (!q || it.text.includes(q));
+      it.el.hidden = !ok;
+      if (ok) shown++;
+    }
+    none.hidden = shown > 0;
+  };
+
+  const chip = (id, label) => {
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "faq-cat";
+    b.textContent = label;
+    if (id === activeCat) b.dataset.on = "true";
+    b.addEventListener("click", () => {
+      activeCat = activeCat === id ? "" : id;
+      for (const other of cats.children) delete other.dataset.on;
+      if (activeCat) b.dataset.on = "true";
+      else cats.firstElementChild.dataset.on = "true";
+      apply();
+    });
+    cats.appendChild(b);
+    return b;
+  };
+  chip("", t.faqAll).dataset.on = "true";
+  for (const c of FAQ.cats) chip(c.id, c.label[lang] ?? c.label.ja);
+
+  search.addEventListener("input", apply);
+  wrap.append(h, tip, search, cats, list, none);
+  return wrap;
+};
+
+/**
  * 旅の基本情報の1節。native <details>/<summary> で畳む。
  * ★summary の中に別の操作要素(リンク・ボタン)を入れない — summary 自体がトグルなので、
  *   中にボタンを置くとキーボードでもスクリーンリーダーでも操作が壊れる。
@@ -983,89 +1139,6 @@ const sosCards = () => {
     box.appendChild(a);
   }
   return box;
-};
-
-/**
- * よくある旅行QA。31問あるので、分類チップ + キーワード検索で絞れないと読まれない。
- * ★<details> は開いていても textContent は取れるので、検索は開閉に関係なく効く。
- * ★絞り込みはDOMを作り直さず hidden の付け外しでやる。作り直すと開いていた答えが閉じる。
- */
-const faqBlock = () => {
-  const t = STRINGS[lang];
-  const wrap = document.createElement("div");
-  wrap.className = "faq";
-
-  const h = document.createElement("h3");
-  h.className = "info-h";
-  h.textContent = t.faqH;
-  const tip = document.createElement("p");
-  tip.className = "course-tip";
-  tip.textContent = t.faqTip;
-
-  const search = document.createElement("input");
-  search.type = "search";
-  search.className = "faq-search";
-  search.placeholder = t.faqSearch;
-  search.setAttribute("aria-label", t.faqH);
-
-  const cats = document.createElement("div");
-  cats.className = "faq-cats";
-  const list = document.createElement("div");
-  list.className = "faq-list";
-  const none = document.createElement("p");
-  none.className = "faq-none";
-  none.textContent = t.faqNone;
-  none.hidden = true;
-
-  let activeCat = "";
-  const items = FAQ.items.map((it) => {
-    const d = document.createElement("details");
-    d.className = "faq-item";
-    d.dataset.cat = it.cat;
-    const sm = document.createElement("summary");
-    sm.className = "faq-q";
-    sm.textContent = it.q[lang] ?? it.q.ja;
-    const a = document.createElement("p");
-    a.className = "faq-a";
-    a.textContent = it.a[lang] ?? it.a.ja;
-    d.append(sm, a);
-    list.appendChild(d);
-    return { el: d, cat: it.cat, text: `${sm.textContent}\n${a.textContent}`.toLowerCase() };
-  });
-
-  const apply = () => {
-    const q = search.value.trim().toLowerCase();
-    let shown = 0;
-    for (const it of items) {
-      const ok = (!activeCat || it.cat === activeCat) && (!q || it.text.includes(q));
-      it.el.hidden = !ok;
-      if (ok) shown++;
-    }
-    none.hidden = shown > 0;
-  };
-
-  const chip = (id, label) => {
-    const b = document.createElement("button");
-    b.type = "button";
-    b.className = "faq-cat";
-    b.textContent = label;
-    if (id === activeCat) b.dataset.on = "true";
-    b.addEventListener("click", () => {
-      activeCat = activeCat === id ? "" : id;
-      for (const other of cats.children) delete other.dataset.on;
-      if (activeCat) b.dataset.on = "true";
-      else cats.firstElementChild.dataset.on = "true";
-      apply();
-    });
-    cats.appendChild(b);
-    return b;
-  };
-  chip("", t.faqAll).dataset.on = "true";
-  for (const c of FAQ.cats) chip(c.id, c.label[lang] ?? c.label.ja);
-
-  search.addEventListener("input", apply);
-  wrap.append(h, tip, search, cats, list, none);
-  return wrap;
 };
 
 const renderInfo = () => {

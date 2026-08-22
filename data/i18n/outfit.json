@@ -1,0 +1,274 @@
+{
+ "bands": {
+  "hot": {
+   "range": "28℃〜",
+   "variants": [
+    {
+     "img": "hot-a",
+     "wear": {
+      "zh": "短袖・連身裙",
+      "ja": "半袖・ワンピース",
+      "cn": "短袖・连衣裙",
+      "en": "Short sleeves, a dress",
+      "ko": "반팔·원피스"
+     }
+    },
+    {
+     "img": "hot-b",
+     "wear": {
+      "zh": "短袖上衣・短褲",
+      "ja": "半袖・ショートパンツ",
+      "cn": "短袖上衣・短裤",
+      "en": "Tee and shorts",
+      "ko": "반팔·반바지"
+     }
+    }
+   ],
+   "zh": {
+    "t": "酷熱",
+    "tip": "又濕又熱，走一下就流汗。室內冷氣很強，一定要帶薄外套。帽子或陽傘和隨時補水是必需。"
+   },
+   "ja": {
+    "t": "酷暑",
+    "tip": "蒸し暑く、少し歩くだけで汗になります。屋内の冷房が強いので薄手の羽織を必ず1枚。帽子か日傘と、こまめな水分を。"
+   },
+   "cn": {
+    "t": "酷热",
+    "tip": "又湿又热，走一下就出汗。室内空调很强，一定要带薄外套。帽子或阳伞和随时补水是必需。"
+   },
+   "en": {
+    "t": "Very hot",
+    "tip": "Humid and hot — you sweat within minutes. Indoor air-con is fierce, so always carry a light layer. Hat or parasol and frequent water."
+   },
+   "ko": {
+    "t": "무더위",
+    "tip": "습하고 더워 조금만 걸어도 땀이 납니다. 실내 냉방이 세니 얇은 겉옷은 필수. 모자나 양산과 수분 보충도."
+   }
+  },
+  "warm": {
+   "range": "23〜27℃",
+   "variants": [
+    {
+     "img": "warm-a",
+     "wear": {
+      "zh": "短袖・薄長褲",
+      "ja": "半袖・薄手のパンツ",
+      "cn": "短袖・薄长裤",
+      "en": "Short sleeves, light trousers",
+      "ko": "반팔·얇은 바지"
+     }
+    },
+    {
+     "img": "warm-b",
+     "wear": {
+      "zh": "薄長袖・裙子",
+      "ja": "薄手の長袖・スカート",
+      "cn": "薄长袖・裙子",
+      "en": "Light long sleeves, a skirt",
+      "ko": "얇은 긴팔·치마"
+     }
+    }
+   ],
+   "zh": {
+    "t": "溫暖",
+    "tip": "最舒服的溫度，但濕度還是高。午後可能有雷陣雨，帶把折傘。"
+   },
+   "ja": {
+    "t": "暖かい",
+    "tip": "いちばん過ごしやすい温度ですが湿度は高めです。午後に雷雨が来ることがあるので折りたたみ傘を。"
+   },
+   "cn": {
+    "t": "温暖",
+    "tip": "最舒服的温度，但湿度还是高。午后可能有雷阵雨，带把折伞。"
+   },
+   "en": {
+    "t": "Warm",
+    "tip": "The most comfortable range, though still humid. Afternoon thunderstorms happen — carry a folding umbrella."
+   },
+   "ko": {
+    "t": "따뜻함",
+    "tip": "가장 쾌적한 온도지만 습도는 높습니다. 오후 소나기가 있을 수 있으니 접이식 우산을."
+   }
+  },
+  "mild": {
+   "range": "18〜22℃",
+   "variants": [
+    {
+     "img": "mild-a",
+     "wear": {
+      "zh": "長袖・薄外套",
+      "ja": "長袖・薄手の上着",
+      "cn": "长袖・薄外套",
+      "en": "Long sleeves and a light jacket",
+      "ko": "긴팔·얇은 겉옷"
+     }
+    }
+   ],
+   "zh": {
+    "t": "涼爽",
+    "tip": "白天很好走，早晚會涼。一件薄外套或襯衫剛剛好。"
+   },
+   "ja": {
+    "t": "過ごしやすい",
+    "tip": "日中は歩きやすく、朝晩だけ冷えます。薄手の上着かシャツを1枚重ねるとちょうどいい。"
+   },
+   "cn": {
+    "t": "凉爽",
+    "tip": "白天很好走，早晚会凉。一件薄外套或衬衫刚刚好。"
+   },
+   "en": {
+    "t": "Mild",
+    "tip": "Easy walking by day, cooler morning and night. One light jacket or shirt over the top is right."
+   },
+   "ko": {
+    "t": "선선함",
+    "tip": "낮에는 걷기 좋고 아침저녁은 서늘합니다. 얇은 겉옷이나 셔츠 하나면 충분."
+   }
+  },
+  "cool": {
+   "range": "13〜17℃",
+   "variants": [
+    {
+     "img": "cool-a",
+     "wear": {
+      "zh": "針織衫・防風外套",
+      "ja": "ニット・防風の上着",
+      "cn": "针织衫・防风外套",
+      "en": "Knit and a windproof jacket",
+      "ko": "니트·방풍 겉옷"
+     }
+    }
+   ],
+   "zh": {
+    "t": "微涼",
+    "tip": "北部這個溫度常常是濕冷，體感比數字低。防風的外套比厚毛衣有用。"
+   },
+   "ja": {
+    "t": "肌寒い",
+    "tip": "北部ではこの気温が湿った寒さになり、数字より寒く感じます。厚いセーターより風を通さない上着が効きます。"
+   },
+   "cn": {
+    "t": "微凉",
+    "tip": "北部这个温度常常是湿冷，体感比数字低。防风的外套比厚毛衣有用。"
+   },
+   "en": {
+    "t": "Cool",
+    "tip": "In the north this reads as damp cold and feels lower than the number. A windproof shell beats a thick sweater."
+   },
+   "ko": {
+    "t": "쌀쌀함",
+    "tip": "북부에서는 습한 추위라 체감이 숫자보다 낮습니다. 두꺼운 스웨터보다 바람을 막는 겉옷이 효과적."
+   }
+  },
+  "chilly": {
+   "range": "8〜12℃",
+   "variants": [
+    {
+     "img": "chilly-a",
+     "wear": {
+      "zh": "毛衣・大衣・圍巾",
+      "ja": "セーター・コート・マフラー",
+      "cn": "毛衣・大衣・围巾",
+      "en": "Sweater, coat, scarf",
+      "ko": "스웨터·코트·목도리"
+     }
+    }
+   ],
+   "zh": {
+    "t": "寒冷",
+    "tip": "台灣的建築多半沒有暖氣，室內也一樣冷。用洋蔥式穿法，加一條圍巾差很多。"
+   },
+   "ja": {
+    "t": "寒い",
+    "tip": "台湾の建物は暖房が無いことが多く、屋内も同じだけ寒いです。重ね着で調整し、マフラーを1本足すと体感が変わります。"
+   },
+   "cn": {
+    "t": "寒冷",
+    "tip": "台湾的建筑多半没有暖气，室内也一样冷。用洋葱式穿法，加一条围巾差很多。"
+   },
+   "en": {
+    "t": "Cold",
+    "tip": "Most buildings here have no heating, so indoors is just as cold. Layer up; one scarf makes a real difference."
+   },
+   "ko": {
+    "t": "추움",
+    "tip": "타이완 건물은 난방이 없는 곳이 많아 실내도 똑같이 춥습니다. 겹쳐 입고 목도리를 하나 더하세요."
+   }
+  },
+  "cold": {
+   "range": "〜7℃",
+   "variants": [
+    {
+     "img": "cold-a",
+     "wear": {
+      "zh": "羽絨・厚外套",
+      "ja": "ダウン・厚手のコート",
+      "cn": "羽绒・厚外套",
+      "en": "Down or a heavy coat",
+      "ko": "패딩·두꺼운 코트"
+     }
+    },
+    {
+     "img": "cold-b",
+     "wear": {
+      "zh": "羽絨・毛帽・手套",
+      "ja": "ダウン・ニット帽・手袋",
+      "cn": "羽绒・毛帽・手套",
+      "en": "Down, beanie, gloves",
+      "ko": "패딩·비니·장갑"
+     }
+    }
+   ],
+   "zh": {
+    "t": "嚴寒",
+    "tip": "平地少見，通常是寒流或在山上(阿里山、合歡山、太平山)。需要真正的防寒和防風防水。"
+   },
+   "ja": {
+    "t": "厳しい寒さ",
+    "tip": "平地ではまれで、寒波か山(阿里山・合歓山・太平山)です。本気の防寒と、防風防水の上着が要ります。"
+   },
+   "cn": {
+    "t": "严寒",
+    "tip": "平地少见，通常是寒流或在山上(阿里山、合欢山、太平山)。需要真正的防寒和防风防水。"
+   },
+   "en": {
+    "t": "Very cold",
+    "tip": "Rare on the plains — this means a cold snap or the mountains (Alishan, Hehuanshan, Taipingshan). Bring real insulation, windproof and waterproof."
+   },
+   "ko": {
+    "t": "혹한",
+    "tip": "평지에서는 드물며 한파나 산(아리산·허환산·타이핑산)입니다. 제대로 된 방한과 방풍·방수가 필요."
+   }
+  }
+ },
+ "humid": {
+  "zh": "濕度高，體感更悶。",
+  "ja": "湿度が高く、体感はさらに蒸します。",
+  "cn": "湿度高，体感更闷。",
+  "en": "High humidity makes it feel muggier.",
+  "ko": "습도가 높아 체감이 더 후텁지근합니다."
+ },
+ "weather": {
+  "rain": {
+   "zh": "在下雨，帶把折傘。",
+   "ja": "雨が降っています。折りたたみ傘を。",
+   "cn": "在下雨，带把折伞。",
+   "en": "It's raining — take a folding umbrella.",
+   "ko": "비가 옵니다. 접이식 우산을."
+  },
+  "snow": {
+   "zh": "山區可能積雪，注意路況。",
+   "ja": "山では雪の可能性があります。足元に注意を。",
+   "cn": "山区可能积雪，注意路况。",
+   "en": "Snow is possible in the mountains — watch your footing.",
+   "ko": "산간에는 눈이 올 수 있습니다."
+  },
+  "hotday": {
+   "zh": "今天特別熱，避開正午的太陽。",
+   "ja": "今日は特に暑いので、正午の直射は避けて。",
+   "cn": "今天特别热，避开正午的太阳。",
+   "en": "Especially hot today — stay out of the midday sun.",
+   "ko": "오늘은 특히 덥습니다. 한낮 햇볕은 피하세요."
+  }
+ }
+}
