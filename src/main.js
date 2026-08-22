@@ -5,6 +5,7 @@ import { createScene, PALETTE } from "./scene.js";
 import { createAmbient } from "./ambient.js";
 import { createAtmosphere } from "./atmosphere.js";
 import { createCourseLayer } from "./courses3d.js";
+import { createEventLayer } from "./events3d.js";
 import { STRINGS, applyLang, detectLang } from "./i18n.js";
 import counties from "../data/counties.json";
 import SPECIALTIES from "../data/specialties.json";
@@ -17,6 +18,7 @@ import { fetchWeather, codeLabel } from "./weather.js";
 import { rinkaCounty, rinkaSpot, RINKA_PROFILE, RINKA_LINKS } from "./rinka.js";
 import COUNTY_INTRO from "../data/i18n/county-intro.json";
 import FAQ from "../data/i18n/faq.json";
+import EVENTS from "../data/events.json";
 import COURSES from "../data/courses.json";
 import VISITOR_CENTERS from "../data/visitor-centers.json";
 
@@ -184,7 +186,55 @@ const renderPanel = () => {
       });
       gour.append(gh, row);
     }
-    const ul = document.createElement("ul");
+    // 季節イベント。月バーが出ていればその月のものだけ、出ていなければ全部。
+    const evbox = document.createElement("div");
+    {
+      const all = EVENTS.pref[county.id] ?? [];
+      const list = activeMonth ? all.filter((e) => e.m.includes(activeMonth)) : all;
+      if (list.length) {
+        const eh = document.createElement("p");
+        eh.className = "gourmet-title";
+        eh.textContent = activeMonth ? `${T.monthEvents}（${activeMonth}）` : T.allEvents;
+        evbox.dataset.picked = pickedEvent?.pref === county.id ? "true" : "false";
+        const ul = document.createElement("div");
+        ul.className = "event-list";
+        // 地図のピンから来たときは、押したイベントを先頭に出して印を付ける。
+        // どのピンを押したのか分からないまま一覧だけ出ると、押した意味が伝わらない
+        const hitOf = (e) => pickedEvent && pickedEvent.pref === county.id
+          && (pickedEvent.key ? e.name.ja === pickedEvent.key : e.cat === pickedEvent.cat);
+        list.sort((a, b) => Number(hitOf(b)) - Number(hitOf(a)));
+        for (const e of list) {
+          const row = document.createElement("div");
+          row.className = "event-row";
+          if (hitOf(e)) row.dataset.picked = "true";
+          const ic = document.createElement("img");
+          ic.className = "event-icon";
+          ic.src = `${import.meta.env.BASE_URL}event/${e.cat}.webp`;
+          ic.alt = "";
+          ic.loading = "lazy";
+          ic.addEventListener("error", () => ic.remove());
+          const nm = document.createElement("span");
+          nm.className = "event-name";
+          nm.textContent = e.name[lang] ?? e.name.ja;
+          const wh = document.createElement("span");
+          wh.className = "event-when";
+          wh.textContent = e.peak[lang] ?? e.peak.ja;
+          row.append(ic, nm, wh);
+          // 祭り・花火・花・イルミは name が固有名(例: 鎌倉まつり)なので、
+          // それだけでは何のイベントか分からない。種類の札を付ける。
+          // 桜・紅葉・雪は name がそのまま種類なので付けない(同じ語が二度出る)
+          const catLabel = EVENTS.cats[e.cat]?.[lang] ?? EVENTS.cats[e.cat]?.ja;
+          if (catLabel && catLabel !== (e.name[lang] ?? e.name.ja)) {
+            const cc = document.createElement("span");
+            cc.className = "event-cat";
+            cc.textContent = catLabel;
+            row.insertBefore(cc, wh);
+          }
+          ul.appendChild(row);
+        }
+        evbox.append(eh, ul);
+      }
+    }    const ul = document.createElement("ul");
     ul.className = "spot-list";
     for (const s of spots) {
       const li = document.createElement("li");
@@ -441,6 +491,9 @@ const attachSheet = (panelEl, { snaps = false, onClose } = {}) => {
   handle.addEventListener("pointerup", finish);
   handle.addEventListener("pointercancel", finish);
 };
+let activeMonth = 0;   // 0=イベント表示なし
+let pickedEvent = null;
+let updateMonthBar = null;
 let updateLangToggle = null;
 let updatePhaseButton = null; // start()が差し込む。言語切替時にラベルを追随させる
 
@@ -547,6 +600,7 @@ const addStamp = (iso) => {
   }
   updatePhaseButton?.();
   updateLangToggle?.();
+  updateMonthBar?.();
 };
 
 stampBtn.addEventListener("click", () => {
@@ -554,6 +608,7 @@ stampBtn.addEventListener("click", () => {
   if (!stampPanel.hidden) renderStampBook();
   updatePhaseButton?.();
   updateLangToggle?.();
+  updateMonthBar?.();
 });
 document.getElementById("stamp-close").addEventListener("click", () => {
   stampPanel.hidden = true;
@@ -583,6 +638,7 @@ const setLang = (next) => {
   if (!stampPanel.hidden) renderStampBook();
   updatePhaseButton?.();
   updateLangToggle?.();
+  updateMonthBar?.();
   // バッジの単位語はパネルの状態に関係なく言語に追随させる(ko残留バグ 2026-08-21)
   if (badgeCountyId) {
     badgeInner.textContent = `${COUNTS[badgeCountyId] ?? ""} ${STRINGS[lang].spotsLabel}`;
@@ -1419,12 +1475,24 @@ function start() {
   /** mode: "idle"(常設・小) | "peek"(ホバー・中) | "full"(選択=名物も時間差で湧く) */
   const setBundle = (group, mode) => {
     const b = bundleFor(group);
-    b.landmark.userData.target = mode === "full" ? 1 : mode === "peek" ? PEEK : IDLE;
+    // ★イベント表示中はランドマークを伏せる。ピンもランドマークも県の重心に立つので、
+    //   両方出すと重なって「どれがイベントか」が読めない(2026-08-22 ユーザー指摘)。
+    //   選択中の県だけは出す(その県を見に来ているので、伏せると手掛かりが消える)。
+    const hideLandmark = activeMonth > 0 && mode !== "full";
+    b.landmark.userData.target =
+      hideLandmark ? 0 : mode === "full" ? 1 : mode === "peek" ? PEEK : IDLE;
     b.landmark.userData.delay = 0;
     b.minis.forEach((m, i) => {
       m.userData.target = mode === "full" ? 1 : 0;
       m.userData.delay = mode === "full" ? 0.16 * (i + 1) : 0;
     });
+  };
+
+  /** イベント表示のON/OFFでランドマークの出し入れが変わるので、全県に掛け直す */
+  const refreshBundles = () => {
+    for (const g of groups) {
+      setBundle(g, g === selected ? "full" : g === hovered ? "peek" : "idle");
+    }
   };
 
   // 起動時: 全県市のランドマークを北から順に小さく立てていく(初回のさざ波)
@@ -1524,11 +1592,28 @@ function start() {
     }
   });
 
-  const pick = (event) => {
+  const pick = (event, commit = false) => {
     const rect = renderer.domElement.getBoundingClientRect();
     pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
     pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
     raycaster.setFromCamera(pointer, camera);
+    // イベントのピンを先に見る。地形より手前に浮いているので、ピンを狙ったのに
+    // 下の県市が取れる(あるいは海に外れる)と操作が噛み合わない
+    if (activeMonth) {
+      const ph = raycaster.intersectObjects(eventLayer.pins, false);
+      if (ph.length) {
+        const ud = ph[0].object.userData;
+        if (commit) {
+          pickedEvent = { pref: ud.pref, cat: ud.cat, key: ud.ev?.name?.zh ?? null };
+          eventLayer.select(ud.pref);
+        }
+        return groups.find((g) => g.userData.county.id === ud.pref) ?? null;
+      }
+    }
+    if (commit) {
+      pickedEvent = null;
+      eventLayer.select(null);
+    }
     const hits = raycaster.intersectObjects(groups, true);
     if (hits.length === 0) return null;
     let node = hits[0].object;
@@ -1553,7 +1638,7 @@ function start() {
     const dist = Math.hypot(e.clientX - downAt.x, e.clientY - downAt.y);
     downAt = null;
     if (dist > 8) return; // ドラッグ扱い(タップ判定は8px以内)
-    select(pick(e));
+    select(pick(e, true));
   });
 
   let framed = false;
@@ -1635,6 +1720,70 @@ function start() {
     });
     updatePhaseButton = render;
   }
+  // ---- 季節イベントの月バー(台湾版へ移植) ----
+  // 日本の観光は「どこへ行くか」より先に「いつ行くか」で中身が変わる。
+  // 月を動かすと、その月にイベントがある県市にピンが立つ。台湾の祭りは旧暦なので月は平年の目安。
+  const eventLayer = createEventLayer(stage, EVENTS, counties.counties, reduceMotion);
+  {
+    const bar = document.getElementById("month-bar");
+    const btns = document.getElementById("month-btns");
+    const off = document.getElementById("month-off");
+    const eBtn = document.getElementById("event-btn");
+    const eLabel = document.getElementById("event-label");
+
+    const jpMonth = Number(new Intl.DateTimeFormat("en-US", {
+      timeZone: "Asia/Tokyo", month: "numeric" }).format(new Date()));
+
+    const render = () => {
+      const T = STRINGS[lang];
+      eLabel.textContent = activeMonth
+        ? (IS_MOBILE() ? MONTHS.name[lang][activeMonth - 1] : `${T.events} ${activeMonth}`)
+        : T.events;
+      eBtn.dataset.on = activeMonth ? "true" : "false";
+      off.textContent = T.monthOff;
+      for (const b of btns.children) {
+        b.dataset.on = Number(b.dataset.m) === activeMonth ? "true" : "false";
+      }
+    };
+
+    const apply = (m) => {
+      const wasOn = activeMonth > 0;
+      activeMonth = m;
+      eventLayer.setMonth(m);
+      if (wasOn !== (m > 0)) refreshBundles();   // ランドマークの出し入れ
+      if (!m) { pickedEvent = null; eventLayer.select(null); }
+      bar.hidden = m === 0 && bar.dataset.forced !== "1";
+      // スマホでは月バーが出ると下の段が1つ増える。ウェルカムカードをその分だけ上げる
+      document.documentElement.dataset.monthbar = String(!bar.hidden);
+      render();
+      // パネルが開いていれば、その月のイベントに差し替える
+      if (!panel.hidden && panel.dataset.county) renderPanel();
+    };
+
+    for (let m = 1; m <= 12; m += 1) {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "month-btn";
+      b.dataset.m = String(m);
+      b.textContent = String(m);
+      b.addEventListener("click", () => apply(m === activeMonth ? 0 : m));
+      btns.appendChild(b);
+    }
+    off.addEventListener("click", () => { bar.dataset.forced = "0"; apply(0); });
+    eBtn.addEventListener("click", () => {
+      if (activeMonth) { bar.dataset.forced = "0"; apply(0); return; }
+      bar.dataset.forced = "1";
+      bar.hidden = false;
+      document.documentElement.dataset.monthbar = "true";
+      apply(jpMonth);            // 開いたら今月から
+    });
+    updateMonthBar = render;
+    render();
+  }
+
+  // ---- 説明モード ----
+  // ★移植の第7段。全機能が揃ってから入れる(当て先の無いツアーは黙って終わるため)
+
   courseLayer = createCourseLayer(scene, counties.bounds, groups, reduceMotion);
   if (import.meta.env.DEV) window.__course = courseLayer;
   const badgeAnchor = new THREE.Vector3();

@@ -251,7 +251,7 @@ export const createScene = (canvas, counties, bounds) => {
   scene.add(key);
 
   return {
-    renderer, scene, camera, world, groups, sea, span, updateSea,
+    renderer, scene, camera, world, groups, sea, span, updateSea, bounds,   // bounds=イベントピンの座標計算に要る
     frameWidth: spanX, frameHeight: spanY,
     extrude: EXTRUDE, lift: LIFT,
   };
