@@ -43,6 +43,30 @@ const rinkaBubble = (text) => {
 };
 
 /** RINKAプロフィール(guide-rowクリックで開閉)。MV STUDIOへの動線つき */
+/**
+ * 案内人の写真を押したときだけ全画面で見せる。
+ * ★パネルの中に大きく置くと、見たくない人にも毎回ついて回る(2026-08-22 ユーザー指摘)。
+ *   既定は小さいアイコンのまま、押した人にだけ 900x1200 を見せる。
+ */
+const openRinkaPhoto = () => {
+  const box = document.createElement("div");
+  box.className = "photo-lightbox";
+  box.tabIndex = -1;
+  const img = document.createElement("img");
+  img.src = `${import.meta.env.BASE_URL}guide/rinka-guide.webp`;
+  img.alt = "RINKA";
+  const close = () => {
+    box.remove();
+    document.removeEventListener("keydown", onKey);
+  };
+  const onKey = (e) => { if (e.key === "Escape") close(); };
+  box.addEventListener("click", close);
+  document.addEventListener("keydown", onKey);
+  box.appendChild(img);
+  document.body.appendChild(box);
+  box.focus();
+};
+
 const toggleRinkaProfile = () => {
   const old = document.getElementById("rinka-profile");
   if (old) {
@@ -53,15 +77,6 @@ const toggleRinkaProfile = () => {
   const card = document.createElement("div");
   card.id = "rinka-profile";
   card.className = "rinka-profile";
-  // ★案内人の写真は 900x1200 の縦長なのに、ヘッダでは48pxの正方形に切って出していた
-  //   (2026-08-22 ユーザー指摘)。ここが唯一「縦のまま大きく出せる」場所なので、
-  //   地図の面積を削らずに見せ場にする。素材が無い場合は静かに落とす
-  const photo = document.createElement("img");
-  photo.className = "rinka-portrait";
-  photo.src = `${import.meta.env.BASE_URL}guide/rinka-guide.webp`;
-  photo.alt = "RINKA";
-  photo.loading = "lazy";
-  photo.addEventListener("error", () => photo.remove());
   const intro = document.createElement("p");
   intro.textContent = P.intro;
   const links = document.createElement("div");
@@ -74,12 +89,26 @@ const toggleRinkaProfile = () => {
     a.textContent = label;
     links.appendChild(a);
   }
-  card.append(photo, intro, links);
+  card.append(intro, links);
   document.querySelector(".guide-row").after(card);
 };
 document.querySelector(".guide-row")?.addEventListener("click", toggleRinkaProfile);
+{
+  const av = document.querySelector(".guide-row img");
+  if (av) {
+    av.classList.add("guide-avatar");
+    av.addEventListener("click", (e) => {
+      e.stopPropagation();   // 行のトグルと二重に反応させない
+      openRinkaPhoto();
+    });
+  }
+}
 
 const renderPanel = () => {
+  // ★案内人のプロフィールは .guide-row(パネルの外枠)の後ろに挿しているので、
+  //   panelBody を作り直しても残る。県市を選び直すたびに開きっぱなしのまま
+  //   居座って邪魔になっていた(2026-08-22 ユーザー指摘)。描き直しのたびに閉じる
+  document.getElementById("rinka-profile")?.remove();
   const county = counties.counties.find((c) => c.id === panelState.countyId);
   if (!county) return;
   panelName.textContent = county.name[lang] ?? county.name.zh;
