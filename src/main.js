@@ -704,6 +704,10 @@ const toggleCourse = (cse) => {
     courseLayer?.show(cse);
     document.getElementById("welcome")?.setAttribute("hidden", "");
     renderCoursePanel(cse); // 右パネルに旅程を表示(ユーザー要望 2026-08-21)
+    // ★コースを選ぶと旅程パネルが「旅の基本情報」の裏で開き、
+    //   スマホでは何も起きていないように見えていた(2026-08-22 ユーザー指摘)。
+    //   ルートを見たくて選んだのだから、上に載っている情報パネルは閉じる
+    infoPanel.hidden = true;
   }
   renderInfo();
 };
@@ -1489,7 +1493,10 @@ function start() {
       camera.position.copy(dir.clone().multiplyScalar(dist));
       controls.target.set(0, 0, 0);
       controls.maxDistance = dist * 1.6;
-      controls.minDistance = dist * 0.35;
+      // ★0.35 では寄りきれず、アイコンが小さいまま押せない(2026-08-22 ユーザー指摘)。
+      //   縦画面は全体を収めるために dist 自体が大きくなるので、余計に遠かった。
+      //   0.15 まで寄れるようにする(押し込みすぎて地面に潜らない範囲は maxPolarAngle が守る)
+      controls.minDistance = dist * 0.15;
       controls.update();
     }
   };
