@@ -2,7 +2,21 @@ node_modules/
 dist/
 # 内部作業物は公開リポジトリに含めない(made-linlinのプロンプト文書公開事故の再発防止)
 docs/
-tools/
+# tools/ は既定で非公開。画像生成のプロンプト(icon_plan / spec_plan / make_rinka_assets /
+# gen_outfit_looks)がここにあり、公開したくない。
+# ★`tools/` ではなく `tools/*`。ディレクトリごと除外すると git が中に降りず、
+#   下の ! による再包含が効かない
+tools/*
+# ただし**公式オープンデータの取り込みと検査だけ**は CI(.github/workflows/refresh-opendata.yml)
+# が毎日動かすので追跡する。中身は公開データの取得・分類・検査で、生成プロンプトも鍵も入らない
+!tools/fetch_opendata.py
+!tools/build_events.py
+!tools/event_picks.py
+!tools/write_meta.py
+!tools/check_about.py
+!tools/check_ui_assets.py
+!tools/check_js.py
+!tools/check_links.py
 assets-from-chatgpt/
 assets-rinka/
 data/source/

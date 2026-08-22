@@ -1,0 +1,67 @@
+# 交通部觀光署の公式オープンデータを毎日取り直し、変化があればコミットする。
+#
+# なぜ要るか(2026-08-23):
+#   このサイトの主張は「観光署の公式データをそのまま使っている」。
+#   手で一度落としたきりだと静かに腐り、主張の方が先に嘘になる。
+#   観光署は毎日1回更新している(UpdateInterval=86400)。
+#
+# 何が変わるか(誇張しない):
+#   - 活動(イベント)の内容と件数     … 毎日変わりうる
+#   - 画面に出る「官方資料更新日」    … 毎日変わる
+#   - 掲載する景点220件の選定        … 変わらない(人が選んだ固定リスト)
+#
+# 失敗しても壊れない: fetch_opendata.py は形と件数を検査し、
+# 通らなければ手元のデータを上書きしない。差分ゼロなら何もコミットしない。
+
+name: Refresh official open data
+
+on:
+  schedule:
+    - cron: "20 21 * * *"        # UTC 21:20 = 台北 05:20。観光署の 02:30 更新の後
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-opendata
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install opencc-python-reimplemented pypinyin
+
+      - name: 公式データを取り直す
+        run: python3 tools/fetch_opendata.py
+
+      - name: 作り直す
+        run: |
+          python3 tools/build_events.py
+          python3 tools/write_meta.py
+
+      - name: 埋め残しと素材の検査
+        run: |
+          python3 tools/check_about.py
+          python3 tools/check_ui_assets.py
+          python3 tools/check_js.py
+
+      - name: 変化があればコミット
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          # data/source/ は .gitignore 済み。派生物だけを見る
+          if git diff --quiet -- data/events.json data/meta.json; then
+            echo "変化なし。何もしない"
+            exit 0
+          fi
+          git add data/events.json data/meta.json
+          git commit -m "觀光署の公式データを取り直す($(date -u +%Y-%m-%d))
+
+          自動更新。tools/fetch_opendata.py が形と件数を検査して取得したもの。"
+          git push

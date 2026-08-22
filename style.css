@@ -3282,3 +3282,11 @@ html[data-phase="night"] .tour-item-n {
   white-space: nowrap;
 }
 .credit { line-height: 1.6; }
+
+/* AI生成の明示。出典表示と同じ行に埋もれさせず、少しだけ立てる
+   (2026-08-23、台湾で行政のAI宣伝物が炎上した事例を踏まえ、先に自分で線引きする) */
+.credit-ai {
+  display: block;
+  margin-top: 4px;
+  opacity: 0.9;
+}

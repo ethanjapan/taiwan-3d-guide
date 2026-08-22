@@ -1,0 +1,17 @@
+{
+  "sources": {
+    "photos": {
+      "count": 225,
+      "commons": 9
+    },
+    "attractions": {
+      "updated": "2026-08-23",
+      "count": 6085
+    },
+    "events": {
+      "updated": "2026-08-23",
+      "count": 954
+    }
+  },
+  "built": "2026-08-23"
+}
