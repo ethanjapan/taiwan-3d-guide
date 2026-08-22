@@ -57,6 +57,8 @@ export const STRINGS = {
     faqAll: "全部",
     faqNone: "沒有符合的問答",
     notices: "開源授權",
+    stampDone: "全部蓋滿了！",
+    stampDoneText: "22 個縣市都走過一遍了。RINKA 陪你繞了台灣一圈。",
     credit: CREDIT,
   },
   ja: {
@@ -113,6 +115,8 @@ export const STRINGS = {
     faqAll: "すべて",
     faqNone: "該当するQAがありません",
     notices: "オープンソースライセンス",
+    stampDone: "ぜんぶ集まりました",
+    stampDoneText: "22の県市をひと通り開きました。RINKAと台湾一周です。",
     credit: CREDIT,
   },
   cn: {
@@ -169,6 +173,8 @@ export const STRINGS = {
     faqAll: "全部",
     faqNone: "没有符合的问答",
     notices: "开源授权",
+    stampDone: "全部盖满了！",
+    stampDoneText: "22 个县市都走过一遍了。RINKA 陪你绕了台湾一圈。",
     credit: CREDIT,
   },
   en: {
@@ -225,6 +231,8 @@ export const STRINGS = {
     faqAll: "All",
     faqNone: "No matching questions",
     notices: "Open-source licences",
+    stampDone: "Every stamp collected",
+    stampDoneText: "You have opened all 22. A full lap of Taiwan with RINKA.",
     credit: CREDIT,
   },
   ko: {
@@ -281,6 +289,8 @@ export const STRINGS = {
     faqAll: "전체",
     faqNone: "해당하는 QA가 없습니다",
     notices: "오픈소스 라이선스",
+    stampDone: "스탬프를 모두 모았습니다",
+    stampDoneText: "전부 한 번씩 열어봤습니다. RINKA와 함께 한 바퀴 완주.",
     credit: CREDIT,
   },
 };

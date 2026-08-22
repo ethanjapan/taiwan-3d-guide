@@ -53,6 +53,15 @@ const toggleRinkaProfile = () => {
   const card = document.createElement("div");
   card.id = "rinka-profile";
   card.className = "rinka-profile";
+  // ★案内人の写真は 900x1200 の縦長なのに、ヘッダでは48pxの正方形に切って出していた
+  //   (2026-08-22 ユーザー指摘)。ここが唯一「縦のまま大きく出せる」場所なので、
+  //   地図の面積を削らずに見せ場にする。素材が無い場合は静かに落とす
+  const photo = document.createElement("img");
+  photo.className = "rinka-portrait";
+  photo.src = `${import.meta.env.BASE_URL}guide/rinka-guide.webp`;
+  photo.alt = "RINKA";
+  photo.loading = "lazy";
+  photo.addEventListener("error", () => photo.remove());
   const intro = document.createElement("p");
   intro.textContent = P.intro;
   const links = document.createElement("div");
@@ -65,7 +74,7 @@ const toggleRinkaProfile = () => {
     a.textContent = label;
     links.appendChild(a);
   }
-  card.append(intro, links);
+  card.append(photo, intro, links);
   document.querySelector(".guide-row").after(card);
 };
 document.querySelector(".guide-row")?.addEventListener("click", toggleRinkaProfile);
@@ -398,6 +407,28 @@ const renderStampBook = () => {
   document.getElementById("stamp-title").textContent = STRINGS[lang].stampBook;
   document.getElementById("stamp-hint").textContent = STRINGS[lang].stampHint;
   const grid = document.getElementById("stamp-grid");
+  // ★全部集めた瞬間まで何も起きなかった。達成はマスコットを出す定石の場所なので、
+  //   ここで案内人を大きく出して締める(2026-08-22 ユーザー要望)
+  const done = document.getElementById("stamp-done");
+  done?.remove();
+  if (stamps.size === counties.counties.length) {
+    const box = document.createElement("div");
+    box.id = "stamp-done";
+    box.className = "stamp-done";
+    const img = document.createElement("img");
+    img.className = "stamp-done-photo";
+    img.src = `${import.meta.env.BASE_URL}guide/rinka-guide.webp`;
+    img.alt = "RINKA";
+    img.addEventListener("error", () => img.remove());
+    const t = document.createElement("p");
+    t.className = "stamp-done-title";
+    t.textContent = STRINGS[lang].stampDone;
+    const d = document.createElement("p");
+    d.className = "stamp-done-text";
+    d.textContent = STRINGS[lang].stampDoneText;
+    box.append(img, t, d);
+    document.getElementById("stamp-hint").after(box);
+  }
   grid.replaceChildren(
     ...counties.counties.map((c) => {
       const cell = document.createElement("div");

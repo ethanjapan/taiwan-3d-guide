@@ -1133,6 +1133,19 @@ body {
   background: #eef8f5;
 }
 
+/* 案内人の全身。元画像は900x1200なので3:4のまま出す(正方形に切らない)。
+   パネルの幅に合わせて伸縮させ、縦は上限を決めて長くなりすぎないようにする */
+.rinka-portrait {
+  display: block;
+  width: 100%;
+  max-height: 46vh;
+  object-fit: cover;
+  object-position: 50% 12%;   /* 顔が切れないよう上寄り */
+  border-radius: 10px;
+  margin: 0 0 10px;
+  background: rgba(255, 255, 255, 0.4);
+}
+
 .rinka-profile p {
   margin: 0 0 8px;
   font-size: 0.7rem;
@@ -3135,4 +3148,35 @@ html[data-phase="night"] .tour-item-n {
   background: #33566b;
   border-color: #33566b;
   color: #fff;
+}
+
+/* しおりを全部集めたときだけ出る締めのカード。達成の瞬間に案内人を大きく出す */
+.stamp-done {
+  margin: 8px 0 14px;
+  padding: 14px;
+  border-radius: 16px;
+  text-align: center;
+  background: linear-gradient(160deg, rgba(255, 214, 120, 0.28), rgba(255, 255, 255, 0.35));
+  border: 1px solid rgba(214, 160, 60, 0.4);
+}
+.stamp-done-photo {
+  display: block;
+  width: min(190px, 62%);
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: 50% 10%;
+  border-radius: 14px;
+  margin: 0 auto 10px;
+}
+.stamp-done-title {
+  margin: 0 0 4px;
+  font-size: 0.92rem;
+  font-weight: 800;
+  color: var(--ink-glass);
+}
+.stamp-done-text {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.7;
+  color: var(--ink-glass-soft);
 }
