@@ -11,7 +11,8 @@ import SPECIALTIES from "../data/specialties.json";
 import COUNTS from "../data/attraction-counts.json";
 import DECORATIONS from "../data/decorations.json";
 import ATTRACTIONS from "../data/attractions.json";
-import { TRAVEL_INFO, TRANSIT, PROMO_VIDEOS } from "./travelinfo.js";
+import { TRAVEL_INFO, TRANSIT, PROMO_VIDEOS,
+         IC_TABLE, MONTHS, SOS } from "./travelinfo.js";
 import { fetchWeather, codeLabel } from "./weather.js";
 import { rinkaCounty, rinkaSpot, RINKA_PROFILE, RINKA_LINKS } from "./rinka.js";
 import COUNTY_INTRO from "../data/i18n/county-intro.json";
@@ -790,6 +791,139 @@ const renderWeatherOverview = async (host) => {
   );
 };
 
+/**
+ * 旅の基本情報の1節。native <details>/<summary> で畳む。
+ * ★summary の中に別の操作要素(リンク・ボタン)を入れない — summary 自体がトグルなので、
+ *   中にボタンを置くとキーボードでもスクリーンリーダーでも操作が壊れる。
+ * ★畳んだ中身は走査できないので、見出しに gist(中に何があるか)を必ず出す。
+ */
+const buildSection = (sec, open) => {
+  const d = document.createElement("details");
+  d.className = "info-sec";
+  if (open) d.open = true;
+  const sm = document.createElement("summary");
+  sm.className = "info-sum";
+  const ic = document.createElement("img");
+  ic.className = "info-sec-icon";
+  ic.src = `${import.meta.env.BASE_URL}info/${sec.id}.webp`;
+  ic.alt = "";
+  ic.loading = "lazy";
+  // 節の見出しアイコンは飾りなので、無ければ枠を残さず消す(プレースホルダの方が目立つ)
+  ic.addEventListener("error", () => ic.remove());
+  const tx = document.createElement("span");
+  tx.className = "info-sum-text";
+  const h = document.createElement("span");
+  h.className = "info-sum-h";
+  h.textContent = sec.h;
+  const g = document.createElement("span");
+  g.className = "info-sum-gist";
+  g.textContent = sec.gist;
+  tx.append(h, g);
+  sm.append(ic, tx);
+  d.appendChild(sm);
+
+  const body = document.createElement("div");
+  body.className = "info-sec-body";
+
+  // 特別扱い: 比較表・12か月の帯・緊急番号は、箇条書きより形で見せた方が速い
+  if (sec.kind === "ic") body.appendChild(icTable());
+  if (sec.kind === "climate") body.appendChild(monthStrip());
+  if (sec.kind === "sos") body.appendChild(sosCards());
+
+  const dl = document.createElement("dl");
+  dl.className = "info-rows";
+  for (const [term, desc] of sec.rows) {
+    const dt = document.createElement("dt");
+    dt.textContent = term;
+    const dd = document.createElement("dd");
+    dd.textContent = desc;
+    dl.append(dt, dd);
+  }
+  body.appendChild(dl);
+  d.appendChild(body);
+  return d;
+};
+
+/**
+ * ICカード3種の比較。
+ * ★4列の表にしたら、パネル幅(実測160px級)で「成田/羽田のJR EAST Travel Service Center」が
+ *   1文字ずつ折り返して読めなくなった。狭い面では表よりカードの積み重ねが強い。
+ */
+const icTable = () => {
+  const t = IC_TABLE[lang] ?? IC_TABLE.en;
+  const box = document.createElement("div");
+  box.className = "ic-cards";
+  for (const row of t.rows) {
+    const card = document.createElement("div");
+    card.className = "ic-card";
+    const name = document.createElement("p");
+    name.className = "ic-name";
+    name.textContent = row[0];
+    card.appendChild(name);
+    const dl = document.createElement("dl");
+    dl.className = "ic-kv";
+    for (let i = 1; i < row.length; i++) {
+      const dt = document.createElement("dt");
+      dt.textContent = t.head[i];
+      const dd = document.createElement("dd");
+      dd.textContent = row[i];
+      dl.append(dt, dd);
+    }
+    card.appendChild(dl);
+    box.appendChild(card);
+  }
+  return box;
+};
+
+/** 12か月の帯。「いつ行くか」は文章で読むより色と一語で拾う方が速い。 */
+const monthStrip = () => {
+  const box = document.createElement("div");
+  box.className = "month-strip";
+  const words = MONTHS.word[lang] ?? MONTHS.word.en;
+  for (let m = 0; m < 12; m++) {
+    const cell = document.createElement("div");
+    cell.className = "month-cell";
+    if (MONTHS.best.includes(m)) cell.dataset.best = "true";
+    const bar = document.createElement("span");
+    bar.className = "month-hue";   // ★画面下の #month-bar と別物。同名にすると高さを奪い合う
+    bar.style.background = MONTHS.colors[m];
+    const no = document.createElement("span");
+    no.className = "month-no";
+    no.textContent = String(m + 1);
+    const w = document.createElement("span");
+    w.className = "month-word";
+    w.textContent = words[m];
+    cell.append(bar, no, w);
+    box.appendChild(cell);
+  }
+  const note = document.createElement("p");
+  note.className = "month-note";
+  note.textContent = `◎ ${MONTHS.bestLabel[lang] ?? MONTHS.bestLabel.en}`;
+  const wrap = document.createElement("div");
+  wrap.append(box, note);
+  return wrap;
+};
+
+/** 緊急番号。文字で書いても電話はかけられないので tel: の押せるカードにする。 */
+const sosCards = () => {
+  const box = document.createElement("div");
+  box.className = "sos-row";
+  for (const [num, label] of SOS[lang] ?? SOS.en) {
+    const a = document.createElement("a");
+    a.className = "sos-card";
+    a.href = `tel:${num.replace(/[^0-9+]/g, "")}`;
+    const n = document.createElement("span");
+    n.className = "sos-num";
+    n.textContent = num;
+    const l = document.createElement("span");
+    l.className = "sos-label";
+    l.textContent = label;
+    a.append(n, l);
+    box.appendChild(a);
+  }
+  return box;
+};
+
 const renderInfo = () => {
   const info = TRAVEL_INFO[lang];
   document.getElementById("info-title").textContent = info.title;
@@ -818,55 +952,77 @@ const renderInfo = () => {
     h.textContent = tr.h;
     transitNodes.push(h);
 
-    const flow = document.createElement("div");
-    flow.className = "transit-flow";
+    const pick = document.createElement("p");
+    pick.className = "course-tip";
+    pick.textContent = tr.pick;
+    transitNodes.push(pick);
+
     const node = (label, cls) => {
       const el = document.createElement("div");
       el.className = `transit-node ${cls}`;
       el.textContent = label;
       return el;
     };
-    flow.appendChild(node(tr.airport, "is-airport"));
-    const routes = document.createElement("div");
-    routes.className = "transit-routes";
-    for (const r of tr.routes) {
-      const card = document.createElement("div");
-      card.className = "transit-route";
-      if (r.best) card.dataset.best = "true";
-      const nm = document.createElement("span");
-      nm.className = "transit-route-name";
-      nm.textContent = r.name;
-      const tm = document.createElement("span");
-      tm.className = "transit-route-time";
-      tm.textContent = r.time;
-      const nt = document.createElement("span");
-      nt.className = "transit-route-note";
-      nt.textContent = r.note;
-      card.append(nm, tm, nt);
-      routes.appendChild(card);
-    }
-    flow.appendChild(routes);
-    flow.appendChild(node(tr.taipei, "is-city"));
-    const onward = document.createElement("div");
-    onward.className = "transit-onward";
-    for (const o of tr.onward) {
-      const chip = document.createElement("span");
-      chip.className = "transit-chip";
-      chip.textContent = o;
-      onward.appendChild(chip);
-    }
-    flow.appendChild(onward);
-    transitNodes.push(flow);
 
-    const south = document.createElement("div");
-    south.className = "transit-south";
-    south.append(
-      node(tr.airport, "is-airport is-mini"),
-      Object.assign(document.createElement("span"), { className: "transit-via", textContent: tr.southRoute.via }),
-      node(tr.hsr, "is-city is-mini"),
-      Object.assign(document.createElement("span"), { className: "transit-via", textContent: tr.southRoute.to }),
-    );
-    transitNodes.push(south);
+    // 台湾版は桃園1つ前提の固定フローだった。実際は松山・高雄・台中からも入れるので、
+    // 日本版と同じ「空港を選ぶ」タブにする
+    const tabs = document.createElement("div");
+    tabs.className = "airport-tabs";
+    const flowBox = document.createElement("div");
+    flowBox.className = "transit-flow-box";
+
+    const drawFlow = (ap) => {
+      const flow = document.createElement("div");
+      flow.className = "transit-flow";
+      flow.appendChild(node(ap.name, "is-airport"));
+      const routes = document.createElement("div");
+      routes.className = "transit-routes";
+      for (const r of ap.routes) {
+        const card = document.createElement("div");
+        card.className = "transit-route";
+        if (r.best) card.dataset.best = "true";
+        const nm = document.createElement("span");
+        nm.className = "transit-route-name";
+        nm.textContent = r.name;
+        const tm = document.createElement("span");
+        tm.className = "transit-route-time";
+        tm.textContent = r.time;
+        const nt = document.createElement("span");
+        nt.className = "transit-route-note";
+        nt.textContent = r.note;
+        card.append(nm, tm, nt);
+        routes.appendChild(card);
+      }
+      flow.appendChild(routes);
+      flow.appendChild(node(ap.city, "is-city"));
+      const onward = document.createElement("div");
+      onward.className = "transit-onward";
+      for (const o of ap.onward) {
+        const chip = document.createElement("span");
+        chip.className = "transit-chip";
+        chip.textContent = o;
+        onward.appendChild(chip);
+      }
+      flow.appendChild(onward);
+      flowBox.replaceChildren(flow);
+      stagger(flowBox);
+    };
+
+    tr.airports.forEach((ap, i) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "airport-tab";
+      b.textContent = ap.name;
+      if (i === 0) b.dataset.on = "true";
+      b.addEventListener("click", () => {
+        for (const other of tabs.children) delete other.dataset.on;
+        b.dataset.on = "true";
+        drawFlow(ap);
+      });
+      tabs.appendChild(b);
+    });
+    transitNodes.push(tabs, flowBox);
+    drawFlow(tr.airports[0]);
 
     const ch = document.createElement("h3");
     ch.className = "info-h";
@@ -981,19 +1137,7 @@ const renderInfo = () => {
     ...transitNodes,
     ...videoNodes,
     ...courseNodes,
-    ...info.sections.flatMap((sec) => {
-      const h = document.createElement("h3");
-      h.className = "info-h";
-      h.textContent = sec.h;
-      const ul = document.createElement("ul");
-      ul.className = "info-list";
-      for (const line of sec.lines) {
-        const li = document.createElement("li");
-        li.textContent = line;
-        ul.appendChild(li);
-      }
-      return [h, ul];
-    }),
+    ...info.sections.map((sec, i) => buildSection(sec, i === 0)),
   );
   stagger(body);
 };
