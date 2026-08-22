@@ -2832,26 +2832,35 @@ html[data-phase="night"] .tour-item-n {
    基準: iOS 44x44pt / Android 48x48dp、画面端から16pt以上
    ══════════════════════════════════════════════════════════════════════════ */
 
-/* 言語トグル(スマホだけ出す) */
+/* 言語トグル(スマホだけ出す)。デスクトップでは入れ物を透過させ、今までどおり横一列 */
 .lang-toggle { display: none; }
+.lang-list { display: contents; }
 
 @media (max-width: 640px) {
   /* --- 3. ヘッダを1段に --- */
   .lang-toggle { display: inline-flex; }
-  .langs .lang[data-lang] { display: none; }
-  /* 開いたときだけ、ヘッダの下に縦に落とす */
-  .langs[data-open="true"] .lang[data-lang] {
-    display: inline-flex;
-    position: absolute;
-    right: 12px;
-    z-index: 30;
-  }
+  /* ★旧実装は nth-of-type で1〜5番目を狙っていたが、.langs の中には検索・情報・?・
+     言語トグルも入っているので、言語ボタンは実際には5〜9番目。4つが位置指定を受けられず
+     同じ場所に重なっていた(2026-08-22 ユーザー指摘)。入れ物を分けて素直に縦積みにする */
   .langs { position: relative; }
-  .langs[data-open="true"] .lang[data-lang]:nth-of-type(1) { top: 46px; }
-  .langs[data-open="true"] .lang[data-lang]:nth-of-type(2) { top: 96px; }
-  .langs[data-open="true"] .lang[data-lang]:nth-of-type(3) { top: 146px; }
-  .langs[data-open="true"] .lang[data-lang]:nth-of-type(4) { top: 196px; }
-  .langs[data-open="true"] .lang[data-lang]:nth-of-type(5) { top: 246px; }
+  .lang-list { display: none; }
+  .langs[data-open="true"] .lang-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    position: absolute;
+    top: 48px;
+    right: 0;
+    z-index: 30;
+    padding: 8px;
+    border-radius: 16px;
+    background: var(--glass-tint);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid var(--glass-edge);
+    box-shadow: 0 14px 34px rgba(18, 46, 66, 0.2);
+  }
+  .lang-list .lang { justify-content: center; }
 
   /* --- 2. タップ標的 44px --- */
   .lang,

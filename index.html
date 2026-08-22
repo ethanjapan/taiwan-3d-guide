@@ -42,11 +42,15 @@
         <button type="button" class="lang help-btn" id="help-btn" aria-label="help" hidden>?</button>
         <!-- スマホでは言語5つが横に並ばずヘッダが2段になる。1つに畳んで押したときだけ開く -->
         <button type="button" class="lang lang-toggle" id="lang-btn" aria-expanded="false"></button>
-        <button type="button" class="lang" data-lang="zh" lang="zh-Hant">繁中</button>
-        <button type="button" class="lang" data-lang="cn" lang="zh-Hans">简中</button>
-        <button type="button" class="lang" data-lang="ja" lang="ja">日本語</button>
-        <button type="button" class="lang" data-lang="en" lang="en">EN</button>
-        <button type="button" class="lang" data-lang="ko" lang="ko">한국어</button>
+        <!-- ★言語ボタンは独立の入れ物に入れる。ヘッダの他のボタンと混ざっていると
+             スマホの縦並びを nth-of-type で数えることになり、順番が変わるたび壊れる -->
+        <div class="lang-list" id="lang-list">
+          <button type="button" class="lang" data-lang="zh" lang="zh-Hant">繁中</button>
+          <button type="button" class="lang" data-lang="cn" lang="zh-Hans">简中</button>
+          <button type="button" class="lang" data-lang="ja" lang="ja">日本語</button>
+          <button type="button" class="lang" data-lang="en" lang="en">EN</button>
+          <button type="button" class="lang" data-lang="ko" lang="ko">한국어</button>
+        </div>
       </nav>
     </header>
 
