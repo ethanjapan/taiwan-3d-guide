@@ -270,7 +270,9 @@ body {
   position: fixed;
   left: clamp(16px, 4vw, 32px);
   bottom: 10px;
-  max-width: min(60ch, calc(100vw - 32px));
+  /* ★狭いデスクトップ(実測1078px)で中央のヒントと92x17px重なっていた。
+     クレジットは左半分に収め、ヒントは中央に残す */
+  max-width: min(60ch, calc(50vw - 40px));
   color: var(--ink-soft);
   font-size: 0.66rem;
   line-height: 1.5;
@@ -2970,13 +2972,35 @@ html[data-phase="night"] .tour-item-n {
     white-space: nowrap;
   }
 
-  /* 上へ積み直す。dock(46) + 余白 */
-  .month-bar { bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }
-  .welcome { bottom: calc(66px + env(safe-area-inset-bottom, 0px)); }
-  html[data-monthbar="true"] .welcome { bottom: calc(185px + env(safe-area-inset-bottom, 0px)); }
-  .hint { bottom: calc(152px + env(safe-area-inset-bottom, 0px)); }
-  body:has(.month-bar:not([hidden])) .hint { bottom: calc(271px + env(safe-area-inset-bottom, 0px)); }
-  html[data-monthbar="true"] .hint { bottom: calc(271px + env(safe-area-inset-bottom, 0px)); }
+  /* 上へ積み直す。dock(46) → クレジット → 月バー → ウェルカム → ヒント の順。
+     ★クレジットはODbLの表示義務があるので消せない。実測でdockと351x38px重なっていたので
+       dockの上に固定の居場所を作る */
+  .credit {
+    left: 12px;
+    right: 12px;
+    bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+    max-width: none;
+    font-size: 0.52rem;
+    line-height: 1.4;
+    /* ★出典は消せないが、3行を超えると上の段を押し上げてしまう。
+       2行で抑え、続きは「旅の基本情報」側に全文がある */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .credit-link {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  /* 実測(375x812)の積み: dock 12..58 / クレジット 62..118 / この上に月バー・カード・ヒント */
+  .month-bar { bottom: calc(124px + env(safe-area-inset-bottom, 0px)); }
+  .welcome { bottom: calc(124px + env(safe-area-inset-bottom, 0px)); }
+  html[data-monthbar="true"] .welcome { bottom: calc(268px + env(safe-area-inset-bottom, 0px)); }
+  .hint { bottom: calc(220px + env(safe-area-inset-bottom, 0px)); }
+  body:has(.month-bar:not([hidden])) .hint { bottom: calc(364px + env(safe-area-inset-bottom, 0px)); }
+  html[data-monthbar="true"] .hint { bottom: calc(364px + env(safe-area-inset-bottom, 0px)); }
 
   /* ウェルカムカードはスマホでは1行の帯にする。
      大きいカードのままだと地図の中心を覆ってしまう(リンクはRINKAプロフィールにもある) */
@@ -3048,4 +3072,26 @@ html[data-phase="night"] .tour-item-n {
   margin: 2px 0 14px;
   font-size: 0.64rem;
   color: var(--ink-soft);
+}
+
+/* ★狭いデスクトップではクレジット(左下)と中央のヒントが同じ高さで重なる
+   (2026-08-22 実測 1078px幅で46x17px)。ヒントを1段上げてクレジットの上に逃がす。
+   スマホは別の積み方(dock)をしているので、ここでは触らない */
+@media (min-width: 641px) and (max-width: 1200px) {
+  .hint {
+    bottom: 56px;
+  }
+  /* ヒントを上げると今度は左下のウェルカムカードと横で触れる(実測26x8px)。
+     カードを細くして中央のヒントに届かないようにする */
+  .welcome {
+    width: min(300px, calc(50vw - 60px));
+  }
+}
+
+/* ★hidden 属性が効かない要素があった(2026-08-22 実測)。
+   [hidden] のUA既定は display:none だが、こちらが .stamp-btn { display:flex } や
+   .lang { display:inline-flex } を後から当てているので、そちらが勝って表示され続ける。
+   個別に書くと必ず書き漏らすので、一括で優先させる。 */
+[hidden] {
+  display: none !important;
 }

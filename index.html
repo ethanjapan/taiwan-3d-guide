@@ -38,7 +38,8 @@
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
         </button>
         <button type="button" class="lang info-btn" id="info-btn" data-i18n="infoBtn"></button>
-        <button type="button" class="lang help-btn" id="help-btn" aria-label="help">?</button>
+        <!-- 説明モードは移植の第7段(全機能が揃ってから) -->
+        <button type="button" class="lang help-btn" id="help-btn" aria-label="help" hidden>?</button>
         <!-- スマホでは言語5つが横に並ばずヘッダが2段になる。1つに畳んで押したときだけ開く -->
         <button type="button" class="lang lang-toggle" id="lang-btn" aria-expanded="false"></button>
         <button type="button" class="lang" data-lang="zh" lang="zh-Hant">繁中</button>
@@ -107,12 +108,14 @@
     <!-- スマホでは縦積みだと月バー・ウェルカムカードと場所を奪い合うので、
          下辺に1列で並べる。デスクトップは display:contents で今までどおり個別配置 -->
     <div class="dock" id="dock">
-      <button type="button" class="stamp-btn event-btn" id="event-btn">
+      <!-- 実装は移植の第3段。素材と配線が入るまで出さない(壊れた見た目を晒さないため) -->
+      <button type="button" class="stamp-btn event-btn" id="event-btn" hidden>
         <img id="event-icon" src="/event/sakura.webp" alt="" />
         <span id="event-label"></span>
       </button>
 
-      <button type="button" class="stamp-btn season-btn" id="season-btn">
+      <!-- 実装は移植の第6段 -->
+      <button type="button" class="stamp-btn season-btn" id="season-btn" hidden>
         <img id="season-icon" src="/ui/hibiscus.webp" alt="" />
         <span id="season-label"></span>
       </button>
