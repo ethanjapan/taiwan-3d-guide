@@ -33,6 +33,9 @@ from datetime import datetime, timezone
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
 DEST = "data/source"
+# ★data/source/ は .gitignore 済みでリポジトリに入らない。CI では存在しないので作る
+#   (手元にはあるので気づけず、GitHub Actions で FileNotFoundError になって発覚)
+os.makedirs(DEST, exist_ok=True)
 
 BASE = "https://media.taiwan.net.tw/XMLReleaseAll_public/v2.0/Zh_tw"
 

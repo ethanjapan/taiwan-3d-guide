@@ -12,7 +12,6 @@ fetch_opendata.py の直後に走らせる。手で書かない(書いた瞬間�
 """
 import json
 import os
-import subprocess
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 os.chdir(ROOT)
@@ -40,9 +39,9 @@ for name, path, key in SRC:
         "count": len(d.get(key) or []),
     }
 
-# サイト側の作り直し日。データの日付と混同しないよう別のキーにする
-meta["built"] = subprocess.run(
-    ["date", "+%Y-%m-%d"], capture_output=True, text=True).stdout.strip()
+# ★"built"(作り直した日)は置かない。台湾版の画面に出るのは觀光署の updated であって
+#   作り直し日ではなく、毎日値が変わるので**中身が同じ日でも差分が出て毎日コミットされる**。
+#   日本版には日次の配信元が無いので、あちらだけ built を持つ
 
 with open("data/meta.json", "w", encoding="utf-8") as f:
     json.dump(meta, f, ensure_ascii=False, indent=2)
@@ -50,4 +49,4 @@ with open("data/meta.json", "w", encoding="utf-8") as f:
 
 for k, v in meta["sources"].items():
     print(f"  {k:12} {v.get('updated', '—'):12} {v['count']}件")
-print(f"  built        {meta['built']}  → data/meta.json")
+print("  → data/meta.json")
