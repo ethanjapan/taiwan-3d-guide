@@ -11,6 +11,7 @@ import { createTour } from "./tour.js";
 import { STRINGS, applyLang, detectLang , ABOUT } from "./i18n.js";
 import META from "../data/meta.json";
 import COUNTY_VIDEOS from "../data/county-videos.json";
+import RINKA_CLIPS from "../data/rinka-clips.json";
 import counties from "../data/counties.json";
 import SPECIALTIES from "../data/specialties.json";
 import COUNTS from "../data/attraction-counts.json";
@@ -78,6 +79,24 @@ const rinkaBubble = (text) => {
  * ★パネルの中に大きく置くと、見たくない人にも毎回ついて回る(2026-08-22 ユーザー指摘)。
  *   既定は小さいアイコンのまま、押した人にだけ 900x1200 を見せる。
  */
+
+/** RINKAの「生きた写真」(I2V微動ループ)。muted+playsinline+loopで自動再生できる。
+    ★preload=metadataにして、詳細を開くまで動画本体を読み込ませない */
+const livingVideo = (file, cls) => {
+  const v = document.createElement("video");
+  v.className = cls;
+  v.src = `${import.meta.env.BASE_URL}living/${file}`;
+  v.muted = true;
+  v.loop = true;
+  v.autoplay = true;
+  v.playsInline = true;
+  v.setAttribute("playsinline", "");
+  v.preload = "metadata";
+  // autoplay属性だけだと再生が始まらない環境がある(背面タブ復帰後など)。明示的に叩く
+  setTimeout(() => v.play().catch(() => { /* 自動再生拒否ならポスターのまま */ }), 60);
+  return v;
+};
+
 const openRinkaPhoto = () => {
   const box = document.createElement("div");
   box.className = "photo-lightbox";
@@ -119,7 +138,19 @@ const toggleRinkaProfile = () => {
     a.textContent = label;
     links.appendChild(a);
   }
-  card.append(intro, links);
+  // 旅のアルバム(生きた写真)。プロフィールを開いた人にだけ読み込む
+  const album = document.createElement("div");
+  album.className = "rinka-album";
+  for (const c of RINKA_CLIPS) {
+    const cell = document.createElement("figure");
+    cell.className = "rinka-album-cell";
+    cell.appendChild(livingVideo(c.file, "rinka-album-video"));
+    const cap = document.createElement("figcaption");
+    cap.textContent = c.t[lang] ?? c.t.zh;
+    cell.appendChild(cap);
+    album.appendChild(cell);
+  }
+  card.append(intro, album, links);
   document.querySelector(".guide-row").after(card);
 };
 document.querySelector(".guide-row")?.addEventListener("click", toggleRinkaProfile);
@@ -449,6 +480,11 @@ const renderPanel = () => {
       renderPanel();
     });
     const frag = [back, rinkaBubble(rinkaSpot(s, lang))];
+    const clip = RINKA_CLIPS.find((c) => c.spot === s.id);
+    if (clip) {
+      // 生きた写真(RINKAがこの場所にいる微動ループ)。実写真より先に見せる
+      frag.push(livingVideo(clip.file, "spot-photo spot-living"));
+    }
     if (s.photo) {
       const img = document.createElement("img");
       img.className = "spot-photo";

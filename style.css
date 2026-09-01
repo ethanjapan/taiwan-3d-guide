@@ -3725,3 +3725,29 @@ html[data-phase="night"] a.plan-route { background: #2f7bea; color: #fff; }
     padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
   }
 }
+
+/* ---- RINKAの生きた写真 ---- */
+.spot-living {
+  display: block;
+  width: 100%;
+  border-radius: 10px;
+}
+.rinka-album {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin: 10px 0 4px;
+}
+.rinka-album-cell { margin: 0; }
+.rinka-album-video {
+  width: 100%;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+  border-radius: 8px;
+}
+.rinka-album-cell figcaption {
+  margin-top: 2px;
+  font-size: 0.6rem;
+  color: var(--ink-soft);
+  text-align: center;
+}
