@@ -100,9 +100,9 @@ const openRinkaPhoto = () => {
   const box = document.createElement("div");
   box.className = "photo-lightbox";
   box.tabIndex = -1;
-  const img = document.createElement("img");
-  img.src = `${import.meta.env.BASE_URL}guide/rinka-guide.webp`;
-  img.alt = "RINKA";
+  // 動くポートレート(2026-09-01)。posterに静止画を敷く
+  const img = livingVideo("profile.mp4", "");
+  img.poster = `${import.meta.env.BASE_URL}guide/rinka-guide.webp`;
   const close = () => {
     box.remove();
     document.removeEventListener("keydown", onKey);
@@ -567,6 +567,10 @@ const planHas = (id) => plan.some((x) => x.s === id);
 const savePlan = () => {
   store.set(PLAN_KEY, JSON.stringify(plan));
   updatePlanChip();
+
+// ウェルカムの動くポートレート(index.htmlの静的video)。autoplay属性だけだと
+// 始まらない環境があるので明示的に叩く(服装カード側のlivingVideoと同じ対策)
+document.querySelector("video.welcome-photo")?.play().catch(() => { /* posterのまま */ });
 };
 const planSpots = () => plan
   .map(({ c, s }) => {
@@ -1323,11 +1327,10 @@ const outfitCard = (w, countyId) => {
   const v = vs[hashCode(countyId) % Math.max(1, vs.length)];
   const box = document.createElement("div");
   box.className = "outfit-card";
-  const img = document.createElement("img");
-  img.className = "outfit-photo";
-  img.src = `${import.meta.env.BASE_URL}outfit/${v ? v.img : band}.webp`;
-  img.alt = "";
-  img.loading = "lazy";
+  // 動くルックブック(2026-09-01)。posterに従来タイルを敷き、動画が来るまで見た目を保つ
+  const tile = v ? v.img : band;
+  const img = livingVideo(`outfit-${tile}.mp4`, "outfit-photo");
+  img.poster = `${import.meta.env.BASE_URL}outfit/${tile}.webp`;
   const txt = document.createElement("div");
   txt.className = "outfit-text";
   const head = document.createElement("span");
