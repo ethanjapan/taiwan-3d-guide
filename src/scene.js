@@ -137,22 +137,28 @@ export const createScene = (canvas, counties, bounds) => {
   const pos = waveGeo.attributes.position;
   const baseXZ = new Float32Array(pos.count * 2);
   const colors = new Float32Array(pos.count * 3);
-  const shallow = new THREE.Color(PALETTE.sea);
-  const deep = new THREE.Color(PALETTE.sea).offsetHSL(0.015, 0.05, -0.13);
-  const tmpC = new THREE.Color();
   for (let i = 0; i < pos.count; i += 1) {
-    const x = pos.getX(i);
-    const z = pos.getZ(i);
-    baseXZ[i * 2] = x;
-    baseXZ[i * 2 + 1] = z;
-    // 島の広がり(≒span/2)を基準に、外へ行くほど深い色へ
-    const d = Math.min(Math.hypot(x, z) / (span * 0.85), 1);
-    tmpC.copy(shallow).lerp(deep, d * d);
-    colors[i * 3] = tmpC.r;
-    colors[i * 3 + 1] = tmpC.g;
-    colors[i * 3 + 2] = tmpC.b;
+    baseXZ[i * 2] = pos.getX(i);
+    baseXZ[i * 2 + 1] = pos.getZ(i);
   }
+  // ★時間帯の海色は material.color の乗算では作れない(暖色×青緑=濁った緑。
+  //   2026-08-23 dusk で実害)。頂点色そのものをパレットで作り直す。
+  //   near=島の際 / far=沖。沖は「空を映している」色にすると俯瞰でも時間帯が伝わる
+  const tintSea = (nearHex, farHex) => {
+    const shallow = new THREE.Color(nearHex);
+    const deep = new THREE.Color(farHex);
+    const tmpC = new THREE.Color();
+    for (let i = 0; i < pos.count; i += 1) {
+      const d = Math.min(Math.hypot(baseXZ[i * 2], baseXZ[i * 2 + 1]) / (span * 0.85), 1);
+      tmpC.copy(shallow).lerp(deep, d * d);
+      colors[i * 3] = tmpC.r;
+      colors[i * 3 + 1] = tmpC.g;
+      colors[i * 3 + 2] = tmpC.b;
+    }
+    waveGeo.attributes.color.needsUpdate = true;
+  };
   waveGeo.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+  tintSea(PALETTE.sea, new THREE.Color(PALETTE.sea).offsetHSL(0.015, 0.05, -0.13).getHex());
   const water = new THREE.Mesh(
     waveGeo,
     new THREE.MeshStandardMaterial({
@@ -239,6 +245,9 @@ export const createScene = (canvas, counties, bounds) => {
   sea.position.y = -EXTRUDE * 0.5;
   scene.add(sea);
 
+  // 霧。沖の海が時間帯の色へ溶けていく(俯瞰では空が映らないので、これが空の代わり)
+  scene.fog = new THREE.Fog(0xcdefe9, span * 2.2, span * 3.4);
+
   scene.add(new THREE.HemisphereLight(0xffffff, 0xbfe6dc, 1.5));
   const key = new THREE.DirectionalLight(0xfff4e2, 2.1);
   key.position.set(-span * 0.6, span * 1.1, span * 0.7);
@@ -251,7 +260,7 @@ export const createScene = (canvas, counties, bounds) => {
   scene.add(key);
 
   return {
-    renderer, scene, camera, world, groups, sea, span, updateSea, bounds,   // bounds=イベントピンの座標計算に要る
+    renderer, scene, camera, world, groups, sea, span, updateSea, tintSea, bounds,   // bounds=イベントピンの座標計算に要る
     frameWidth: spanX, frameHeight: spanY,
     extrude: EXTRUDE, lift: LIFT,
   };

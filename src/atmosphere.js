@@ -20,12 +20,19 @@ export const phaseOf = (h) =>
 
 export const PHASES = ["morning", "day", "dusk", "night"];
 
-// ライト/色のプリセット。dayは createScene の初期値と一致させる
+// ライト/色のプリセット。dayは createScene の初期値と一致させる。
+// ★sea は「materialに乗算する色」から「頂点色を作り直す2色(近/沖)」へ変更(2026-08-23)。
+//   暖色×青緑の乗算で dusk が濁った緑になった実害への対処。fog は沖が溶ける色=擬似的な空。
+//   値は色彩設計の相談(GPT・類似/分裂補色調和と大気遠近法)を反映
 const PRESETS = {
-  morning: { hemi: 1.35, hemiSky: 0xfff4e0, key: 0xffe7c2, keyI: 1.9, sea: 0xfff2e2, body: "#f3efe2" },
-  day: { hemi: 1.5, hemiSky: 0xffffff, key: 0xfff4e2, keyI: 2.1, sea: 0xffffff, body: "" },
-  dusk: { hemi: 1.15, hemiSky: 0xffdfc4, key: 0xffb98a, keyI: 1.85, sea: 0xf6d8c2, body: "#f2e0d2" },
-  night: { hemi: 0.62, hemiSky: 0xbcd0f0, key: 0xa9bfe8, keyI: 1.0, sea: 0xa8c0d8, body: "#22344a" },
+  morning: { hemi: 1.35, hemiSky: 0xfff4e0, key: 0xffe7c2, keyI: 1.9,
+             seaNear: 0x8fd8cf, seaFar: 0xd9c9a8, fog: 0xf3e6c9 },
+  day:     { hemi: 1.5, hemiSky: 0xffffff, key: 0xfff4e2, keyI: 2.1,
+             seaNear: 0x7edbd2, seaFar: 0x55b7b4, fog: 0xcdefe9 },
+  dusk:    { hemi: 1.15, hemiSky: 0xffdfc4, key: 0xffb98a, keyI: 1.85,
+             seaNear: 0x6fb9b4, seaFar: 0xc98f77, fog: 0xf0c19a },
+  night:   { hemi: 0.62, hemiSky: 0xbcd0f0, key: 0xa9bfe8, keyI: 1.0,
+             seaNear: 0x2a4a63, seaFar: 0x16283f, fog: 0x1d3450 },
 };
 
 const loadSprite = (name, scale) => {
@@ -84,11 +91,11 @@ export const createAtmosphere = (stage, reduceMotion) => {
       key.intensity = p.keyI;
       key.color.set(p.key);
     }
-    stage.sea.traverse?.((o) => {
-      if (o.isMesh && o.material?.vertexColors) o.material.color.set(p.sea);
-    });
-    document.body.style.background = p.body || "";
-    document.documentElement.dataset.phase = p2; // CSS側の文字色切替に使う
+    stage.tintSea?.(p.seaNear, p.seaFar);
+    if (stage.scene.fog) stage.scene.fog.color.set(p.fog);
+    // ★背景はCSSの html[data-phase] グラデーションに移管(2026-08-23)。
+    //   インラインの単色指定が残っているとCSSより強く、グラデーションが一生効かない
+    document.documentElement.dataset.phase = p2; // CSS側の空グラデ・文字色切替に使う
 
     clearPhaseProps();
     // 太陽/月(空の右奥にゆっくり浮かぶ)

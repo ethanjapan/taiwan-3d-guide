@@ -26,7 +26,12 @@ body {
 }
 
 body {
-  background: linear-gradient(180deg, #e6f7f4 0%, #cdefe9 100%);
+  /* 空。時間帯(html[data-phase])ごとに下で上書きする。
+     ★以前は atmosphere.js がインラインで単色を書いており、ここが一生効かなかった */
+  background:
+    radial-gradient(115% 85% at 78% -10%, rgba(255, 244, 214, 0.85) 0%, rgba(255, 244, 214, 0) 55%),
+    linear-gradient(180deg, #bfe9f0 0%, #d2f0e9 58%, #cdefe9 100%);
+  transition: background 1.2s ease;
   color: var(--ink);
   font-family: "Hiragino Sans", "Noto Sans TC", "Noto Sans JP", system-ui, sans-serif;
   overflow: hidden;
@@ -3289,4 +3294,103 @@ html[data-phase="night"] .tour-item-n {
   display: block;
   margin-top: 4px;
   opacity: 0.9;
+}
+
+
+/* ---- 時間帯の空 ----
+   3D側のライトは atmosphere.js のプリセット、空はここ。両方で1つの時間帯を作る。
+   グラデーションは transition が効かないプロパティなので、切替は 1.2s の
+   background transition に任せず、色の跳ねが気になる場合は各stopを近い明度で揃える */
+html[data-phase="morning"] body {
+  background:
+    radial-gradient(120% 90% at 80% -8%, rgba(255, 214, 156, 0.9) 0%, rgba(255, 214, 156, 0) 58%),
+    linear-gradient(180deg, #ffe8c4 0%, #f9e7d3 46%, #e8f1e4 100%);
+}
+html[data-phase="dusk"] body {
+  background:
+    radial-gradient(120% 95% at 76% -6%, rgba(255, 158, 96, 0.75) 0%, rgba(255, 158, 96, 0) 60%),
+    linear-gradient(180deg, #8d7bab 0%, #d99a86 42%, #f4d4b8 78%, #f6ddc8 100%);
+}
+html[data-phase="night"] body {
+  background:
+    radial-gradient(130% 100% at 74% -12%, rgba(120, 150, 210, 0.35) 0%, rgba(120, 150, 210, 0) 55%),
+    linear-gradient(180deg, #0e1a32 0%, #1a2f4e 55%, #27476a 100%);
+}
+
+/* 夜の星。canvas(3D)の背面に置く。個々の星は2層のrepeatグラデーションで十分軽い */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  background-image:
+    radial-gradient(1.4px 1.4px at 22px 34px, rgba(255, 255, 255, 0.9) 48%, transparent 52%),
+    radial-gradient(1px 1px at 130px 92px, rgba(255, 240, 210, 0.75) 48%, transparent 52%),
+    radial-gradient(1.8px 1.8px at 236px 26px, rgba(210, 226, 255, 0.85) 48%, transparent 52%),
+    radial-gradient(1px 1px at 310px 140px, rgba(255, 255, 255, 0.6) 48%, transparent 52%),
+    radial-gradient(1.2px 1.2px at 74px 180px, rgba(255, 255, 255, 0.7) 48%, transparent 52%);
+  background-size: 380px 240px;
+  /* 下半分(海)には星を出さない */
+  mask-image: linear-gradient(180deg, #000 0%, #000 42%, transparent 68%);
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 42%, transparent 68%);
+}
+html[data-phase="night"] body::before {
+  opacity: 1;
+  animation: star-drift 240s linear infinite;
+}
+@keyframes star-drift {
+  from { background-position: 0 0; }
+  to { background-position: -380px 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html[data-phase="night"] body::before { animation: none; }
+}
+
+
+/* ---- 見出しタイポグラフィ ----
+   タイトル・県市名だけ明朝(セリフ)にして「旅の案内書」の顔を作る。本文はゴシックのまま。
+   フォールバックに明朝系OSフォントを並べ、読み込み失敗でも雰囲気が保てるようにする */
+.title,
+.panel-name,
+.info-title,
+.welcome-name {
+  font-family: "Noto Serif TC", "Hiragino Mincho ProN", "Yu Mincho", serif;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+
+/* ---- パネルのガラス化 ----
+   白ベタ→半透明+blur。3Dの島や空がうっすら透けて、UIが「浮いている」感が出る。
+   backdrop-filter非対応環境ではrgbaの白がそのまま効く(読めなくはならない) */
+.panel,
+.info-panel {
+  background: rgba(255, 255, 255, 0.82);
+  -webkit-backdrop-filter: blur(14px) saturate(1.25);
+  backdrop-filter: blur(14px) saturate(1.25);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+}
+html[data-phase="night"] .panel,
+html[data-phase="night"] .info-panel {
+  background: rgba(24, 38, 58, 0.78);
+  border-color: rgba(140, 170, 210, 0.25);
+}
+
+/* ---- マイクロインタラクション ----
+   押せるものは触ると持ち上がる。transformはレイアウトを揺らさない */
+.lang,
+.stamp-btn,
+.close,
+.credit-link {
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.lang:hover,
+.stamp-btn:hover {
+  transform: translateY(-1.5px);
+}
+@media (prefers-reduced-motion: reduce) {
+  .lang, .stamp-btn, .close, .credit-link { transition: none; }
+  .lang:hover, .stamp-btn:hover { transform: none; }
 }
