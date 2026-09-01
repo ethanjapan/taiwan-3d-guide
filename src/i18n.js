@@ -4,6 +4,8 @@ const CREDIT =
 
 export const STRINGS = {
   zh: {
+    planRoute: "在 Google Maps 開啟路線",
+    planRouteLeg: "路線 ",
     locate: "顯示目前位置",
     gpsOutside: "目前位置在台灣範圍外",
     gpsFail: "無法取得位置(請確認定位權限)",
@@ -84,6 +86,8 @@ export const STRINGS = {
     credit: CREDIT,
   },
   ja: {
+    planRoute: "ルートをGoogle Mapsで開く",
+    planRouteLeg: "ルート",
     locate: "現在地を表示",
     gpsOutside: "現在地は台湾の外です",
     gpsFail: "位置を取得できません(位置情報の許可を確認)",
@@ -164,6 +168,8 @@ export const STRINGS = {
     credit: CREDIT,
   },
   cn: {
+    planRoute: "在 Google Maps 打开路线",
+    planRouteLeg: "路线 ",
     locate: "显示当前位置",
     gpsOutside: "当前位置在台湾范围外",
     gpsFail: "无法获取位置(请确认定位权限)",
@@ -244,6 +250,8 @@ export const STRINGS = {
     credit: CREDIT,
   },
   en: {
+    planRoute: "Open route in Google Maps",
+    planRouteLeg: "Route ",
     locate: "Show my location",
     gpsOutside: "You are outside Taiwan",
     gpsFail: "Could not get location (check permission)",
@@ -324,6 +332,8 @@ export const STRINGS = {
     credit: CREDIT,
   },
   ko: {
+    planRoute: "Google Maps에서 경로 열기",
+    planRouteLeg: "경로 ",
     locate: "현재 위치 표시",
     gpsOutside: "현재 위치가 대만 밖입니다",
     gpsFail: "위치를 가져올 수 없습니다(권한 확인)",

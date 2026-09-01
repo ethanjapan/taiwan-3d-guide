@@ -3631,3 +3631,47 @@ html[data-phase="night"] .welcome-video-label { color: #eaf3fa; }
 }
 /* 経路リンクは地図リンクと横並び */
 .spot-route { margin-left: 12px; }
+
+/* Google Mapsへのルート持ち出し。aタグだがボタンの見た目に揃える */
+.plan-routes { display: grid; gap: 8px; }
+.plan-routes:empty { display: none; }
+a.plan-route {
+  display: block;
+  text-decoration: none;
+  text-align: center;
+  background: #2f7bea;              /* Mapsへ出る動線=青。AIの紫・KMLの珊瑚と役割で塗り分け */
+  color: #fff;
+  font-size: 0.76rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+html[data-phase="night"] a.plan-route { background: #2f7bea; color: #fff; }
+
+/* シートが開いている間、モバイルではdockとクレジットを退避する。
+   チップがシートの中身(ボタン)の上に浮いて押せなくしていた(実機実測 2026-09-01)。
+   出典表示はシートを閉じれば常時見える+「關於本站」にも常設 */
+@media (max-width: 640px) {
+  .dock, .credit {
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  body[data-sheet-open="1"] .dock,
+  body[data-sheet-open="1"] .credit {
+    transform: translateY(140%);
+    opacity: 0;
+    pointer-events: none;
+  }
+  /* 左上の地図操作(移動/現在地)も退避。全開シートでRINKA行に重なった(シミュレーター実測) */
+  .move-btn, .locate-btn {
+    transition: transform 0.25s ease, opacity 0.25s ease;
+  }
+  body[data-sheet-open="1"] .move-btn,
+  body[data-sheet-open="1"] .locate-btn {
+    transform: translateX(-160%);
+    opacity: 0;
+    pointer-events: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dock, .credit { transition: none; }
+}

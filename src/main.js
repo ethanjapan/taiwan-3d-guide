@@ -484,7 +484,9 @@ const renderPanel = () => {
     // 経路(乗換)。originを渡さなければGoogle Maps側が現在地を出発点にする
     const route = document.createElement("a");
     route.className = "spot-map spot-route";
-    route.href = `https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=transit`;
+    // 名称渡し(座標は最寄り建物に吸着する実測)。乗換は経由地非対応なので単発のみ
+    route.href = "https://www.google.com/maps/dir/?api=1&destination=" +
+      encodeURIComponent(`${s.name.zh} ${county.name.zh}`) + "&travelmode=transit";
     route.target = "_blank";
     route.rel = "noreferrer";
     route.textContent = T.route;
@@ -557,6 +559,46 @@ const buildPlanPrompt = () => {
   return `${ask}\n\n${rows.join("\n")}\n\n(來源/from: 台灣3D旅遊導覽 https://ethanjapan.github.io/taiwan-3d-guide/ )`;
 };
 
+/**
+ * 計画の景点を「回りやすい順」に並べ、Google Mapsの複数経由地リンクに分割する。
+ * 制約(Maps URLs公式): 経由地はモバイル3/その他9まで・transitは経由地非対応。
+ * → 最小の3に合わせ、1区間=新規4箇所(経由3+目的1)。区間1は origin を渡さない
+ *   (Google Mapsが現在地を出発点にする)。区間2以降は前区間の最後を origin に。
+ */
+const buildRouteLegs = () => {
+  const items = planSpots();
+  if (!items.length) return [];
+  // 貪欲な最近傍で並べ替え(厳密な最適化は不要。「北から南へ飛び回らない」程度でよい)
+  const rest = items.slice();
+  const ordered = [rest.shift()];
+  while (rest.length) {
+    const last = ordered[ordered.length - 1].sp;
+    let bi = 0;
+    let bd = Infinity;
+    rest.forEach(({ sp }, i) => {
+      const d = (sp.lat - last.lat) ** 2 + (sp.lon - last.lon) ** 2;
+      if (d < bd) { bd = d; bi = i; }
+    });
+    ordered.push(rest.splice(bi, 1)[0]);
+  }
+  // ★座標を渡すと最寄りの建物に吸着して「7-Eleven」等と表示された(Google Maps実測)。
+  //   公式データベース由来の正式名称+県市名で渡すと正しいPOIに解決される
+  //   (台北101/九份老街/佛光山/西子湾で確認済)
+  const P = ({ county, sp }) => encodeURIComponent(`${sp.name.zh} ${county.name.zh}`);
+  const legs = [];
+  for (let i = 0; i < ordered.length; i += 4) {
+    const chunk = ordered.slice(i, i + 4);
+    const dest = chunk[chunk.length - 1];
+    const way = chunk.slice(0, -1).map(P);
+    const origin = i === 0 ? null : ordered[i - 1];
+    let url = `https://www.google.com/maps/dir/?api=1&destination=${P(dest)}&travelmode=driving`;
+    if (way.length) url += `&waypoints=${way.join("%7C")}`;
+    if (origin) url += `&origin=${P(origin)}`;
+    legs.push({ url, names: chunk.map(({ sp }) => sp.name[lang] ?? sp.name.zh) });
+  }
+  return legs;
+};
+
 const buildPlanKml = () => {
   const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const marks = planSpots().map(({ county, sp }) => {
@@ -607,6 +649,21 @@ const renderPlanPanel = () => {
     row.append(nm, where, rm);
     return row;
   }));
+  // Google Mapsへの持ち出し(現地の道順はMapsに任せる)。区間ごとにボタンを出す
+  const routeBox = document.getElementById("plan-routes");
+  const legs = buildRouteLegs();
+  routeBox.replaceChildren(...legs.map((leg, i) => {
+    const a = document.createElement("a");
+    a.className = "plan-action plan-route";
+    a.href = leg.url;
+    a.target = "_blank";
+    a.rel = "noreferrer";
+    const label = legs.length === 1 ? T.planRoute : `${T.planRouteLeg}${i + 1}`;
+    const names = leg.names.join(" → ");
+    a.textContent = `${label}（${names.length > 26 ? names.slice(0, 25) + "…" : names}）`;
+    return a;
+  }));
+
   const has = plan.length > 0;
   document.getElementById("plan-copy").disabled = !has;
   document.getElementById("plan-kml").disabled = !has;
@@ -671,6 +728,22 @@ document.getElementById("welcome-video")?.addEventListener("click", () => {
   wrap.append(frame, x);
   document.body.appendChild(wrap);
 });
+
+
+/* ---- シート開閉をbodyへ伝える(2026-09-01 実機で発覚した被りの修正) ----
+   モバイルではボトムシート(県パネル/実用資訊/スタンプ帳/旅の計画)の上に
+   dockのチップが浮いて、シート内のボタンを隠していた(iPhone実機+シミュレーターで再現)。
+   個々の開閉コードに足すと漏れるので、hidden属性の変化を監視して一元化する */
+{
+  const sheets = ["panel", "info-panel", "stamp-panel", "plan-panel"]
+    .map((id) => document.getElementById(id)).filter(Boolean);
+  const sync = () => {
+    document.body.dataset.sheetOpen = sheets.some((el) => !el.hidden) ? "1" : "";
+  };
+  const mo = new MutationObserver(sync);
+  for (const el of sheets) mo.observe(el, { attributes: true, attributeFilter: ["hidden"] });
+  sync();
+}
 
 const hint = document.getElementById("hint");
 
