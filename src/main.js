@@ -11,7 +11,6 @@ import { createTour } from "./tour.js";
 import { STRINGS, applyLang, detectLang , ABOUT } from "./i18n.js";
 import META from "../data/meta.json";
 import COUNTY_VIDEOS from "../data/county-videos.json";
-import RINKA_CLIPS from "../data/rinka-clips.json";
 import counties from "../data/counties.json";
 import SPECIALTIES from "../data/specialties.json";
 import COUNTS from "../data/attraction-counts.json";
@@ -138,19 +137,7 @@ const toggleRinkaProfile = () => {
     a.textContent = label;
     links.appendChild(a);
   }
-  // 旅のアルバム(生きた写真)。プロフィールを開いた人にだけ読み込む
-  const album = document.createElement("div");
-  album.className = "rinka-album";
-  for (const c of RINKA_CLIPS) {
-    const cell = document.createElement("figure");
-    cell.className = "rinka-album-cell";
-    cell.appendChild(livingVideo(c.file, "rinka-album-video"));
-    const cap = document.createElement("figcaption");
-    cap.textContent = c.t[lang] ?? c.t.zh;
-    cell.appendChild(cap);
-    album.appendChild(cell);
-  }
-  card.append(intro, album, links);
+  card.append(intro, links);
   document.querySelector(".guide-row").after(card);
 };
 document.querySelector(".guide-row")?.addEventListener("click", toggleRinkaProfile);
@@ -480,11 +467,6 @@ const renderPanel = () => {
       renderPanel();
     });
     const frag = [back, rinkaBubble(rinkaSpot(s, lang))];
-    const clip = RINKA_CLIPS.find((c) => c.spot === s.id);
-    if (clip) {
-      // 生きた写真(RINKAがこの場所にいる微動ループ)。実写真より先に見せる
-      frag.push(livingVideo(clip.file, "spot-photo spot-living"));
-    }
     if (s.photo) {
       const img = document.createElement("img");
       img.className = "spot-photo";
