@@ -566,8 +566,10 @@ const buildPlanKml = () => {
 const planBtnEl = document.getElementById("plan-btn");
 const planPanelEl = document.getElementById("plan-panel");
 const updatePlanChip = () => {
-  document.getElementById("plan-count").textContent = String(plan.length);
-  planBtnEl.hidden = plan.length === 0 && planPanelEl.hidden;
+  // AI旅程は目玉機能なので常時見せる。件数だけバッジで増減
+  const c = document.getElementById("plan-count");
+  c.textContent = String(plan.length);
+  c.hidden = plan.length === 0;
 };
 const renderPlanPanel = () => {
   const T = STRINGS[lang];

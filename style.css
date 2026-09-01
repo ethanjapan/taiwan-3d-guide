@@ -1346,12 +1346,7 @@ body {
   text-align: center;
 }
 
-@media (max-width: 640px) {
-  .stamp-btn {
-    bottom: 74px;
-    right: 12px;
-  }
-}
+
 
 /* 夜・夕方は暗い海の上に乗る素の文字を明るく */
 /* 夕方も海が中間の暗さになるので、夜と同じく白文字にしないとクレジットが読めない
@@ -1369,15 +1364,7 @@ html[data-phase="dusk"] .credit {
 }
 
 /* 時間帯切替ボタン(スタンプボタンの上に積む) */
-.phase-btn {
-  bottom: 68px;
-}
 
-@media (max-width: 640px) {
-  .phase-btn {
-    bottom: 120px;
-  }
-}
 
 /* ==== 演出強化(2026-08-22 A1-A6/B1-B5): transform+opacityのみ・300ms以下・reduced-motion対応 ==== */
 
@@ -1645,14 +1632,6 @@ html[data-phase="dusk"] .credit {
 .transit-flow-box { min-height: 120px; }
 
 /* ---- 季節切替ボタン(日本版で追加。時間帯ボタンの上に積む) ---- */
-.season-btn {
-  bottom: 116px;
-}
-@media (max-width: 640px) {
-  .season-btn {
-    bottom: calc(112px + env(safe-area-inset-bottom, 0px));
-  }
-}
 
 /* ---- 天気アイコン(日本版で追加。台湾版は文字だけだった) ---- */
 .weather-icon {
@@ -2399,7 +2378,6 @@ html[data-phase="night"] .info-sum::after {
 }
 .month-off:hover { background: rgba(255, 255, 255, 0.5); }
 
-.event-btn { bottom: 164px; }
 .event-btn[data-on="true"] {
   background: linear-gradient(180deg, rgba(224, 104, 95, 0.9), rgba(200, 82, 74, 0.94));
   color: #fff;
@@ -2496,7 +2474,6 @@ html[data-phase="night"] div[data-picked="true"] > .gourmet-title {
   }
   .month-btn { min-width: 26px; font-size: 0.7rem; }
   .month-off { display: none; }   /* 狭い画面ではイベントボタンで消せるので省く */
-  .event-btn { bottom: calc(160px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* 月バーが出ている間はヒントを上へ逃がす(同じ高さに2本並ぶと読めない) */
@@ -2992,17 +2969,33 @@ html[data-phase="night"] .tour-item-n {
    スマホは縦積みだと月バーとウェルカムカードで場所を奪い合い、地図の中心まで
    UIが覆っていた(2026-08-22 実測: 375x812 で地図中心 y=411 の上に重なる)。
    → 下辺に1列で並べ、上へ月バー・ウェルカム・ヒントの順に積む */
-.dock { display: contents; }
+/* ★以前は display:contents+チップごとの bottom 手打ちだった。
+   新しいチップを足すたびに位置指定を忘れて重なる事故が起きた(2026-09-01 実測で3個重なり)ので、
+   デスクトップも縦積みのflexにして「足せば並ぶ」構造にする */
+.dock {
+  display: flex;
+  flex-direction: column;   /* DOM順=イベントが上・スタンプが下(従来の並び) */
+  align-items: flex-end;
+  gap: 6px;
+  position: fixed;
+  right: clamp(16px, 4vw, 32px);
+  bottom: 22px;
+  z-index: 3;
+}
+.dock .stamp-btn {
+  position: static;
+}
 
 @media (max-width: 640px) {
   .dock {
     display: flex;
+    flex-direction: row;   /* ★基底(デスクトップ)がcolumnになったので明示必須 */
     position: fixed;
     left: 12px;
     right: 12px;
     bottom: calc(12px + env(safe-area-inset-bottom, 0px));
     z-index: 3;
-    gap: 6px;
+    gap: 4px;              /* 5チップ化で1つあたりの幅が要る(「イベント」切れ実測) */
   }
   .dock .stamp-btn {
     position: static;
@@ -3010,10 +3003,11 @@ html[data-phase="night"] .tour-item-n {
     min-width: 0;
     min-height: 46px;
     justify-content: center;
-    padding: 6px 6px;
-    gap: 4px;
-    /* ★4つで1列=1つ83px。0.68remだと「イベント」が入りきらず切れる(実測) */
-    font-size: 0.63rem;
+    padding: 6px 4px;
+    gap: 3px;
+    /* ★AI旅程が加わり5つで1列。0.63remでも「イベント」が切れた(実測)ので一段詰める */
+    font-size: 0.6rem;
+    letter-spacing: 0;
   }
   .dock .stamp-btn img { width: 18px; height: 18px; flex: 0 0 auto; }
   .dock .stamp-btn span {
@@ -3021,6 +3015,8 @@ html[data-phase="night"] .tour-item-n {
     text-overflow: ellipsis;
     white-space: nowrap;
   }
+  /* スタンプの「11/22」は数字なので切らない(「11/…」は意味が消える) */
+  #stamp-count { overflow: visible; font-variant-numeric: tabular-nums; }
 
   /* 上へ積み直す。dock(46) → クレジット → 月バー → ウェルカム → ヒント の順。
      ★クレジットはODbLの表示義務があるので消せない。実測でdockと351x38px重なっていたので
@@ -3028,7 +3024,7 @@ html[data-phase="night"] .tour-item-n {
   .credit {
     left: 12px;
     right: 12px;
-    bottom: calc(62px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(70px + env(safe-area-inset-bottom, 0px));   /* dockの実高に追随(7px重なり実測→解消) */
     max-width: none;
     font-size: 0.52rem;
     line-height: 1.4;
@@ -3421,9 +3417,24 @@ html[data-phase="night"] .video-source { color: #a8bdd4; }
 .plan-action {
   border: 0; border-radius: 10px; padding: 10px 12px;
   font-size: 0.78rem; font-weight: 700; cursor: pointer;
-  background: var(--accent); color: #fff;
+  background: rgba(35, 66, 60, 0.12); color: var(--ink);
   transition: transform 0.18s ease;
 }
+/* 主役はChatGPT相談。FABと同じグラデーションで「これがAI」だと分かるようにする */
+#plan-copy {
+  background: linear-gradient(135deg, #7862d9 0%, #b45cc4 55%, #ef7a6e 100%);
+  color: #fff;
+  padding: 13px 12px;
+  font-size: 0.84rem;
+  box-shadow: 0 8px 22px rgba(120, 98, 217, 0.3);
+}
+#plan-kml { background: var(--accent); color: #fff; }
+html[data-phase="night"] .plan-action { background: rgba(200, 220, 245, 0.16); color: #eaf3fa; }
+html[data-phase="night"] #plan-copy {
+  background: linear-gradient(135deg, #7862d9 0%, #b45cc4 55%, #ef7a6e 100%);
+  color: #fff;
+}
+html[data-phase="night"] #plan-kml { background: var(--accent); color: #fff; }
 .plan-action:disabled { opacity: 0.45; cursor: default; }
 .plan-action:not(:disabled):hover { transform: translateY(-1.5px); }
 .plan-action.plan-clear { background: rgba(35, 66, 60, 0.12); color: var(--ink); }
@@ -3497,9 +3508,92 @@ html[data-phase="night"] .welcome-video-label { color: #eaf3fa; }
   cursor: pointer;
 }
 
-/* 操作モード(回転/移動)。押下中=移動モード */
-.move-btn .move-ico { font-size: 0.9rem; line-height: 1; }
+/* 操作モード(回転/移動)。1本指/2本指の使い分けはタッチの機能なので、
+   マウス環境(PC)には出さない。PCで左下に置くとODbLクレジットと重なる実測もあった */
+.move-btn { display: none; }
+@media (pointer: coarse) {
+  .move-btn { display: block; }
+}
+.move-btn {
+  position: fixed;
+  left: clamp(16px, 4vw, 32px);
+  bottom: 22px;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  color: var(--ink);
+  font-size: 1.15rem;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+.move-btn:hover { transform: translateY(-1.5px); }
 .move-btn[aria-pressed="true"] {
   background: var(--accent);
   color: #fff;
+}
+@media (max-width: 640px) {
+  /* 下辺はdock・クレジット・ウェルカムで渋滞している(実測で3件衝突)。
+     モード切替は連打しないので、上部の空(地図の空白)に置く */
+  .move-btn {
+    left: 12px;
+    top: 118px;
+    bottom: auto;
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* ---- AI旅程(目玉機能・常時表示) ----
+   dockの子として置く: デスクトップ=列の最上段 / モバイル=横列の左端。
+   ★fixedで浮かせない。浮かせた版はモバイルでクレジットと19px重なった(実測) */
+.plan-fab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 11px 16px;
+  margin-bottom: 4px;              /* 普通のチップと一線を引く隙間 */
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7862d9 0%, #b45cc4 55%, #ef7a6e 100%);
+  color: #fff;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  box-shadow: 0 10px 28px rgba(120, 98, 217, 0.42);
+  cursor: pointer;
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.plan-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 34px rgba(120, 98, 217, 0.5);
+}
+.plan-fab-ico { font-size: 0.95rem; }
+.plan-fab-count {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.28);
+  font-size: 0.72rem;
+  text-align: center;
+}
+@media (max-width: 640px) {
+  .plan-fab {
+    flex: 1 1 0;                   /* 幅は均等(1.2にすると「イベント」側が切れた実測) */
+    min-width: 0;
+    margin-bottom: 0;
+    padding: 6px 6px;
+    font-size: 0.62rem;
+    gap: 3px;
+    white-space: nowrap;           /* ★「AI旅程」が1文字ずつ縦に折れた(実測) */
+  }
+  .plan-fab-count { min-width: 16px; font-size: 0.6rem; padding: 1px 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .plan-fab, .move-btn { transition: none; }
 }

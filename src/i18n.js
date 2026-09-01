@@ -4,6 +4,7 @@ const CREDIT =
 
 export const STRINGS = {
   zh: {
+    planChip: "AI 行程",
     moveMode: "移動",
     introVideo: "60秒認識台灣",
     planTitle: "旅遊計畫",
@@ -79,6 +80,7 @@ export const STRINGS = {
     credit: CREDIT,
   },
   ja: {
+    planChip: "AI旅程",
     moveMode: "移動",
     introVideo: "60秒で台湾を知る",
     planTitle: "旅の計画",
@@ -154,6 +156,7 @@ export const STRINGS = {
     credit: CREDIT,
   },
   cn: {
+    planChip: "AI 行程",
     moveMode: "移动",
     introVideo: "60秒认识台湾",
     planTitle: "旅游计划",
@@ -229,6 +232,7 @@ export const STRINGS = {
     credit: CREDIT,
   },
   en: {
+    planChip: "AI trip",
     moveMode: "Pan",
     introVideo: "Taiwan in 60 seconds",
     planTitle: "Trip plan",
@@ -304,6 +308,7 @@ export const STRINGS = {
     credit: CREDIT,
   },
   ko: {
+    planChip: "AI 일정",
     moveMode: "이동",
     introVideo: "60초로 보는 타이완",
     planTitle: "여행 계획",

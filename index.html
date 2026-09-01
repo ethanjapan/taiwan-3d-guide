@@ -128,6 +128,11 @@
     <!-- スマホでは縦積みだと月バー・ウェルカムカードと場所を奪い合うので、
          下辺に1列で並べる。デスクトップは display:contents で今までどおり個別配置 -->
     <div class="dock" id="dock">
+      <button type="button" class="plan-fab" id="plan-btn">
+        <span class="plan-fab-ico" aria-hidden="true">✦</span>
+        <span data-i18n="planChip"></span>
+        <span class="plan-fab-count" id="plan-count" hidden>0</span>
+      </button>
       <button type="button" class="stamp-btn event-btn" id="event-btn">
         <img id="event-icon" src="/event/sakura.webp" alt="" />
         <span id="event-label"></span>
@@ -147,15 +152,14 @@
         <img src="/ui/stamp-ring.webp" alt="" />
         <span id="stamp-count">0/22</span>
       </button>
-      <button type="button" class="stamp-btn move-btn" id="move-btn" aria-pressed="false">
-        <span class="move-ico" aria-hidden="true">✥</span>
-        <span data-i18n="moveMode"></span>
-      </button>
-      <button type="button" class="stamp-btn plan-btn" id="plan-btn" hidden>
-        <img src="/ui/signboard.webp" alt="" />
-        <span id="plan-count">0</span>
-      </button>
     </div>
+
+    <!-- 地図の操作モード(回転/移動)。コンテンツ系チップと混ぜず、地図の隅に置く -->
+    <button type="button" class="move-btn" id="move-btn" aria-pressed="false"
+            data-i18n-aria="moveMode">
+      <span class="move-ico" aria-hidden="true">✥</span>
+    </button>
+
 
     <aside class="panel stamp-panel" id="plan-panel" hidden>
       <div class="sheet-handle" data-sheet-handle></div>
