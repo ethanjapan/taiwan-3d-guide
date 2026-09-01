@@ -524,6 +524,29 @@ const renderPanel = () => {
     const src = document.createElement("p");
     src.className = "spot-source";
     src.textContent = T.source + (s.credit ? `｜${s.credit}` : "");
+    // 公式の1次情報(觀光署データ・繁体字原文のまま=出典明示)。あるものだけ行を出す
+    const info = document.createElement("dl");
+    info.className = "spot-official";
+    const infoRow = (label, val, href) => {
+      if (!val) return;
+      const dt = document.createElement("dt");
+      dt.textContent = label;
+      const dd = document.createElement("dd");
+      if (href) {
+        const a = document.createElement("a");
+        a.href = href;
+        a.target = "_blank";
+        a.rel = "noreferrer";
+        a.textContent = val;
+        dd.appendChild(a);
+      } else dd.textContent = val;
+      info.append(dt, dd);
+    };
+    infoRow(T.lblHours, s.hours);
+    infoRow(T.lblFee, s.fee);
+    infoRow(T.lblRsv, s.rsv ? T.lblRsv : "", s.rsv);
+    infoRow("Web", s.web ? s.web.replace(/^https?:\/\//, "").slice(0, 38) : "", s.web);
+
     // 旅の計画に追加(ユーザー要望 2026-09-01)
     const padd = document.createElement("button");
     padd.type = "button";
@@ -541,6 +564,7 @@ const renderPanel = () => {
     });
     frag.push(h, town, sum);
     if (details) frag.push(details);
+    if (info.childElementCount) frag.push(info);
     frag.push(padd, link, route, src);
     panelBody.dataset.view = "detail";
     panelBody.dataset.view = "list";
@@ -566,6 +590,25 @@ const loadPlan = () => {
   } catch { return []; }
 };
 let plan = loadPlan();
+// 共有リンク(?plan=id,id,...)で開いたら、その計画を取り込む(手元より共有を優先)
+{
+  const shared = new URLSearchParams(location.search).get("plan");
+  if (shared) {
+    const wanted = new Set(shared.split(","));
+    const found = [];
+    for (const [c, arr] of Object.entries(ATTRACTIONS)) {
+      for (const sp of arr) if (wanted.has(sp.id)) found.push({ c, s: sp.id });
+    }
+    if (found.length) {
+      plan = found;
+      store.set(PLAN_KEY, JSON.stringify(plan));
+    }
+    // URLに残すと再読み込みのたびに上書きされるので消す
+    const u = new URL(location.href);
+    u.searchParams.delete("plan");
+    history.replaceState(null, "", u);
+  }
+}
 const planHas = (id) => plan.some((x) => x.s === id);
 const savePlan = () => {
   store.set(PLAN_KEY, JSON.stringify(plan));
@@ -708,6 +751,8 @@ const renderPlanPanel = () => {
 
   const has = plan.length > 0;
   document.getElementById("plan-copy").disabled = !has;
+  document.getElementById("plan-share").textContent = T.planShare;
+  document.getElementById("plan-share").disabled = !has;
   document.getElementById("plan-kml").disabled = !has;
   document.getElementById("plan-clear").disabled = !has;
 };
@@ -735,6 +780,18 @@ document.getElementById("plan-copy").addEventListener("click", async (e) => {
   }
   e.target.textContent = STRINGS[lang].planCopied;
   setTimeout(() => { e.target.textContent = STRINGS[lang].planCopy; }, 2600);
+});
+document.getElementById("plan-share").addEventListener("click", async (e) => {
+  const u = new URL(location.origin + location.pathname);
+  u.searchParams.set("plan", plan.map((x) => x.s).join(","));
+  const url = u.toString();
+  // モバイルはOSの共有シート、なければコピー
+  if (navigator.share) {
+    try { await navigator.share({ url }); return; } catch { /* キャンセル */ }
+  }
+  try { await navigator.clipboard.writeText(url); } catch { window.prompt("URL:", url); return; }
+  e.target.textContent = STRINGS[lang].planShared;
+  setTimeout(() => { e.target.textContent = STRINGS[lang].planShare; }, 2600);
 });
 document.getElementById("plan-kml").addEventListener("click", () => {
   const blob = new Blob([buildPlanKml()], { type: "application/vnd.google-earth.kml+xml" });
@@ -1946,6 +2003,61 @@ function start() {
     return sp;
   };
 
+  /** 現在地から近い順に景点3件。雨(天気コード>=51)なら屋内語を持つ景点を優先 */
+  const INDOOR = /博物館|美術館|文物館|故事館|展覽|文化館|寺|廟|宮/;
+  const showNearby = async (la, lo) => {
+    const all = [];
+    for (const [c, arr] of Object.entries(ATTRACTIONS)) {
+      for (const sp of arr) {
+        const km = Math.hypot((sp.lat - la) * 111, (sp.lon - lo) * 101);
+        all.push({ c, sp, km });
+      }
+    }
+    all.sort((a, b) => a.km - b.km);
+    // 最寄り景点の県の現在天気で雨を判定(現在地の県は直接分からないため)
+    let raining = false;
+    try {
+      const w = await fetchWeather(all[0].c);
+      raining = (w?.now?.code ?? 0) >= 51;
+    } catch { /* 天気が取れなくても出す */ }
+    let picks = all.slice(0, 12);
+    if (raining) picks.sort((a, b) =>
+      (INDOOR.test(b.sp.name.zh) ? 1 : 0) - (INDOOR.test(a.sp.name.zh) ? 1 : 0) || a.km - b.km);
+    picks = picks.slice(0, 3);
+
+    document.getElementById("nearby-card")?.remove();
+    const card = document.createElement("div");
+    card.id = "nearby-card";
+    card.className = "nearby-card";
+    const h = document.createElement("p");
+    h.className = "nearby-title";
+    h.textContent = STRINGS[lang].nearbyTitle + (raining ? STRINGS[lang].nearbyRain : "");
+    card.appendChild(h);
+    for (const { c, sp, km } of picks) {
+      const row = document.createElement("button");
+      row.type = "button";
+      row.className = "nearby-row";
+      const nm = document.createElement("span");
+      nm.textContent = sp.name[lang] ?? sp.name.zh;
+      const d = document.createElement("span");
+      d.className = "nearby-km";
+      d.textContent = `${km < 10 ? km.toFixed(1) : Math.round(km)}${STRINGS[lang].nearbyKm}`;
+      row.append(nm, d);
+      row.addEventListener("click", () => {
+        card.remove();
+        jumpToSpot?.(c, sp.id);
+      });
+      card.appendChild(row);
+    }
+    const x = document.createElement("button");
+    x.type = "button";
+    x.className = "close";
+    x.textContent = "×";
+    x.addEventListener("click", () => card.remove());
+    document.body.appendChild(card);
+    card.appendChild(x);
+  };
+
   document.getElementById("locate-btn")?.addEventListener("click", () => {
     if (!navigator.geolocation) { toast(STRINGS[lang].gpsFail); return; }
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -1961,6 +2073,7 @@ function start() {
       marker = dotSprite();
       marker.position.set(px - cx, stage.extrude + stage.span * 0.03, -(py - cy));
       stage.scene.add(marker);
+      showNearby(la, lo);
     }, () => toast(STRINGS[lang].gpsFail), { enableHighAccuracy: false, timeout: 12000, maximumAge: 120000 });
   });
 }
