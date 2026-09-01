@@ -3650,8 +3650,10 @@ html[data-phase="night"] a.plan-route { background: #2f7bea; color: #fff; }
 
 /* シートが開いている間、モバイルではdockとクレジットを退避する。
    チップがシートの中身(ボタン)の上に浮いて押せなくしていた(実機実測 2026-09-01)。
-   出典表示はシートを閉じれば常時見える+「關於本站」にも常設 */
-@media (max-width: 640px) {
+   出典表示はシートを閉じれば常時見える+「關於本站」にも常設。
+   ★横向きスマホ(幅874等)は max-width:640px に入らず「PC扱い」で素通りしていた。
+     touch端末かつ低い画面(高さ500px以下)も同じ退避を適用する */
+@media (max-width: 640px), ((pointer: coarse) and (max-height: 500px)) {
   .dock, .credit {
     transition: transform 0.25s ease, opacity 0.25s ease;
   }
@@ -3674,4 +3676,39 @@ html[data-phase="night"] a.plan-route { background: #2f7bea; color: #fff; }
 }
 @media (prefers-reduced-motion: reduce) {
   .dock, .credit { transition: none; }
+}
+
+/* ---- 横向きスマホ(touch・低い画面) ----
+   幅は640pxを超えるためPC用の縦列dockが適用されるが、
+   縦列は約300pxあり高さ402pxの画面では上までせり上がる。横列へ切り替える */
+@media (pointer: coarse) and (max-height: 500px) and (min-width: 641px) {
+  .dock {
+    flex-direction: row;
+    right: calc(12px + env(safe-area-inset-right, 0px));
+    bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+    gap: 5px;
+  }
+  .dock .stamp-btn {
+    min-height: 40px;
+    padding: 5px 9px;
+    font-size: 0.62rem;
+  }
+  .plan-fab {
+    margin-bottom: 0;
+    padding: 8px 12px;
+    font-size: 0.68rem;
+    white-space: nowrap;
+  }
+  /* 地図操作は左端(ノッチ側safe-area考慮)。縦積み2個で高さ内に収まる */
+  .move-btn { display: block; left: calc(14px + env(safe-area-inset-left, 0px)); bottom: 10px; }
+  .locate-btn { left: calc(14px + env(safe-area-inset-left, 0px)); bottom: 62px; }
+  /* ウェルカムは低い画面では場所を食いすぎる。中身をスクロール可能に潰す */
+  .welcome { max-height: 46vh; overflow-y: auto; }
+  /* クレジットは左下でmove-btnと重なるので中央寄せの帯にする */
+  .credit {
+    left: calc(70px + env(safe-area-inset-left, 0px));
+    right: auto;
+    max-width: 40vw;
+    font-size: 0.5rem;
+  }
 }
