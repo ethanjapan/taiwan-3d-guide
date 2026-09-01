@@ -51,21 +51,21 @@
     {
      "img": "warm-a",
      "wear": {
-      "zh": "短袖・薄長褲",
-      "ja": "半袖・薄手のパンツ",
-      "cn": "短袖・薄长裤",
-      "en": "Short sleeves, light trousers",
-      "ko": "반팔·얇은 바지"
+      "zh": "無袖上衣・寬褲",
+      "ja": "ノースリーブ・ワイドパンツ",
+      "cn": "无袖上衣・宽裤",
+      "en": "Sleeveless knit, wide pants",
+      "ko": "민소매·와이드 팬츠"
      }
     },
     {
      "img": "warm-b",
      "wear": {
-      "zh": "薄長袖・裙子",
-      "ja": "薄手の長袖・スカート",
-      "cn": "薄长袖・裙子",
-      "en": "Light long sleeves, a skirt",
-      "ko": "얇은 긴팔·치마"
+      "zh": "改良式旗袍・薄外套",
+      "ja": "モダン旗袍・薄手の羽織り",
+      "cn": "改良式旗袍・薄外套",
+      "en": "Modern qipao, light jacket",
+      "ko": "모던 치파오·얇은 겉옷"
      }
     }
    ],
@@ -96,11 +96,11 @@
     {
      "img": "mild-a",
      "wear": {
-      "zh": "長袖・薄外套",
-      "ja": "長袖・薄手の上着",
-      "cn": "长袖・薄外套",
-      "en": "Long sleeves and a light jacket",
-      "ko": "긴팔·얇은 겉옷"
+      "zh": "襯衫・針織背心",
+      "ja": "シャツ・ニットベスト",
+      "cn": "衬衫・针织背心",
+      "en": "Shirt and knit vest",
+      "ko": "셔츠·니트 베스트"
      }
     }
    ],
@@ -131,11 +131,11 @@
     {
      "img": "cool-a",
      "wear": {
-      "zh": "針織衫・防風外套",
-      "ja": "ニット・防風の上着",
-      "cn": "针织衫・防风外套",
-      "en": "Knit and a windproof jacket",
-      "ko": "니트·방풍 겉옷"
+      "zh": "風衣式洋裝",
+      "ja": "トレンチ風ワンピース",
+      "cn": "风衣式连衣裙",
+      "en": "Trench-style dress",
+      "ko": "트렌치풍 원피스"
      }
     }
    ],
@@ -166,11 +166,11 @@
     {
      "img": "chilly-a",
      "wear": {
-      "zh": "毛衣・大衣・圍巾",
-      "ja": "セーター・コート・マフラー",
-      "cn": "毛衣・大衣・围巾",
-      "en": "Sweater, coat, scarf",
-      "ko": "스웨터·코트·목도리"
+      "zh": "高領毛衣・格紋裙",
+      "ja": "タートルネック・チェックスカート",
+      "cn": "高领毛衣・格纹裙",
+      "en": "Turtleneck, tartan skirt",
+      "ko": "터틀넥·체크 스커트"
      }
     }
    ],
