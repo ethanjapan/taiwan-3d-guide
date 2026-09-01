@@ -19,6 +19,7 @@ tools/*
 !tools/check_links.py
 # 觀光署データの検査。中身は公開データの突き合わせで、生成プロンプトも鍵も入らない
 !tools/audit_opendata.py
+!tools/check_videos.py
 assets-from-chatgpt/
 assets-rinka/
 data/source/

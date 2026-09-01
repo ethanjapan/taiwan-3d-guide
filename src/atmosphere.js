@@ -24,15 +24,19 @@ export const PHASES = ["morning", "day", "dusk", "night"];
 // ★sea は「materialに乗算する色」から「頂点色を作り直す2色(近/沖)」へ変更(2026-08-23)。
 //   暖色×青緑の乗算で dusk が濁った緑になった実害への対処。fog は沖が溶ける色=擬似的な空。
 //   値は色彩設計の相談(GPT・類似/分裂補色調和と大気遠近法)を反映
+// ★2026-09-01 色彩レビュー(GPT・色彩学)を反映:
+//   大面積(海沖)に暖色や高彩度を置かない。夕焼けの橙は霧と光源に限定し、
+//   海は青緑→紫灰へ(分裂補色が面積差で効く)。夜の霧は沖より一段明るくして奥行きを戻す。
+//   目安=大面積の彩度はHSLで昼45-55%/夕30-40%/夜25-35%。#ef7a6e級は画面の5%以下
 const PRESETS = {
   morning: { hemi: 1.35, hemiSky: 0xfff4e0, key: 0xffe7c2, keyI: 1.9,
-             seaNear: 0x8fd8cf, seaFar: 0xd9c9a8, fog: 0xf3e6c9 },
+             seaNear: 0x8bcfc7, seaFar: 0xaabdb7, fog: 0xefe2cc },
   day:     { hemi: 1.5, hemiSky: 0xffffff, key: 0xfff4e2, keyI: 2.1,
-             seaNear: 0x7edbd2, seaFar: 0x55b7b4, fog: 0xcdefe9 },
+             seaNear: 0x78cec6, seaFar: 0x78aaa9, fog: 0xd2ebe6 },
   dusk:    { hemi: 1.15, hemiSky: 0xffdfc4, key: 0xffb98a, keyI: 1.85,
-             seaNear: 0x6fb9b4, seaFar: 0xc98f77, fog: 0xf0c19a },
-  night:   { hemi: 0.62, hemiSky: 0xbcd0f0, key: 0xa9bfe8, keyI: 1.0,
-             seaNear: 0x2a4a63, seaFar: 0x16283f, fog: 0x1d3450 },
+             seaNear: 0x6fa7a4, seaFar: 0x7b7e8d, fog: 0xd7aa91 },
+  night:   { hemi: 0.62, hemiSky: 0xbcd0f0, key: 0x91aac8, keyI: 1.0,
+             seaNear: 0x34566a, seaFar: 0x293f52, fog: 0x394d5d },
 };
 
 const loadSprite = (name, scale) => {

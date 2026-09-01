@@ -101,6 +101,10 @@
       <div class="welcome-body">
         <p class="welcome-name">RINKA</p>
         <p class="welcome-text" data-i18n="welcomeText"></p>
+        <button type="button" class="welcome-video" id="welcome-video">
+          <img src="https://i.ytimg.com/vi/KDhH5YEZREs/mqdefault.jpg" alt="" loading="lazy" />
+          <span class="welcome-video-label" data-i18n="introVideo"></span>
+        </button>
         <div class="welcome-links">
           <a href="https://ethanjapan.github.io/mv-studio-site/" target="_blank" rel="noopener" data-i18n="rinkaSite">MV STUDIO</a>
           <a href="https://www.youtube.com/@mvstudio_by_linlin" target="_blank" rel="noopener">YouTube</a>
@@ -143,7 +147,29 @@
         <img src="/ui/stamp-ring.webp" alt="" />
         <span id="stamp-count">0/22</span>
       </button>
+      <button type="button" class="stamp-btn move-btn" id="move-btn" aria-pressed="false">
+        <span class="move-ico" aria-hidden="true">✥</span>
+        <span data-i18n="moveMode"></span>
+      </button>
+      <button type="button" class="stamp-btn plan-btn" id="plan-btn" hidden>
+        <img src="/ui/signboard.webp" alt="" />
+        <span id="plan-count">0</span>
+      </button>
     </div>
+
+    <aside class="panel stamp-panel" id="plan-panel" hidden>
+      <div class="sheet-handle" data-sheet-handle></div>
+      <img class="panel-garland" src="/ui/garland.webp" alt="" />
+      <h2 class="info-title" id="plan-title"></h2>
+      <p class="course-tip" id="plan-hint"></p>
+      <div id="plan-list"></div>
+      <div class="plan-actions">
+        <button type="button" class="plan-action" id="plan-copy"></button>
+        <button type="button" class="plan-action" id="plan-kml"></button>
+        <button type="button" class="plan-action plan-clear" id="plan-clear"></button>
+      </div>
+      <button type="button" class="close" id="plan-close" aria-label="close">×</button>
+    </aside>
 
     <aside class="panel stamp-panel" id="stamp-panel" hidden>
       <div class="sheet-handle" data-sheet-handle></div>

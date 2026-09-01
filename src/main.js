@@ -10,6 +10,7 @@ import { createSeason } from "./season.js";
 import { createTour } from "./tour.js";
 import { STRINGS, applyLang, detectLang , ABOUT } from "./i18n.js";
 import META from "../data/meta.json";
+import COUNTY_VIDEOS from "../data/county-videos.json";
 import counties from "../data/counties.json";
 import SPECIALTIES from "../data/specialties.json";
 import COUNTS from "../data/attraction-counts.json";
@@ -124,6 +125,40 @@ document.querySelector(".guide-row")?.addEventListener("click", toggleRinkaProfi
     });
   }
 }
+
+
+/**
+ * YouTube click-to-play。サムネだけ先読みし、iframeはクリック時に生成
+ * (privacy-enhanced=youtube-nocookie)。実用資訊の公式動画と同じ作法。
+ */
+const ytClickToPlay = (id, title) => {
+  const box = document.createElement("div");
+  box.className = "promo-video";
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "promo-thumb";
+  const img = document.createElement("img");
+  img.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+  img.alt = title;
+  img.loading = "lazy";
+  const play = document.createElement("span");
+  play.className = "promo-play";
+  btn.append(img, play);
+  btn.addEventListener("click", () => {
+    const frame = document.createElement("iframe");
+    frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+    frame.allow = "autoplay; encrypted-media; picture-in-picture";
+    frame.allowFullscreen = true;
+    frame.title = title;
+    frame.className = "promo-frame";
+    btn.replaceWith(frame);
+  });
+  const cap = document.createElement("p");
+  cap.className = "promo-title";
+  cap.textContent = title;
+  box.append(btn, cap);
+  return box;
+};
 
 const renderPanel = () => {
   // ★案内人のプロフィールは .guide-row(パネルの外枠)の後ろに挿しているので、
@@ -340,10 +375,26 @@ const renderPanel = () => {
     panelBody.dataset.view = "list";
     // ピンから来たときはイベント帯を最初に出す。下まで巻かないと見えないのでは、
     // 「押したのに何も起きない」のと同じ
+    // 県市の公式宣伝動画(縣市政府観光局のYouTube・click-to-play)。
+    // 載せるのは tools/check_videos.py がチャンネル名まで検証したものだけ
+    const vidbox = document.createElement("div");
+    {
+      const cv = COUNTY_VIDEOS[county.id];
+      if (cv) {
+        const vh = document.createElement("p");
+        vh.className = "gourmet-title";
+        vh.textContent = T.countyVideo;
+        vidbox.append(vh, ytClickToPlay(cv.id, cv.title));
+        const src = document.createElement("p");
+        src.className = "video-source";
+        src.textContent = `${T.videoBy} ${cv.channel}`;
+        vidbox.appendChild(src);
+      }
+    }
     panelBody.replaceChildren(
       ...(pickedEvent?.pref === county.id
-        ? [rk, evbox, wstrip, oslot, intro, gour, nowHead, ul]
-        : [rk, wstrip, oslot, intro, gour, evbox, nowHead, ul]),
+        ? [rk, evbox, wstrip, oslot, intro, gour, vidbox, nowHead, ul]
+        : [rk, wstrip, oslot, intro, gour, evbox, vidbox, nowHead, ul]),
     );
     stagger(panelBody);
     if (IS_MOBILE() && !panel.dataset.sheet) panel.dataset.sheet = "half";
@@ -433,9 +484,24 @@ const renderPanel = () => {
     const src = document.createElement("p");
     src.className = "spot-source";
     src.textContent = T.source + (s.credit ? `｜${s.credit}` : "");
+    // 旅の計画に追加(ユーザー要望 2026-09-01)
+    const padd = document.createElement("button");
+    padd.type = "button";
+    padd.className = "plan-add";
+    const paint = () => {
+      padd.textContent = planHas(s.id) ? `✓ ${T.planAdded}` : `+ ${T.planAdd}`;
+      padd.dataset.on = String(planHas(s.id));
+    };
+    paint();
+    padd.addEventListener("click", () => {
+      if (planHas(s.id)) plan = plan.filter((x) => x.s !== s.id);
+      else plan.push({ c: county.id, s: s.id });
+      savePlan();
+      paint();
+    });
     frag.push(h, town, sum);
     if (details) frag.push(details);
-    frag.push(link, src);
+    frag.push(padd, link, src);
     panelBody.dataset.view = "detail";
     panelBody.dataset.view = "list";
   panelBody.replaceChildren(...frag);
@@ -443,6 +509,160 @@ const renderPanel = () => {
     stagger(panelBody);
   }
 };
+
+/* ---- 旅の計画(ユーザー要望 2026-09-01) ----
+   行きたい景点を集めて、(1) 自分のChatGPTに貼る旅程相談プロンプト
+   (2) Google マイマップに取り込むKML を書き出す。
+   サイト側でAIを呼ばない=APIキー不要・運用費ゼロ。ユーザーが自分のGPTに貼る */
+const PLAN_KEY = "plan";
+const loadPlan = () => {
+  try { return JSON.parse(localStorage.getItem(PLAN_KEY)) ?? []; } catch { return []; }
+};
+let plan = loadPlan();
+const planHas = (id) => plan.some((x) => x.s === id);
+const savePlan = () => {
+  try { localStorage.setItem(PLAN_KEY, JSON.stringify(plan)); } catch { /* private mode */ }
+  updatePlanChip();
+};
+const planSpots = () => plan
+  .map(({ c, s }) => {
+    const county = counties.counties.find((x) => x.id === c);
+    const sp = (ATTRACTIONS[c] ?? []).find((x) => x.id === s);
+    return county && sp ? { county, sp } : null;
+  })
+  .filter(Boolean);
+
+const PLAN_PROMPT_LANG = { zh: "繁體中文", cn: "简体中文", ja: "日本語", en: "English", ko: "한국어" };
+const buildPlanPrompt = () => {
+  const rows = planSpots().map(({ county, sp }, i) => {
+    const nm = sp.name[lang] ?? sp.name.zh;
+    const area = `${county.name[lang] ?? county.name.zh} ${sp.town ?? ""}`.trim();
+    return `${i + 1}. ${nm}（${sp.name.zh}｜${area}｜${sp.lat.toFixed(4)},${sp.lon.toFixed(4)}）`;
+  });
+  // どの言語UIでも、地名の照合が要るので繁体字の正式名を併記する
+  const ask = {
+    zh: "我想去台灣旅行。以下是我想去的景點(名稱｜縣市｜座標)。請幫我:\n1. 依地理位置分組並排出合理的行程順序(哪幾個排同一天)\n2. 每天的移動方式(高鐵/台鐵/公車/包車)與大約時間\n3. 各景點的建議停留時間與最佳時段\n4. 順路的在地美食\n先確認我的旅行天數與出發地再開始。",
+    cn: "我想去台湾旅行。以下是我想去的景点(名称｜县市｜坐标)。请帮我:\n1. 按地理位置分组并排出合理的行程顺序(哪几个排同一天)\n2. 每天的移动方式(高铁/台铁/公交/包车)与大约时间\n3. 各景点的建议停留时间与最佳时段\n4. 顺路的当地美食\n请先确认我的旅行天数与出发地再开始。",
+    ja: "台湾旅行を計画しています。以下が行きたい景点です(名称｜県市｜座標)。次をお願いします:\n1. 地理的に無理のない回り順(どれを同じ日にまとめるか)\n2. 日ごとの移動手段(高鉄/台鉄/バス/チャーター)と所要時間の目安\n3. 各景点の滞在時間と行くべき時間帯\n4. 道中のおすすめグルメ\nまず旅行日数と出発地を私に確認してから始めてください。",
+    en: "I am planning a trip to Taiwan. Below are the spots I want to visit (name | county | coordinates). Please: \n1. Group them geographically into a sensible route (which ones fit the same day)\n2. Suggest transport for each day (HSR / TRA / bus / charter) with rough times\n3. Recommend how long to stay at each spot and the best time of day\n4. Add local food worth stopping for along the way\nAsk me for my trip length and starting point before you begin.",
+    ko: "대만 여행을 계획 중입니다. 아래는 가고 싶은 명소입니다(이름｜현시｜좌표). 부탁드립니다:\n1. 지리적으로 무리 없는 동선(어떤 곳을 같은 날에 묶을지)\n2. 일자별 이동수단(고속철/타이완철도/버스/차터)과 소요시간\n3. 각 명소의 체류 시간과 가기 좋은 시간대\n4. 가는 길의 현지 음식 추천\n시작 전에 여행 일수와 출발지를 먼저 물어봐 주세요.",
+  }[lang];
+  return `${ask}\n\n${rows.join("\n")}\n\n(來源/from: 台灣3D旅遊導覽 https://ethanjapan.github.io/taiwan-3d-guide/ )`;
+};
+
+const buildPlanKml = () => {
+  const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const marks = planSpots().map(({ county, sp }) => {
+    const nm = sp.name[lang] ?? sp.name.zh;
+    const desc = `${county.name.zh} ${sp.town ?? ""}｜${sp.sum?.[lang] ?? sp.sum?.zh ?? ""}`;
+    return `  <Placemark><name>${esc(nm)}</name><description>${esc(desc)}</description>` +
+           `<Point><coordinates>${sp.lon},${sp.lat},0</coordinates></Point></Placemark>`;
+  });
+  return `<?xml version="1.0" encoding="UTF-8"?>\n` +
+    `<kml xmlns="http://www.opengis.net/kml/2.2"><Document><name>Taiwan Trip Plan</name>\n` +
+    `${marks.join("\n")}\n</Document></kml>`;
+};
+
+const planBtnEl = document.getElementById("plan-btn");
+const planPanelEl = document.getElementById("plan-panel");
+const updatePlanChip = () => {
+  document.getElementById("plan-count").textContent = String(plan.length);
+  planBtnEl.hidden = plan.length === 0 && planPanelEl.hidden;
+};
+const renderPlanPanel = () => {
+  const T = STRINGS[lang];
+  document.getElementById("plan-title").textContent = T.planTitle;
+  document.getElementById("plan-hint").textContent = plan.length ? T.planHint : T.planEmpty;
+  document.getElementById("plan-copy").textContent = T.planCopy;
+  document.getElementById("plan-kml").textContent = T.planKml;
+  document.getElementById("plan-clear").textContent = T.planClear;
+  const list = document.getElementById("plan-list");
+  list.replaceChildren(...planSpots().map(({ county, sp }) => {
+    const row = document.createElement("div");
+    row.className = "plan-row";
+    const nm = document.createElement("span");
+    nm.className = "plan-name";
+    nm.textContent = sp.name[lang] ?? sp.name.zh;
+    const where = document.createElement("span");
+    where.className = "plan-where";
+    where.textContent = county.name[lang] ?? county.name.zh;
+    const rm = document.createElement("button");
+    rm.type = "button";
+    rm.className = "plan-remove";
+    rm.textContent = "×";
+    rm.addEventListener("click", () => {
+      plan = plan.filter((x) => x.s !== sp.id);
+      savePlan();
+      renderPlanPanel();
+    });
+    row.append(nm, where, rm);
+    return row;
+  }));
+  const has = plan.length > 0;
+  document.getElementById("plan-copy").disabled = !has;
+  document.getElementById("plan-kml").disabled = !has;
+  document.getElementById("plan-clear").disabled = !has;
+};
+planBtnEl.addEventListener("click", () => {
+  planPanelEl.hidden = !planPanelEl.hidden;
+  if (!planPanelEl.hidden) renderPlanPanel();
+});
+document.getElementById("plan-close").addEventListener("click", () => {
+  planPanelEl.hidden = true;
+  updatePlanChip();
+});
+document.getElementById("plan-copy").addEventListener("click", async (e) => {
+  try {
+    await navigator.clipboard.writeText(buildPlanPrompt());
+  } catch {
+    // clipboard APIが使えない環境(非https等)はテキスト選択で代替
+    const ta = document.createElement("textarea");
+    ta.value = buildPlanPrompt();
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+  }
+  e.target.textContent = STRINGS[lang].planCopied;
+  setTimeout(() => { e.target.textContent = STRINGS[lang].planCopy; }, 2600);
+});
+document.getElementById("plan-kml").addEventListener("click", () => {
+  const blob = new Blob([buildPlanKml()], { type: "application/vnd.google-earth.kml+xml" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "taiwan-trip-plan.kml";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+});
+document.getElementById("plan-clear").addEventListener("click", () => {
+  plan = [];
+  savePlan();
+  renderPlanPanel();
+});
+updatePlanChip();
+
+
+// 入口の「60秒で台湾を知る」(觀光署ブランド動画)。
+// サイトの役目は台湾を知ってもらうことなので、国全体の顔を最初のカードに置く
+document.getElementById("welcome-video")?.addEventListener("click", () => {
+  const wrap = document.createElement("div");
+  wrap.className = "intro-overlay";
+  const frame = document.createElement("iframe");
+  frame.src = "https://www.youtube-nocookie.com/embed/KDhH5YEZREs?autoplay=1&rel=0";
+  frame.allow = "autoplay; encrypted-media; picture-in-picture";
+  frame.allowFullscreen = true;
+  frame.title = "TAIWAN - Waves of Wonder";
+  const x = document.createElement("button");
+  x.type = "button";
+  x.className = "intro-overlay-close";
+  x.textContent = "×";
+  const closeIt = () => wrap.remove();
+  x.addEventListener("click", closeIt);
+  wrap.addEventListener("click", (e) => { if (e.target === wrap) closeIt(); });
+  wrap.append(frame, x);
+  document.body.appendChild(wrap);
+});
+
 const hint = document.getElementById("hint");
 
 /**
@@ -1536,6 +1756,36 @@ function start() {
   controls.maxDistance = span * 1.9;
   controls.maxPolarAngle = Math.PI * 0.46;
   controls.enablePan = false;
+
+  // ---- 操作モード(ユーザー要望 2026-09-01) ----
+  // 既定=回転(1本指ドラッグで回す)。「移動」=1本指でパン・2本指でズーム。
+  // 地図アプリに慣れた指はパンを期待するので、切り替えを持たせて選ばせる。
+  // パンを許すと島が画面外へ行けるので、targetを島の範囲内に留める
+  const PAN_LIMIT = () => span * 0.9;
+  const applyMoveMode = (on) => {
+    controls.enablePan = on;
+    controls.screenSpacePanning = false;          // 地面に沿って動かす(空に飛ばさない)
+    controls.touches.ONE = on ? THREE.TOUCH.PAN : THREE.TOUCH.ROTATE;
+    controls.touches.TWO = THREE.TOUCH.DOLLY_ROTATE;   // 2本指=ズーム+回転(両モード共通)
+    controls.mouseButtons.LEFT = on ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
+    document.getElementById("move-btn")?.setAttribute("aria-pressed", String(on));
+    try { localStorage.setItem("moveMode", on ? "1" : ""); } catch { /* private mode */ }
+  };
+  let moveMode = false;
+  try { moveMode = localStorage.getItem("moveMode") === "1"; } catch { /* private mode */ }
+  applyMoveMode(moveMode);
+  document.getElementById("move-btn")?.addEventListener("click", () => {
+    moveMode = !moveMode;
+    applyMoveMode(moveMode);
+  });
+  controls.addEventListener("change", () => {
+    // パンの行きすぎを戻す(島を見失った操作不能状態を作らない)
+    const L = PAN_LIMIT();
+    const t = controls.target;
+    t.x = THREE.MathUtils.clamp(t.x, -L, L);
+    t.z = THREE.MathUtils.clamp(t.z, -L, L);
+    t.y = 0;
+  });
 
   // 台湾は南北に細長く、しかも斜め俯瞰なので奥行きが圧縮される。
   // 画角から机上で距離を出すと必ずどこかが切れるか小さすぎるので、

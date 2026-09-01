@@ -3394,3 +3394,112 @@ html[data-phase="night"] .info-panel {
   .lang, .stamp-btn, .close, .credit-link { transition: none; }
   .lang:hover, .stamp-btn:hover { transform: none; }
 }
+
+/* 県市パネルの公式宣伝動画。実用資訊の .promo-video を流用し、提供元だけ足す */
+.video-source {
+  margin: 4px 0 0;
+  font-size: 0.66rem;
+  color: var(--ink-soft);
+}
+html[data-phase="night"] .video-source { color: #a8bdd4; }
+
+/* ---- 旅の計画 ---- */
+.plan-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 2px;
+  border-bottom: 1px solid rgba(35, 66, 60, 0.1);
+}
+.plan-name { flex: 1; font-size: 0.8rem; font-weight: 600; }
+.plan-where { font-size: 0.66rem; color: var(--ink-soft); }
+.plan-remove {
+  border: 0; background: none; color: var(--ink-soft);
+  font-size: 1rem; cursor: pointer; padding: 2px 6px;
+}
+.plan-actions { display: grid; gap: 8px; margin-top: 14px; }
+.plan-action {
+  border: 0; border-radius: 10px; padding: 10px 12px;
+  font-size: 0.78rem; font-weight: 700; cursor: pointer;
+  background: var(--accent); color: #fff;
+  transition: transform 0.18s ease;
+}
+.plan-action:disabled { opacity: 0.45; cursor: default; }
+.plan-action:not(:disabled):hover { transform: translateY(-1.5px); }
+.plan-action.plan-clear { background: rgba(35, 66, 60, 0.12); color: var(--ink); }
+html[data-phase="night"] .plan-action.plan-clear { background: rgba(200, 220, 245, 0.16); color: #eaf3fa; }
+.plan-add {
+  display: block;
+  width: 100%;
+  margin: 10px 0 4px;
+  border: 1.5px dashed var(--accent); border-radius: 10px;
+  background: none; color: var(--accent);
+  padding: 8px 10px; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+}
+.plan-add[data-on="true"] {
+  border-style: solid;
+  background: var(--accent);
+  color: #fff;
+}
+.plan-btn img { filter: hue-rotate(120deg); } /* スタンプの輪と見分けが付くように */
+
+/* ---- 入口の「60秒で台湾を知る」 ---- */
+.welcome-video {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin: 8px 0 2px;
+  padding: 6px;
+  border: 0;
+  border-radius: 10px;
+  background: rgba(35, 66, 60, 0.07);
+  cursor: pointer;
+  text-align: left;
+  transition: transform 0.18s ease;
+}
+.welcome-video:hover { transform: translateY(-1.5px); }
+.welcome-video img {
+  width: 74px;
+  border-radius: 7px;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.welcome-video-label { font-size: 0.76rem; font-weight: 700; color: var(--ink); }
+html[data-phase="night"] .welcome-video { background: rgba(200, 220, 245, 0.12); }
+html[data-phase="night"] .welcome-video-label { color: #eaf3fa; }
+
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(10, 20, 26, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4vmin;
+}
+.intro-overlay iframe {
+  width: min(960px, 94vw);
+  aspect-ratio: 16 / 9;
+  border: 0;
+  border-radius: 12px;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.5);
+}
+.intro-overlay-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  border: 0;
+  background: none;
+  color: #fff;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+/* 操作モード(回転/移動)。押下中=移動モード */
+.move-btn .move-ico { font-size: 0.9rem; line-height: 1; }
+.move-btn[aria-pressed="true"] {
+  background: var(--accent);
+  color: #fff;
+}
