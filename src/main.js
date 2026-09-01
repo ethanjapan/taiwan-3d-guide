@@ -37,6 +37,14 @@ const panelBody = document.getElementById("panel-body");
 // panelState.spotId が null なら10件リスト、あれば詳細ビュー。
 const panelState = { countyId: null, spotId: null };
 
+
+/** localStorage の安全な読み書き。拒否環境(private mode等)ではthrowするので必ずここを通す。
+    GPTデバッグ指摘(2026-09-01): 生の呼び出しが10箇所あり、throwすると起動ごと死んでいた */
+const store = {
+  get: (k) => { try { return localStorage.getItem(k); } catch { return null; } },
+  set: (k, v) => { try { localStorage.setItem(k, v); } catch { /* 保存できなくてもUIは進める */ } },
+};
+
 const mapsUrl = (s) => `https://www.google.com/maps?q=${s.lat},${s.lon}`;
 
 /** 天気アイコン。素材(public/weather/*.webp)が無い間は error で自分を消すので、
@@ -525,12 +533,19 @@ const renderPanel = () => {
    サイト側でAIを呼ばない=APIキー不要・運用費ゼロ。ユーザーが自分のGPTに貼る */
 const PLAN_KEY = "plan";
 const loadPlan = () => {
-  try { return JSON.parse(localStorage.getItem(PLAN_KEY)) ?? []; } catch { return []; }
+  // 配列でない・要素の形が違う・実在しないIDは読み込み時に落とす
+  // (GPTデバッグ指摘4/5: 「件数あり・一覧なし・空のプロンプト」状態になっていた)
+  try {
+    const a = JSON.parse(store.get(PLAN_KEY) ?? "[]");
+    if (!Array.isArray(a)) return [];
+    return a.filter((x) => x && typeof x.c === "string" && typeof x.s === "string"
+      && (ATTRACTIONS[x.c] ?? []).some((sp) => sp.id === x.s));
+  } catch { return []; }
 };
 let plan = loadPlan();
 const planHas = (id) => plan.some((x) => x.s === id);
 const savePlan = () => {
-  try { localStorage.setItem(PLAN_KEY, JSON.stringify(plan)); } catch { /* private mode */ }
+  store.set(PLAN_KEY, JSON.stringify(plan));
   updatePlanChip();
 };
 const planSpots = () => plan
@@ -681,13 +696,15 @@ document.getElementById("plan-copy").addEventListener("click", async (e) => {
   try {
     await navigator.clipboard.writeText(buildPlanPrompt());
   } catch {
-    // clipboard APIが使えない環境(非https等)はテキスト選択で代替
+    // clipboard APIが使えない環境はテキスト選択で代替。
+    // ★それも失敗したら「コピーしました」と偽らない(GPTデバッグ指摘12)
     const ta = document.createElement("textarea");
     ta.value = buildPlanPrompt();
     document.body.appendChild(ta);
     ta.select();
-    document.execCommand("copy");
+    const ok = document.execCommand("copy");
     ta.remove();
+    if (!ok) { window.prompt("Copy:", buildPlanPrompt()); return; }
   }
   e.target.textContent = STRINGS[lang].planCopied;
   setTimeout(() => { e.target.textContent = STRINGS[lang].planCopy; }, 2600);
@@ -892,7 +909,11 @@ let updateSeasonButton = null;
 let updatePhaseButton = null; // start()が差し込む。言語切替時にラベルを追随させる
 
 // ---- 旅のしおり(スタンプラリー)。訪問=県市パネルを開いた県市。localStorageで永続 ----
-const stamps = new Set(JSON.parse(localStorage.getItem("stamps") ?? "[]"));
+const stamps = new Set((() => {
+  // 壊れたJSON・配列以外が入っていても起動を殺さない(GPTデバッグ指摘3)
+  try { const a = JSON.parse(store.get("stamps") ?? "[]"); return Array.isArray(a) ? a : []; }
+  catch { return []; }
+})());
 const stampBtn = document.getElementById("stamp-btn");
 const stampPanel = document.getElementById("stamp-panel");
 const stampCountEl = document.getElementById("stamp-count");
@@ -961,7 +982,7 @@ const renderStampBook = () => {
 const addStamp = (iso) => {
   if (stamps.has(iso)) return;
   stamps.add(iso);
-  localStorage.setItem("stamps", JSON.stringify([...stamps]));
+  store.set("stamps", JSON.stringify([...stamps]));
   updateStampCount();
   stampBtn.dataset.pop = "true";
   setTimeout(() => delete stampBtn.dataset.pop, 700);
@@ -1014,7 +1035,9 @@ document.getElementById("stamp-close").addEventListener("click", () => {
 
 const setLang = (next) => {
   lang = next;
-  localStorage.setItem("lang", next);
+  store.set("lang", next);
+  // 開いているplanパネルは旧言語のまま残る(GPTデバッグ指摘10)
+  if (!document.getElementById("plan-panel").hidden) renderPlanPanel();
   applyLang(next);
   searchInput.placeholder = STRINGS[next].searchPh;
   if (!fallback.hidden) showFallback();
@@ -1183,7 +1206,10 @@ const renderCoursePanel = (cse) => {
       day = st.day;
       const dh = document.createElement("h3");
       dh.className = "info-h";
-      dh.textContent = `Day ${day}`;
+      // 「Day 1」を英語固定にしない(GPTデバッグ指摘14)
+      const DAY_FMT = { zh: (n) => `第${n}天`, cn: (n) => `第${n}天`,
+                        ja: (n) => `${n}日目`, en: (n) => `Day ${n}`, ko: (n) => `${n}일차` };
+      dh.textContent = (DAY_FMT[lang] ?? DAY_FMT.en)(day);
       frag.push(dh);
     }
     const row = document.createElement("div");
@@ -1851,10 +1877,10 @@ function start() {
     controls.touches.TWO = THREE.TOUCH.DOLLY_ROTATE;   // 2本指=ズーム+回転(両モード共通)
     controls.mouseButtons.LEFT = on ? THREE.MOUSE.PAN : THREE.MOUSE.ROTATE;
     document.getElementById("move-btn")?.setAttribute("aria-pressed", String(on));
-    try { localStorage.setItem("moveMode", on ? "1" : ""); } catch { /* private mode */ }
+    store.set("moveMode", on ? "1" : "");
   };
   let moveMode = false;
-  try { moveMode = localStorage.getItem("moveMode") === "1"; } catch { /* private mode */ }
+  moveMode = store.get("moveMode") === "1";
   applyMoveMode(moveMode);
   document.getElementById("move-btn")?.addEventListener("click", () => {
     moveMode = !moveMode;
@@ -2274,6 +2300,7 @@ function start() {
   attachSheet(panel, { snaps: true, onClose: () => select(null) });
   attachSheet(infoPanel, {});
   attachSheet(stampPanel, {});
+  attachSheet(document.getElementById("plan-panel"), {});   // GPTデバッグ指摘11
 
   jumpToSpot = (iso, spotId) => {
     const g = groups.find((x) => x.userData.county.id === iso);
@@ -2301,7 +2328,7 @@ function start() {
                      dusk: T.phaseDusk, night: T.phaseNight }[sel];
       return sel === "auto" ? `${name}(${{ morning: T.phaseMorning, day: T.phaseDay, dusk: T.phaseDusk, night: T.phaseNight }[atmosphere.phase]})` : name;
     };
-    let sel = localStorage.getItem("phase") ?? "auto";
+    let sel = store.get("phase") ?? "auto";
     if (!CYCLE.includes(sel)) sel = "auto";
     const render = () => {
       icon.src = `${import.meta.env.BASE_URL}ui/${ICONS[atmosphere.phase] ?? "sun"}.webp`;
@@ -2310,7 +2337,7 @@ function start() {
     render();
     btn.addEventListener("click", () => {
       sel = CYCLE[(CYCLE.indexOf(sel) + 1) % CYCLE.length];
-      localStorage.setItem("phase", sel);
+      store.set("phase", sel);
       atmosphere.setPhase(sel);
       render();
       // 時間帯で景点の並びが変わるので、開いていれば作り直す
@@ -2338,7 +2365,7 @@ function start() {
       return { auto: T.seasonAuto, spring: T.seasonSpring, summer: T.seasonSummer,
                autumn: T.seasonAutumn, winter: T.seasonWinter }[k];
     };
-    let sel = localStorage.getItem("season") ?? "auto";
+    let sel = store.get("season") ?? "auto";
     if (!CYCLE.includes(sel)) sel = "auto";
     season.setSeason(sel);
     const render = () => {
@@ -2351,7 +2378,7 @@ function start() {
     render();
     btn.addEventListener("click", () => {
       sel = CYCLE[(CYCLE.indexOf(sel) + 1) % CYCLE.length];
-      localStorage.setItem("season", sel);
+      store.set("season", sel);
       season.setSeason(sel);
       render();
     });

@@ -3654,10 +3654,11 @@ html[data-phase="night"] a.plan-route { background: #2f7bea; color: #fff; }
    ★横向きスマホ(幅874等)は max-width:640px に入らず「PC扱い」で素通りしていた。
      touch端末かつ低い画面(高さ500px以下)も同じ退避を適用する */
 @media (max-width: 640px), ((pointer: coarse) and (max-height: 500px)) {
-  .dock, .credit {
+  .dock, .credit, .month-bar {
     transition: transform 0.25s ease, opacity 0.25s ease;
   }
   body[data-sheet-open="1"] .dock,
+  body[data-sheet-open="1"] .month-bar,
   body[data-sheet-open="1"] .credit {
     transform: translateY(140%);
     opacity: 0;
@@ -3710,5 +3711,17 @@ html[data-phase="night"] a.plan-route { background: #2f7bea; color: #fff; }
     right: auto;
     max-width: 40vw;
     font-size: 0.5rem;
+  }
+}
+
+/* standalone(ホーム画面起動)のsafe-area。GPTデバッグ指摘7/8(2026-09-01):
+   viewport-fit=coverなのに上端を見ておらず、ヘッダーがDynamic Island側へ入り込む。
+   シートの末尾ボタンもホームインジケーターに近接していた */
+.topbar {
+  padding-top: calc(14px + env(safe-area-inset-top, 0px));
+}
+@media (max-width: 640px) {
+  .panel, .info-panel, .stamp-panel {
+    padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px));
   }
 }

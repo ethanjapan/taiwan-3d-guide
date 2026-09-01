@@ -173,7 +173,7 @@ export const createTour = (api) => {
       runTour(forced === "1" ? "map" : forced);
       return;
     }
-    if (localStorage.getItem(KEY)) return;
+    try { if (localStorage.getItem(KEY)) return; } catch { /* 拒否環境=毎回出るだけ */ }
     runTour("map");
   };
   // 地図が立ち上がる演出(バネ)が落ち着いてから。動いている最中に枠を出すとずれる

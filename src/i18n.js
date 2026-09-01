@@ -431,7 +431,8 @@ export const detectLang = () => {
   const url = normalize(new URLSearchParams(location.search).get("lang"));
   if (url) return url;
 
-  const saved = localStorage.getItem("lang");
+  let saved = null;
+  try { saved = localStorage.getItem("lang"); } catch { /* 拒否環境 */ }
   if (saved in STRINGS) return saved;
 
   return normalize(navigator.language) ?? "zh";

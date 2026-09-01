@@ -126,7 +126,8 @@ export const createAtmosphere = (stage, reduceMotion) => {
   };
 
   // 初期状態: 保存された選択 > ?phase= > 台湾の実時間
-  const saved = localStorage.getItem("phase");
+  let saved = null;
+  try { saved = localStorage.getItem("phase"); } catch { /* 拒否環境 */ }
   const forced = new URLSearchParams(location.search).get("phase");
   applyPhase(PRESETS[forced] ? forced : saved ?? "auto");
 

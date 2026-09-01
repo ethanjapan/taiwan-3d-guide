@@ -1,0 +1,21 @@
+{
+ "name": "台灣 3D 旅遊導覽",
+ "short_name": "台灣3D導覽",
+ "start_url": "/taiwan-3d-guide/",
+ "scope": "/taiwan-3d-guide/",
+ "display": "standalone",
+ "background_color": "#cdefe9",
+ "theme_color": "#cdefe9",
+ "icons": [
+  {
+   "src": "icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}
