@@ -491,7 +491,10 @@ const renderPanel = () => {
     }
     const town = document.createElement("p");
     town.className = "spot-town";
-    town.textContent = `${county.name[lang]} ${s.town}`;
+    // 行政区名: zh/ja=繁体字のまま(漢字で通じる)、cn=簡体字、en/ko=ピンイン
+    const townName = lang === "cn" ? (s.town_cn ?? s.town)
+      : (lang === "en" || lang === "ko") ? (s.town_en ?? s.town) : s.town;
+    town.textContent = `${county.name[lang]} ${townName}`;
     const sum = document.createElement("p");
     sum.className = "spot-sum";
     sum.textContent = s.sum[lang] ?? s.sum.en;
