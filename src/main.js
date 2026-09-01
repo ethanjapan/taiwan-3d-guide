@@ -481,6 +481,13 @@ const renderPanel = () => {
     link.target = "_blank";
     link.rel = "noreferrer";
     link.textContent = T.openMap;
+    // 経路(乗換)。originを渡さなければGoogle Maps側が現在地を出発点にする
+    const route = document.createElement("a");
+    route.className = "spot-map spot-route";
+    route.href = `https://www.google.com/maps/dir/?api=1&destination=${s.lat},${s.lon}&travelmode=transit`;
+    route.target = "_blank";
+    route.rel = "noreferrer";
+    route.textContent = T.route;
     const src = document.createElement("p");
     src.className = "spot-source";
     src.textContent = T.source + (s.credit ? `｜${s.credit}` : "");
@@ -501,7 +508,7 @@ const renderPanel = () => {
     });
     frag.push(h, town, sum);
     if (details) frag.push(details);
-    frag.push(padd, link, src);
+    frag.push(padd, link, route, src);
     panelBody.dataset.view = "detail";
     panelBody.dataset.view = "list";
   panelBody.replaceChildren(...frag);
@@ -1780,6 +1787,55 @@ function start() {
     moveMode = !moveMode;
     applyMoveMode(moveMode);
   });
+
+/* ---- 現在地(GPS・ユーザー要望 2026-09-01) ----
+   台湾滞在中に「いま自分は島のどこにいるか」を出す。
+   座標式は build-shapes.mjs の投影と同一(ORIGIN 120.98/23.75・SCALE 60・cosLat)。
+   位置情報はブラウザのGeolocation APIのみ・サーバへ送らない(このサイトにサーバは無い) */
+{
+  const GPS_ORIGIN = { lon: 120.98, lat: 23.75 };
+  const GPS_SCALE = 60;
+  const GPS_COS = Math.cos((GPS_ORIGIN.lat * Math.PI) / 180);
+  const cx = (stage.bounds.minX + stage.bounds.maxX) / 2;
+  const cy = (stage.bounds.minY + stage.bounds.maxY) / 2;
+  let marker = null;
+  const toast = (msg) => showHint(msg);
+
+  const dotSprite = () => {
+    const cv = document.createElement("canvas");
+    cv.width = cv.height = 96;
+    const g = cv.getContext("2d");
+    g.fillStyle = "rgba(56, 128, 255, 0.25)";
+    g.beginPath(); g.arc(48, 48, 44, 0, Math.PI * 2); g.fill();
+    g.fillStyle = "#fff";
+    g.beginPath(); g.arc(48, 48, 20, 0, Math.PI * 2); g.fill();
+    g.fillStyle = "#2f7bea";
+    g.beginPath(); g.arc(48, 48, 15, 0, Math.PI * 2); g.fill();
+    const sp = new THREE.Sprite(new THREE.SpriteMaterial({
+      map: new THREE.CanvasTexture(cv), transparent: true, depthWrite: false }));
+    sp.scale.setScalar(stage.span * 0.05);
+    return sp;
+  };
+
+  document.getElementById("locate-btn")?.addEventListener("click", () => {
+    if (!navigator.geolocation) { toast(STRINGS[lang].gpsFail); return; }
+    navigator.geolocation.getCurrentPosition((pos) => {
+      const { latitude: la, longitude: lo } = pos.coords;
+      // 台湾+離島の範囲(オープンデータ検査と同じ枠)。外なら置かない
+      if (!(21.7 <= la && la <= 26.5 && 118.1 <= lo && lo <= 122.1)) {
+        toast(STRINGS[lang].gpsOutside);
+        return;
+      }
+      const px = (lo - GPS_ORIGIN.lon) * GPS_COS * GPS_SCALE;
+      const py = (la - GPS_ORIGIN.lat) * GPS_SCALE;
+      marker?.removeFromParent();
+      marker = dotSprite();
+      marker.position.set(px - cx, stage.extrude + stage.span * 0.03, -(py - cy));
+      stage.scene.add(marker);
+    }, () => toast(STRINGS[lang].gpsFail), { enableHighAccuracy: false, timeout: 12000, maximumAge: 120000 });
+  });
+}
+
   controls.addEventListener("change", () => {
     // パンの行きすぎを戻す(島を見失った操作不能状態を作らない)
     const L = PAN_LIMIT();

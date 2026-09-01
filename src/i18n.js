@@ -4,6 +4,10 @@ const CREDIT =
 
 export const STRINGS = {
   zh: {
+    locate: "顯示目前位置",
+    gpsOutside: "目前位置在台灣範圍外",
+    gpsFail: "無法取得位置(請確認定位權限)",
+    route: "路線(Google Maps)",
     planChip: "AI 行程",
     moveMode: "移動",
     introVideo: "60秒認識台灣",
@@ -80,6 +84,10 @@ export const STRINGS = {
     credit: CREDIT,
   },
   ja: {
+    locate: "現在地を表示",
+    gpsOutside: "現在地は台湾の外です",
+    gpsFail: "位置を取得できません(位置情報の許可を確認)",
+    route: "経路・乗換(Google Maps)",
     planChip: "AI旅程",
     moveMode: "移動",
     introVideo: "60秒で台湾を知る",
@@ -156,6 +164,10 @@ export const STRINGS = {
     credit: CREDIT,
   },
   cn: {
+    locate: "显示当前位置",
+    gpsOutside: "当前位置在台湾范围外",
+    gpsFail: "无法获取位置(请确认定位权限)",
+    route: "路线(Google Maps)",
     planChip: "AI 行程",
     moveMode: "移动",
     introVideo: "60秒认识台湾",
@@ -232,6 +244,10 @@ export const STRINGS = {
     credit: CREDIT,
   },
   en: {
+    locate: "Show my location",
+    gpsOutside: "You are outside Taiwan",
+    gpsFail: "Could not get location (check permission)",
+    route: "Directions (Google Maps)",
     planChip: "AI trip",
     moveMode: "Pan",
     introVideo: "Taiwan in 60 seconds",
@@ -308,6 +324,10 @@ export const STRINGS = {
     credit: CREDIT,
   },
   ko: {
+    locate: "현재 위치 표시",
+    gpsOutside: "현재 위치가 대만 밖입니다",
+    gpsFail: "위치를 가져올 수 없습니다(권한 확인)",
+    route: "길찾기(Google Maps)",
     planChip: "AI 일정",
     moveMode: "이동",
     introVideo: "60초로 보는 타이완",

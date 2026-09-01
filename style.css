@@ -3597,3 +3597,37 @@ html[data-phase="night"] .welcome-video-label { color: #eaf3fa; }
 @media (prefers-reduced-motion: reduce) {
   .plan-fab, .move-btn { transition: none; }
 }
+
+/* 現在地ボタン。移動ボタンと同じ丸・その上に積む */
+.locate-btn {
+  position: fixed;
+  left: clamp(16px, 4vw, 32px);
+  bottom: 74px;
+  z-index: 3;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  color: #2f7bea;
+  font-size: 1.05rem;
+  cursor: pointer;
+  transition: transform 0.18s ease;
+}
+.locate-btn:hover { transform: translateY(-1.5px); }
+@media (max-width: 640px) {
+  .locate-btn {
+    left: 12px;
+    top: 168px;
+    bottom: auto;
+    width: 42px;
+    height: 42px;
+  }
+}
+/* PCは移動ボタンが出ないので、現在地を下段へ寄せる */
+@media (pointer: fine) and (min-width: 641px) {
+  .locate-btn { bottom: 22px; }
+}
+/* 経路リンクは地図リンクと横並び */
+.spot-route { margin-left: 12px; }
