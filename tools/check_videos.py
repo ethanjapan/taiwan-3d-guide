@@ -45,8 +45,12 @@ VERIFIED_OFFICIAL = {
 }
 
 bad = []
+CHECKS = []
 for iso, v in sorted(VIDEOS.items()):
-    vid = v.get("id") or ""
+    CHECKS.append((iso, v, v.get("id") or ""))
+    for lg, vid2 in (v.get("byLang") or {}).items():
+        CHECKS.append((f"{iso}({lg})", v, vid2))
+for iso, v, vid in CHECKS:
     if not re.fullmatch(r"[\w-]{11}", vid):
         bad.append(f"{iso}: id '{vid}' がYouTube IDの形(11文字)でない")
         continue

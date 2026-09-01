@@ -407,10 +407,12 @@ const renderPanel = () => {
     {
       const cv = COUNTY_VIDEOS[county.id];
       if (cv) {
+        // 言語別の版があるならUIの言語に合わせる(高雄=GO! KAOHSIUNGの日/韓/英版)
+        const vid = cv.byLang?.[lang] ?? cv.id;
         const vh = document.createElement("p");
         vh.className = "gourmet-title";
         vh.textContent = T.countyVideo;
-        vidbox.append(vh, ytClickToPlay(cv.id, cv.title));
+        vidbox.append(vh, ytClickToPlay(vid, cv.title));
         const src = document.createElement("p");
         src.className = "video-source";
         src.textContent = `${T.videoBy} ${cv.channel}`;

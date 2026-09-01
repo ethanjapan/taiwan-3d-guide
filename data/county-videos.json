@@ -84,10 +84,15 @@
   "year": "2025"
  },
  "TW-KHH": {
-  "id": "qc2Vm1WFCFk",
-  "title": "GO! KAOHSIUNG 東北亞篇",
-  "channel": "高雄旅遊網(高雄市政府觀光局)",
-  "year": "2026"
+  "id": "3WIwU6cDGh4",
+  "title": "GO! KAOHSIUNG",
+  "channel": "高雄旅遊網",
+  "year": "2026",
+  "byLang": {
+   "ja": "qc2Vm1WFCFk",
+   "ko": "oPgryVEcpXg",
+   "en": "vWdhSRRH-4c"
+  }
  },
  "TW-PIF": {
   "id": "HnNCX-m7zbw",
