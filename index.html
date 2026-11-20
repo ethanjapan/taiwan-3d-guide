@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head><meta name="robots" content="noai,noimageai"><meta name="tdm-reservation" content="1">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- ホーム画面追加(standalone)対応。URLバーが無くなるぶん safe-area の余白が本物になる -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="台灣3D導覽" />
+    <meta name="theme-color" content="#cdefe9" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="./icons/icon-192.png" />
+    <title>台灣 3D 旅遊導覽</title>
+    <meta name="description" content="以3D地圖漫遊台灣220個景點(繁中/简中/日本語/EN/한국어対応)｜台湾3D観光ガイド" />
+    <link rel="icon" type="image/png" href="/taiwan-3d-guide/favicon.png" />
+    <!-- OGP: 絶対URL+バージョン付きファイル名(クエリ文字列よりスクレイパ互換が確実) -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="台灣3D旅遊導覽" />
+    <meta property="og:locale" content="zh_TW" />
+    <meta property="og:locale:alternate" content="ja_JP" />
+    <meta property="og:locale:alternate" content="en_US" />
+    <meta property="og:locale:alternate" content="ko_KR" />
+    <meta property="og:title" content="台灣3D旅遊導覽｜台湾3D観光ガイド" />
+    <meta property="og:description" content="以3D地圖漫遊台灣220個景點(五語対応)。天氣・美食・行程・RINKA導覽つき" />
+    <meta property="og:url" content="https://ethanjapan.github.io/taiwan-3d-guide/" />
+    <meta property="og:image" content="https://ethanjapan.github.io/taiwan-3d-guide/og-20260822.jpg" />
+    <meta property="og:image:secure_url" content="https://ethanjapan.github.io/taiwan-3d-guide/og-20260822.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="台灣3D旅遊導覽のサムネイル" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="台灣3D旅遊導覽｜台湾3D観光ガイド" />
+    <meta name="twitter:description" content="以3D地圖漫遊台灣220個景點(五語対応)。天氣・美食・行程・RINKA導覽つき" />
+    <meta name="twitter:image" content="https://ethanjapan.github.io/taiwan-3d-guide/og-20260822.jpg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;800&display=swap" />
+    <script type="module" crossorigin src="/taiwan-3d-guide/assets/index-HzhXQA_E.js"></script>
+    <link rel="modulepreload" crossorigin href="/taiwan-3d-guide/assets/vendor-yL6Oju4Y.js">
+    <link rel="stylesheet" crossorigin href="/taiwan-3d-guide/assets/vendor-CTZuBZOi.css">
+    <link rel="stylesheet" crossorigin href="/taiwan-3d-guide/assets/index-DfssJ4__.css">
+  </head>
+  <body>
+    <canvas id="stage" aria-hidden="true"></canvas>
+
+    <header class="topbar">
+      <h1 class="title"><img class="title-compass" src="/taiwan-3d-guide/ui/compass.webp" alt="" /><span data-i18n="title">台灣 3D 旅遊導覽</span></h1>
+      <nav class="langs" aria-label="Language">
+        <button type="button" class="lang search-toggle" id="search-toggle" aria-label="search">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><line x1="15.5" y1="15.5" x2="21" y2="21"/></svg>
+        </button>
+        <button type="button" class="lang info-btn" id="info-btn" data-i18n="infoBtn"></button>
+        <button type="button" class="lang help-btn" id="help-btn" aria-label="help">?</button>
+        <!-- スマホでは言語5つが横に並ばずヘッダが2段になる。1つに畳んで押したときだけ開く -->
+        <!-- ★現在の言語だけを出すと「ただの札」に見えて押せると分からない(2026-08-22 ユーザー指摘)。
+             地球の印と下向きの矢印を付けて、開くものだと分かる形にする -->
+        <button type="button" class="lang lang-toggle" id="lang-btn" aria-expanded="false" aria-haspopup="true">
+          <svg class="lang-globe" width="15" height="15" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="1.9" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/><path d="M3 12h18"/>
+            <path d="M12 3c2.6 2.6 2.6 15.4 0 18-2.6-2.6-2.6-15.4 0-18z"/>
+          </svg>
+          <span id="lang-btn-label"></span>
+        </button>
+        <!-- ★言語ボタンは独立の入れ物に入れる。ヘッダの他のボタンと混ざっていると
+             スマホの縦並びを nth-of-type で数えることになり、順番が変わるたび壊れる -->
+        <div class="lang-list" id="lang-list">
+          <button type="button" class="lang" data-lang="zh" lang="zh-Hant">繁中</button>
+          <button type="button" class="lang" data-lang="cn" lang="zh-Hans">简中</button>
+          <button type="button" class="lang" data-lang="ja" lang="ja">日本語</button>
+          <button type="button" class="lang" data-lang="en" lang="en">EN</button>
+          <button type="button" class="lang" data-lang="ko" lang="ko">한국어</button>
+        </div>
+      </nav>
+    </header>
+
+    <p class="hint" id="hint" data-i18n="hint">拖曳旋轉．滾動縮放．點選縣市</p>
+
+    <div class="search" id="search">
+      <input type="search" id="search-input" autocomplete="off" />
+      <ul class="search-results" id="search-results" hidden></ul>
+    </div>
+
+    <aside class="panel" id="panel" hidden>
+      <div class="sheet-handle" data-sheet-handle></div>
+      <img class="panel-garland" src="/taiwan-3d-guide/ui/garland.webp" alt="" />
+      <button type="button" class="close" id="close" data-i18n-aria="close" aria-label="關閉">×</button>
+      <div class="guide-row">
+        <img class="guide-avatar" src="/taiwan-3d-guide/guide/rinka-avatar.webp" alt="RINKA" width="40" height="40" />
+        <span class="guide-label" data-i18n="guideLabel"></span>
+      </div>
+      <h2 class="panel-name" id="panel-name"></h2>
+      <div class="panel-body" id="panel-body"></div>
+    </aside>
+
+    <div class="badge" id="badge" data-show="false" aria-hidden="true"><span class="badge-inner" id="badge-inner"></span></div>
+
+    <aside class="panel info-panel" id="info-panel" hidden>
+      <div class="sheet-handle" data-sheet-handle></div>
+      <img class="panel-garland" src="/taiwan-3d-guide/ui/garland.webp" alt="" />
+      <button type="button" class="close" id="info-close" data-i18n-aria="close" aria-label="關閉">×</button>
+      <h2 class="panel-name" id="info-title"></h2>
+      <div class="panel-body" id="info-body"></div>
+    </aside>
+
+    <aside class="welcome" id="welcome">
+      <img class="welcome-hibiscus" src="/taiwan-3d-guide/ui/hibiscus.webp" alt="" />
+      <video class="welcome-photo" src="/taiwan-3d-guide/living/profile.mp4"
+             poster="/taiwan-3d-guide/guide/rinka-guide.webp" muted loop autoplay playsinline
+             aria-label="RINKA"></video>
+      <div class="welcome-body">
+        <p class="welcome-name">RINKA</p>
+        <p class="welcome-text" data-i18n="welcomeText"></p>
+        <button type="button" class="welcome-video" id="welcome-video">
+          <img src="https://i.ytimg.com/vi/KDhH5YEZREs/mqdefault.jpg" alt="" loading="lazy" />
+          <span class="welcome-video-label" data-i18n="introVideo"></span>
+        </button>
+        <div class="welcome-links">
+          <a href="https://ethanjapan.github.io/mv-studio-site/" target="_blank" rel="noopener">MV STUDIO</a>
+          <a href="https://www.youtube.com/@mvstudio_by_linlin" target="_blank" rel="noopener">YouTube</a>
+        </div>
+      </div>
+      <button type="button" class="close" id="welcome-close" data-i18n-aria="close" aria-label="關閉">×</button>
+    </aside>
+
+    <aside class="tour-menu" id="tour-menu" hidden>
+      <button type="button" class="close" id="tour-close" aria-label="close">×</button>
+      <p class="tour-title" id="tour-title"></p>
+      <p class="tour-lead" id="tour-lead"></p>
+      <div class="tour-list" id="tour-list"></div>
+    </aside>
+
+    <div class="month-bar" id="month-bar" hidden>
+      <button type="button" class="month-off" id="month-off"></button>
+      <div class="month-btns" id="month-btns"></div>
+    </div>
+
+    <!-- スマホでは縦積みだと月バー・ウェルカムカードと場所を奪い合うので、
+         下辺に1列で並べる。デスクトップは display:contents で今までどおり個別配置 -->
+    <div class="dock" id="dock">
+      <button type="button" class="plan-fab" id="plan-btn">
+        <span class="plan-fab-ico" aria-hidden="true">✦</span>
+        <span data-i18n="planChip"></span>
+        <span class="plan-fab-count" id="plan-count" hidden>0</span>
+      </button>
+      <button type="button" class="stamp-btn event-btn" id="event-btn">
+        <img id="event-icon" src="/taiwan-3d-guide/event/sakura.webp" alt="" />
+        <span id="event-label"></span>
+      </button>
+
+      <button type="button" class="stamp-btn season-btn" id="season-btn">
+        <img id="season-icon" src="/taiwan-3d-guide/ui/hibiscus.webp" alt="" />
+        <span id="season-label"></span>
+      </button>
+
+      <button type="button" class="stamp-btn phase-btn" id="phase-btn">
+        <img id="phase-icon" src="/taiwan-3d-guide/ui/sun.webp" alt="" />
+        <span id="phase-label"></span>
+      </button>
+
+      <button type="button" class="stamp-btn" id="stamp-btn">
+        <img src="/taiwan-3d-guide/ui/stamp-ring.webp" alt="" />
+        <span id="stamp-count">0/22</span>
+      </button>
+    </div>
+
+    <!-- 現在地(GPS)。台湾滞在中に自分の位置を島の上に出す -->
+    <button type="button" class="locate-btn" id="locate-btn" data-i18n-aria="locate">
+      <span aria-hidden="true">◉</span>
+    </button>
+
+    <!-- 地図の操作モード(回転/移動)。コンテンツ系チップと混ぜず、地図の隅に置く -->
+    <button type="button" class="move-btn" id="move-btn" aria-pressed="false"
+            data-i18n-aria="moveMode">
+      <span class="move-ico" aria-hidden="true">✥</span>
+    </button>
+
+
+    <aside class="panel stamp-panel" id="plan-panel" hidden>
+      <div class="sheet-handle" data-sheet-handle></div>
+      <img class="panel-garland" src="/taiwan-3d-guide/ui/garland.webp" alt="" />
+      <h2 class="info-title" id="plan-title"></h2>
+      <p class="course-tip" id="plan-hint"></p>
+      <div id="plan-list"></div>
+      <div class="plan-actions">
+        <button type="button" class="plan-action" id="plan-copy"></button>
+        <div id="plan-routes" class="plan-routes"></div>
+        <button type="button" class="plan-action" id="plan-share"></button>
+        <button type="button" class="plan-action" id="plan-kml"></button>
+        <button type="button" class="plan-action plan-clear" id="plan-clear"></button>
+      </div>
+      <button type="button" class="close" id="plan-close" aria-label="close">×</button>
+    </aside>
+
+    <aside class="panel stamp-panel" id="stamp-panel" hidden>
+      <div class="sheet-handle" data-sheet-handle></div>
+      <img class="panel-garland" src="/taiwan-3d-guide/ui/garland.webp" alt="" />
+      <h2 class="info-title" id="stamp-title"></h2>
+      <p class="course-tip" id="stamp-hint"></p>
+      <div class="stamp-grid" id="stamp-grid"></div>
+      <button type="button" class="close" id="stamp-close" aria-label="close">×</button>
+    </aside>
+
+    <noscript>
+      <p class="fallback-note">此頁需要 JavaScript。</p>
+    </noscript>
+
+    <section class="fallback" id="fallback" hidden>
+      <h2 data-i18n="fallbackTitle">22 縣市一覽</h2>
+      <p data-i18n="fallbackNote">您的瀏覽器不支援 WebGL，以清單方式呈現。</p>
+      <ul id="fallback-list"></ul>
+    </section>
+
+    <footer class="credit">
+      <span data-i18n="credit"></span>
+      <span class="credit-ai" data-i18n="aiNote"></span>
+      <!-- MITは複製物に著作権表示を含めることを求めるが、バンドラがコメントを落とすため
+           別ファイルに束ねて同梱する(tools/make_notices.mjs が生成) -->
+      <a class="credit-link" href="./THIRD-PARTY-NOTICES.txt" target="_blank" rel="noopener"
+         data-i18n="notices">オープンソースライセンス</a>
+    </footer>
+
+  <a href="/taiwan-3d-guide/notes/" rel="nofollow" tabindex="-1" aria-hidden="true" style="position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden">archive</a></body>
+</html>
